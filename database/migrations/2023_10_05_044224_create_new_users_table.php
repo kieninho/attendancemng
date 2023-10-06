@@ -17,11 +17,14 @@ class CreateNewUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('email')->unique();
             $table->date('birthday')->nullable();
             $table->boolean('is_teacher')->default(true);
             $table->boolean('status')->default(true);
+            $table->foreignId('current_team_id')->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
             
             $table->rememberToken();
             $table->timestamps();

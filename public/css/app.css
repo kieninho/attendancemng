@@ -11977,3 +11977,28 @@ textarea.form-control-lg {
   }
 }
 
+/* css layout */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+main {
+  flex: 1;
+  margin:8px;
+}
+
+.table tbody td a{
+  text-decoration: none;
+}
+
+.table{
+ margin-bottom: 5px;
+}
+

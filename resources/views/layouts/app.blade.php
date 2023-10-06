@@ -8,21 +8,17 @@
     @yield('styles')
 </head>
 <body>
-    <header>
-        <nav>
-            <!-- Định nghĩa menu -->
-        </nav>
-    </header>
+<div id="container">
+@yield('header')
 
-    <main>
-        @yield('content')
-    </main>
+<main>
+    @yield('content')
+</main>
 
-    <footer>
-        <!-- Định nghĩa footer -->
-    </footer>
+@yield('footer')
 
-    <script src="{{ asset('js/app.js') }}"></script>
-    @yield('scripts')
+<script src="{{ asset('js/app.js') }}"></script>
+@yield('scripts')
+</div>
 </body>
 </html>
