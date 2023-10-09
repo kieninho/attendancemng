@@ -1,0 +1,160 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="table-responsive">
+
+    <table class="table table-hover table-striped mb-1">
+        <thead>
+            <tr>
+                <th scope="col">Stt</th>
+                <th scope="col">Mã lớp</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Sinh viên</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Action</th>
+                <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($classes as $class)
+            <tr>
+                <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                <td class="table-Info">{{$class->code}}</td>
+                <td class="table-Info">{{$class->name}}</td>
+                <td class="table-Info">{{$class->description}}</td>
+                <td class="table-Info">{{$class->students->count()??0}}</td>
+                <td class="table-Info">{{$class->created_at}}</td>
+                <td class="table-Info">
+                    <span class="text-success cursor-pointer edit-button" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>
+                    <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>
+                    <a class="link-primary" href="">Chi tiết</a>
+                </td>
+                <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Tạo Lớp</button>
+<button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
+
+
+
+
+<div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo lớp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{route('store.class')}}" method="POST">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="mb-1">
+                        <label for="recipient-name" class="col-form-label">Tên lớp:</label>
+                        <input type="text" name="name" class="form-control" id="add-class-name">
+                        @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-1">
+                        <label for="description-class-name" class="col-form-label">Chi tiết:</label>
+                        <textarea class="form-control" name="description" id="description-class-name"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editClassModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo lớp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{route('store.class')}}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" id="classId" name="classId">
+                    <div class="mb-1">
+                        <label for="recipient-name" class="col-form-label">Tên lớp:</label>
+                        <input type="text" name="name" class="form-control" id="add-class-name">
+                        @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-1">
+                        <label for="description-class-name" class="col-form-label">Chi tiết:</label>
+                        <textarea class="form-control" name="description" id="description-class-name"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@endsection
+
+@section('header')
+@include('elements.header')
+@endsection
+
+@section('footer')
+@include('elements.footer')
+@endsection
+
+<script>
+    function selectAll() {
+        var checkboxes = document.getElementsByName("item_ids[]");
+        var selectAllCheckbox = document.getElementById("select-all");
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = selectAllCheckbox.checked;
+        }
+    }
+
+    function setCheckedSelectAll() {
+        var checkboxes = document.getElementsByName("item_ids[]");
+        var selectAllCheckbox = document.getElementById("select-all");
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked == false) {
+                selectAllCheckbox.checked = false;
+                return;
+            }
+            selectAllCheckbox.checked = true;
+        }
+    }
+
+    $(document).ready(function() {
+        $.ajax({
+            url: "{{ route('get.class',['id'=>{{$class->id}}]) }}",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                // Hiển thị dữ liệu lên form
+                $('#add-class-name').val(response.name);
+                $('#description-class-name').val(response.description);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+</script>

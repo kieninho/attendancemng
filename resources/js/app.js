@@ -1,4 +1,6 @@
-import './bootstrap';
+lllllll;
+require('bootstrap');
+
 
 import Alpine from 'alpinejs';
 
