@@ -11,8 +11,8 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::where('status','=',1)->get();
-        return view('student.index',compact('students'));
+        $students = Student::where('status', '=', 1)->get();
+        return view('student.index', compact('students'));
     }
 
     public function store(Request $request)
@@ -34,36 +34,39 @@ class StudentController extends Controller
 
         $data = $request->all();
         $data['status'] = 1;
-        $data['code'] = helper::genCode('SV',$listExitsCode);
+        $data['code'] = helper::genCode('SV', $listExitsCode);
+        $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime();
 
         $result = Student::create($data);
 
-        if($result){
+        if ($result) {
             return redirect()->back();
         }
-        
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $student = Student::findOrFail($id);
-        if($student){
+        if ($student) {
             $student->status = 0;
         }
         $student->save();
         return redirect()->back();
     }
 
-    public function get($id){
+    public function get($id)
+    {
         $data = Student::findOrFail($id);
 
         return response()->json($data);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 
         $data = $request->all();
         $record = Student::findOrFail($data['studentId']);
-        if(isset($record)){
+        if (isset($record)) {
             $request->validate(
                 [
                     'name' => 'required|string|min:3|max:100',
@@ -77,9 +80,9 @@ class StudentController extends Controller
                 ['stopOnFirstFailure' => true]
             );
             $record->fill([
-                'name'=>$data['name'],
-                'email'=>$data['email'],
-                'birthday'=>Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime(),
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime(),
             ]);
 
             $record->save();

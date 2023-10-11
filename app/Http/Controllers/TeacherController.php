@@ -42,38 +42,40 @@ class TeacherController extends Controller
 
         $data['status'] = 1;
         $data['is_teacher'] = 1;
-        $data['password']='123456';
+        $data['password'] = '123456';
         $data['password'] = Hash::make($data['password']);
+        $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime();
 
         $result = User::create($data);
 
         if ($result) {
             $message = 'Thêm mới thành công!';
-        }
-        else{
+        } else {
             $message = 'Thêm mới không thành công!';
         }
         return redirect()->back()->withErrors($message);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $user = User::findOrFail($id);
-        if($user){
+        if ($user) {
             $user->status = 0;
         }
         $user->save();
         return redirect()->back();
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 
         $data = $request->all();
         $record = User::findOrFail($data['teacherId']);
 
-        if(isset($record)){
+        if (isset($record)) {
             $request->validate([
                 'name' => 'required|string|min:3|max:100',
-            ],[
+            ], [
                 'name.required' => 'Tên không được bỏ trống',
                 'name.string' => 'Nhập tên là chữ cái',
                 'name.min' => 'Tên phải nhiều hơn 3 kí tự',
@@ -81,20 +83,20 @@ class TeacherController extends Controller
 
 
             $record->fill([
-                'name'=>$data['name'],
-                'birthday'=>Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime(),
-                'phone'=>$data['phone'],
+                'name' => $data['name'],
+                'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime(),
+                'phone' => $data['phone'],
             ]);
 
             $record->save();
-
         }
 
 
         return redirect()->back();
     }
 
-    public function get($id){
+    public function get($id)
+    {
         $data = User::findOrFail($id);
 
         return response()->json($data);

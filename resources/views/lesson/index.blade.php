@@ -9,6 +9,9 @@
     <div class="col-md-2">
         <div class="list-group">
             <a href="#" class="list-group-item list-group-item-action">Danh sách lớp</a>
+            @foreach($classes as $class)
+            <a href="{{route('lesson',['classId'=>$class->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$class->name}}</a>
+            @endforeach
             <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 1</a>
             <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 2</a>
             <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 3</a>
@@ -31,6 +34,28 @@
             </thead>
 
             <tbody>
+
+                @foreach($lessons as $lesson)
+                <tr>
+                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <td class="table-Info">{{$lesson->name}}</td>
+                    <td class="table-Info">{{$lesson->description}}</td>
+                    <td class="table-Info">17h40 - 21h10 10/4/1222</td>
+                    <td class="table-Info">
+                        @foreach({{$lesson->users as $teacher}})
+                        {{$teacher->name.", "}}
+                        @endforeach
+                    </td>
+                    <td class="table-Info">{{$lesson->students->count()??0}}/40</td>
+                    <td class="table-Info">
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="1" data-bs-target="#editClassModal">Sửa</span>
+                        <a class="link-danger" href="#">Xóa</a>
+                        <a class="link-primary" href="">Chi tiết</a>
+                    </td>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                </tr>
+                @endforeach
+
                 <tr>
                     <th scope="row" class="table-Info">1</th>
                     <td class="table-Info">Lesson 1</td>

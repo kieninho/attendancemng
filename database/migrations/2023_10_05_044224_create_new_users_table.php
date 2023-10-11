@@ -22,7 +22,7 @@ class CreateNewUsersTable extends Migration
             $table->date('birthday')->nullable();
             $table->boolean('is_teacher')->default(true);
             $table->boolean('status')->default(true);
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->rememberToken();
             $table->timestamps();

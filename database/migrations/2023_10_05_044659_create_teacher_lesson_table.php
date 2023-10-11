@@ -15,7 +15,7 @@ class CreateTeacherLessonTable extends Migration
     {
         Schema::create('teacher_lesson', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('tearcher_id');
+            $table->unsignedInteger('teacher_id');
             $table->unsignedInteger('lesson_id');
             $table->timestamps();
         });
