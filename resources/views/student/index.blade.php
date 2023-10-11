@@ -6,43 +6,45 @@
 
 
 @section('content')
+<div class="container-fluid">
 <div class="table-responsive">
 
-    <table class="table table-hover table-striped mb-1">
-        <thead>
-            <tr>
-                <th scope="col">Stt</th>
-                <th scope="col">Mã SV</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Email</th>
-                <th scope="col">Ngày sinh</th>
-                <th scope="col">Chuyên cần</th>
-                <th scope="col">Action</th>
-                <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($students as $student)
-            <tr>
-                <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
-                <td class="table-Info">{{$student->code}}</td>
-                <td class="table-Info">{{$student->name}}</td>
-                <td class="table-Info">{{$student->email}}</td>
-                <td class="table-Info">{{$student->birthday}}</td>
-                <td class="table-Info">89%</td>
-                <td class="table-Info">
-                    <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editStudentModal">Sửa</span>
-                    <a class="link-danger" href="{{route('delete.student',['id'=>$student->id])}}">Xóa</a>
-                    <a class="link-primary" href="">Chi tiết</a>
-                </td>
-                <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<table class="table table-hover table-striped mb-1">
+    <thead>
+        <tr>
+            <th scope="col">Stt</th>
+            <th scope="col">Mã SV</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Email</th>
+            <th scope="col">Ngày sinh</th>
+            <th scope="col">Chuyên cần</th>
+            <th scope="col">Action</th>
+            <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($students as $student)
+        <tr>
+            <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+            <td class="table-Info">{{$student->code}}</td>
+            <td class="table-Info">{{$student->name}}</td>
+            <td class="table-Info">{{$student->email}}</td>
+            <td class="table-Info">{{$student->birthday}}</td>
+            <td class="table-Info">89%</td>
+            <td class="table-Info">
+                <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editStudentModal">Sửa</span>
+                <a class="link-danger" href="{{route('delete.student',['id'=>$student->id])}}">Xóa</a>
+                <a class="link-primary" href="">Chi tiết</a>
+            </td>
+            <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 </div>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">Thêm SV</button>
 <button type="button" class="btn btn-primary">Xóa SV đã chọn</button>
+</div>
 
 
 

@@ -26,7 +26,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'birthday',
     ];
 
     /**
@@ -48,14 +50,22 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birthday' => 'datetime',
     ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    public function getBirthdayAttribute($value)
+    {
+        if(!empty($value)){
+            return date('d/m/Y', strtotime($value));
+        }
+        else{
+            return null;
+        }
+    }
+
+
+    public function lessons()
+    {
+        return $this->belongsToMany(lesson::class, 'teacher_lesson', 'teacher_id', 'lesson_id')->where('status', 1);
+    }
 }

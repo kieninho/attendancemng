@@ -5,43 +5,45 @@
 @endsection
 
 @section('content')
+<div class="container-fluid">
 <div class="table-responsive">
 
-    <table class="table table-hover table-striped mb-1">
-        <thead>
-            <tr>
-                <th scope="col">Stt</th>
-                <th scope="col">Mã lớp</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Mô tả</th>
-                <th scope="col">Sinh viên</th>
-                <th scope="col">Ngày tạo</th>
-                <th scope="col">Action</th>
-                <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($classes as $class)
-            <tr>
-                <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
-                <td class="table-Info">{{$class->code}}</td>
-                <td class="table-Info">{{$class->name}}</td>
-                <td class="table-Info">{{$class->description}}</td>
-                <td class="table-Info">{{$class->students->count()??0}}</td>
-                <td class="table-Info">{{$class->created_at}}</td>
-                <td class="table-Info">
-                    <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>
-                    <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>
-                    <a class="link-primary" href="">Chi tiết</a>
-                </td>
-                <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<table class="table table-hover table-striped mb-1">
+    <thead>
+        <tr>
+            <th scope="col">Stt</th>
+            <th scope="col">Mã lớp</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Sinh viên</th>
+            <th scope="col">Ngày tạo</th>
+            <th scope="col">Action</th>
+            <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($classes as $class)
+        <tr>
+            <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+            <td class="table-Info">{{$class->code}}</td>
+            <td class="table-Info">{{$class->name}}</td>
+            <td class="table-Info">{{$class->descrsiption}}</td>
+            <td class="table-Info">{{$class->students->count()??0}}</td>
+            <td class="table-Info">{{$class->created_at}}</td>
+            <td class="table-Info">
+                <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>
+                <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>
+                <a class="link-primary" href="">Chi tiết</a>
+            </td>
+            <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 </div>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Tạo Lớp</button>
 <button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
+</div>
 
 
 

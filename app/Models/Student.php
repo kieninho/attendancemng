@@ -58,11 +58,11 @@ class Student extends Model
 
     // relationship
     public function classes(){
-        return $this->belongsToMany(Classes::class,'student_class','student_id','class_id');
+        return $this->belongsToMany(Classes::class,'student_class','student_id','class_id')->where('status', 1);
     }
 
     public function lessons(){
-        return $this->belongsToMany(Lesson::class,'student_lesson','student_id','lesson_id');
+        return $this->belongsToMany(Lesson::class,'student_lesson','student_id','lesson_id')->where('status', 1);
     }
 
 }

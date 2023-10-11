@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Services\helper;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class StudentController extends Controller
 {
@@ -66,8 +66,8 @@ class StudentController extends Controller
         if(isset($record)){
             $request->validate(
                 [
-                    'name' => 'required|string|min:3|max:255',
-                    'email' => 'required|string|email|max:255'
+                    'name' => 'required|string|min:3|max:100',
+                    'email' => 'required|string|email|max:150'
                 ],
                 [
                     'name.required' => 'Tên lớp không được bỏ trống',
@@ -79,7 +79,7 @@ class StudentController extends Controller
             $record->fill([
                 'name'=>$data['name'],
                 'email'=>$data['email'],
-                'birthday'=>$data['birthday'],
+                'birthday'=>Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime(),
             ]);
 
             $record->save();

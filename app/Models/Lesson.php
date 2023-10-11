@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Classes;
 use App\Models\User;
 use App\Models\Student;
+use Illuminate\Support\Carbon;
+
+
 
 
 class Lesson extends Model
@@ -31,22 +34,23 @@ class Lesson extends Model
     //get-set format
     public function getStartAtAttribute($value)
     {
-        return date('d/m/Y', strtotime($value));
+        return date('H:i d/m/Y', strtotime($value));
     }
 
-    public function setStartAtAttribute($value)
-    {
-        $this->attributes['start_at'] = date('H:i:s d/m/y', strtotime($value));
-    }
+
 
     public function getEndAtAttribute($value)
     {
-        return date('d/m/Y', strtotime($value));
+        return date('H:i d/m/Y', strtotime($value));
     }
 
-    public function setEndAtAttribute($value)
+    public function getStartAndEnd()
     {
-        $this->attributes['end_at'] = date('H:i:s d/m/y', strtotime($value));
+        $start = Carbon::parse($this->start_at)->format('H:i');
+        $end = Carbon::parse($this->end_at)->format('H:i');
+        $date = Carbon::parse($this->start_at)->format('d/m/y');
+
+        return $start . ' - ' . $end . ' ' . $date;
     }
 
     public function getCreatedAtAttribute($value)
@@ -54,30 +58,24 @@ class Lesson extends Model
         return date('d/m/Y', strtotime($value));
     }
 
-    public function setCreatedAtAttribute($value)
-    {
-        $this->attributes['created_at'] = date('H:i:s d/m/y', strtotime($value));
-    }
 
     public function getUpdatedAtAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
     }
 
-    public function setUpdatedAtAttribute($value)
+    public function classes()
     {
-        return $this->attributes['updated_at'] = date('H:i:s d/m/y', strtotime($value));
+        return $this->belongsTo(Classes::class)->where('status', 1);
     }
 
-    public function classes(){
-        return $this->belongsTo(Classes::class);
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'student_lesson', 'lesson_id', 'student_id')->where('status', 1);
     }
 
-    public function students(){
-        return $this->belongsToMany(Student::class,'student_lesson','lesson_id','student_id');
-    }
-
-    public function teachers(){
-        return $this->belongsToMany(User::class,'teacher_lesson','lesson_id','teacher_id');
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class, 'teacher_lesson', 'lesson_id', 'teacher_id')->where('status', 1);
     }
 }

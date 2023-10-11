@@ -11,33 +11,33 @@ use Illuminate\Support\Facades\Auth;
 
         <ul class="nav col-10 col-lg-auto my-2 justify-content-center my-md-0 text-small">
           <li>
-            <a href="#" class="nav-link text-white">
+            <a href="{{route('home')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/home.svg') }}">
               Trang chủ
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
+            <a href="{{route('class')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/class.svg') }}">
               Lớp
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
+            <a href="{{route('student')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/student.svg') }}">
               Sinh viên
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
+            <a href="{{route('teacher')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/teacher.svg') }}">
               Giáo viên
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
+            <a href="{{route('home')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/admin1.svg') }}">
-              Quản trị viên
+              Người dùng
             </a>
           </li>
 

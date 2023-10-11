@@ -43,11 +43,11 @@ class Classes extends Model
     
     // Relationship
     public function students(){
-        return $this->belongsToMany(Student::class,'student_class','class_id','student_id');
+        return $this->belongsToMany(Student::class,'student_class','class_id','student_id')->where('status', 1);
     }
 
     public function lessons(){
-        return $this->hasMany(Lesson::class);
+        return $this->hasMany(Lesson::class)->where('status', 1);
     }
     
 

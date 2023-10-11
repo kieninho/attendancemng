@@ -18,4 +18,16 @@
             $code = str_pad($code, 4, '0', STR_PAD_LEFT);
             return $prefix.$code;
         }
+
+        function generateRandomPassword($length = 6) {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $randomString = '';
+            $len = strlen($characters);
+        
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $len - 1)];
+            }
+        
+            return $randomString;
+        }
      }

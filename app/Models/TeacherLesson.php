@@ -21,18 +21,8 @@ class TeacherLesson extends Model
         return date('d/m/Y', strtotime($value));
     }
 
-    public function setCreatedAtAttribute($value)
-    {
-        $this->attributes['created_at'] = date('H:i:s d/m/y', strtotime($value));
-    }
-
     public function getUpdatedAtAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
-    }
-
-    public function setUpdatedAtAttribute($value)
-    {
-        $this->attributes['updated_at'] = date('H:i:s d/m/y', strtotime($value));
     }
 }
