@@ -5,45 +5,52 @@
 @endsection
 
 @section('content')
-<div class="table-responsive">
+<div class="container-fluid row">
+    <div class="col-md-2">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">Danh sách lớp</a>
+            <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 1</a>
+            <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 2</a>
+            <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 3</a>
+        </div>
+    </div>
 
-    <table class="table table-hover table-striped mb-1">
-        <thead>
-            <tr>
-                <th scope="col">Stt</th>
-                <th scope="col">Mã lớp</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Mô tả</th>
-                <th scope="col">Sinh viên</th>
-                <th scope="col">Ngày tạo</th>
-                <th scope="col">Action</th>
-                <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($classes as $class)
-            <tr>
-                <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
-                <td class="table-Info">{{$class->code}}</td>
-                <td class="table-Info">{{$class->name}}</td>
-                <td class="table-Info">{{$class->description}}</td>
-                <td class="table-Info">{{$class->students->count()??0}}</td>
-                <td class="table-Info">{{$class->created_at}}</td>
-                <td class="table-Info">
-                    <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>
-                    <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>
-                    <a class="link-primary" href="">Chi tiết</a>
-                </td>
-                <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="table-responsive col-md-10">
+        <table class="table table-hover table-striped mb-1">
+            <thead>
+                <tr>
+                    <th scope="col">Stt</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Mô tả</th>
+                    <th scope="col">Thời gian</th>
+                    <th scope="col">GV</th>
+                    <th scope="col">Sĩ số</th>
+                    <th scope="col">Action</th>
+                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th scope="row" class="table-Info">1</th>
+                    <td class="table-Info">Lesson 1</td>
+                    <td class="table-Info">Giới thiệu lung tung</td>
+                    <td class="table-Info">17h40 - 21h10 10/4/1222</td>
+                    <td class="table-Info">Nguyễn Văn Hoàng, Lê Minh Đức</td>
+                    <td class="table-Info">18/23</td>
+                    <td class="table-Info">
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="1" data-bs-target="#editClassModal">Sửa</span>
+                        <a class="link-danger" href="#">Xóa</a>
+                        <a class="link-primary" href="">Chi tiết</a>
+                    </td>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Thêm buổi học</button>
+    </div>
+
 </div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Tạo Lớp</button>
-<button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
-
-
 
 
 <div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -60,9 +67,6 @@
                     <div class="mb-1">
                         <label for="recipient-name" class="col-form-label">Tên lớp:</label>
                         <input type="text" name="name" class="form-control" id="add-class-name">
-                        @error('name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                     </div>
                     <div class="mb-1">
                         <label for="description-class-name" class="col-form-label">Chi tiết:</label>
@@ -93,9 +97,6 @@
                     <div class="mb-1">
                         <label for="recipient-name" class="col-form-label">Tên lớp:</label>
                         <input type="text" name="name" class="form-control" id="edit-class-name">
-                        @error('name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                     </div>
                     <div class="mb-1">
                         <label for="description-class-name" name="name" class="col-form-label">Chi tiết:</label>
@@ -112,7 +113,7 @@
     </div>
 </div>
 
-<script>
+<!-- <script>
     function selectAll() {
         var checkboxes = document.getElementsByName("item_ids[]");
         var selectAllCheckbox = document.getElementById("select-all");
@@ -151,12 +152,9 @@
             });
         });
     });
-</script>
+</script> -->
 @endsection
 
 @section('footer')
 @include('elements.footer')
 @endsection
-
-
-

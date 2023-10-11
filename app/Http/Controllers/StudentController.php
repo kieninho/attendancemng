@@ -2,41 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use App\Models\Student;
 use App\Services\helper;
-use App\Models\Classes;
 use Illuminate\Support\Facades\Auth;
 
-class ClassController extends Controller
+class StudentController extends Controller
 {
     public function index()
     {
-        $classes = Classes::where('status','=',1)->get();
-        return view('class.index',compact('classes'));
+        $students = Student::where('status','=',1)->get();
+        return view('student.index',compact('students'));
     }
 
     public function store(Request $request)
     {
         $request->validate(
             [
-                'name' => 'required|string|min:2',
+                'name' => 'required|string|min:3|max:255',
+                'email' => 'required|string|email|max:255'
             ],
             [
                 'name.required' => 'Tên lớp không được bỏ trống',
                 'name.string' => 'Nhập tên lớp là chữ cái',
-                'name.min' => 'Tên lớp phải nhiều hơn 2 kí tự',
+                'name.min' => 'Tên lớp phải nhiều hơn 3 kí tự',
             ],
             ['stopOnFirstFailure' => true]
         );
 
-        $listExitsCode = Classes::pluck('code')->all();
+        $listExitsCode = Student::pluck('code')->all();
 
         $data = $request->all();
         $data['status'] = 1;
-        $data['code'] = helper::genCode('CL',$listExitsCode);
+        $data['code'] = helper::genCode('SV',$listExitsCode);
 
-        $result = Classes::create($data);
+        $result = Student::create($data);
 
         if($result){
             return redirect()->back();
@@ -45,16 +45,16 @@ class ClassController extends Controller
     }
 
     public function delete($id){
-        $class = Classes::findOrFail($id);
-        if($class){
-            $class->status = 0;
+        $student = Student::findOrFail($id);
+        if($student){
+            $student->status = 0;
         }
-        $class->save();
+        $student->save();
         return redirect()->back();
     }
 
-    public function getClass($id){
-        $data = Classes::findOrFail($id);
+    public function get($id){
+        $data = Student::findOrFail($id);
 
         return response()->json($data);
     }
@@ -62,22 +62,26 @@ class ClassController extends Controller
     public function update(Request $request){
 
         $data = $request->all();
-        $record = Classes::findOrFail($data['classId']);
+        $record = Student::findOrFail($data['studentId']);
         if(isset($record)){
             $request->validate(
                 [
-                    'name' => 'required|string|min:2',
+                    'name' => 'required|string|min:3|max:255',
+                    'email' => 'required|string|email|max:255'
                 ],
                 [
                     'name.required' => 'Tên lớp không được bỏ trống',
                     'name.string' => 'Nhập tên lớp là chữ cái',
-                    'name.min' => 'Tên lớp phải nhiều hơn 2 kí tự',
+                    'name.min' => 'Tên lớp phải nhiều hơn 3 kí tự',
                 ],
                 ['stopOnFirstFailure' => true]
             );
-            $record->id = $data['classId'];
-            $record->name = $data['name'];
-            $record->description = $data['description'];
+            $record->fill([
+                'name'=>$data['name'],
+                'email'=>$data['email'],
+                'birthday'=>$data['birthday'],
+            ]);
+
             $record->save();
         }
 
