@@ -40,8 +40,9 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
-    Route::get('/{id}', [LessonController::class, 'index'])->name('lesson');
-    Route::post('/store', [LessonController::class, 'store'])->name('store.lesson');
+    Route::get('/', [LessonController::class, 'index'])->name('lesson');
+    Route::get('/class={classId}', [LessonController::class, 'classLesson'])->name('classLesson');
+    Route::post('/store/class={classId}', [LessonController::class, 'store'])->name('store.lesson');
     Route::get('/delete/{id}', [LessonController::class, 'delete'])->name('delete.lesson');
     Route::get('/get', [LessonController::class, 'get'])->name('get.lesson');
     Route::get('/get/{id}', [LessonController::class, 'get'])->name('get.lesson.id');

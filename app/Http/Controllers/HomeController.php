@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Classes;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = Auth::user();
+        if ($user->is_teacher) {
+            $classes = $user->lessons->map(function ($lesson) {
+                return $lesson->classes;
+            });
+        } else {
+            $classes = Classes::where('status', 1)->orderBy('created_at','asc')->get();
+        }
+        return view('home',compact('classes',));
     }
 }

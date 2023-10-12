@@ -7,43 +7,54 @@
 
 @section('content')
 <div class="container-fluid">
-<div class="table-responsive">
+    <div class="table-responsive">
 
-<table class="table table-hover table-striped mb-1">
-    <thead>
-        <tr>
-            <th scope="col">Stt</th>
-            <th scope="col">Mã SV</th>
-            <th scope="col">Tên</th>
-            <th scope="col">Email</th>
-            <th scope="col">Ngày sinh</th>
-            <th scope="col">Chuyên cần</th>
-            <th scope="col">Action</th>
-            <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($students as $student)
-        <tr>
-            <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
-            <td class="table-Info">{{$student->code}}</td>
-            <td class="table-Info">{{$student->name}}</td>
-            <td class="table-Info">{{$student->email}}</td>
-            <td class="table-Info">{{$student->birthday}}</td>
-            <td class="table-Info">89%</td>
-            <td class="table-Info">
-                <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editStudentModal">Sửa</span>
-                <a class="link-danger" href="{{route('delete.student',['id'=>$student->id])}}">Xóa</a>
-                <a class="link-primary" href="">Chi tiết</a>
-            </td>
-            <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-</div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">Thêm SV</button>
-<button type="button" class="btn btn-primary">Xóa SV đã chọn</button>
+        <table class="table table-hover table-striped mb-1">
+            <thead>
+                <tr>
+                    <th scope="col">Stt</th>
+                    <th scope="col">Mã SV</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Ngày sinh</th>
+                    <th scope="col">Chuyên cần</th>
+                    <th scope="col">Action</th>
+                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($students as $student)
+                <tr>
+                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <td class="table-Info">{{$student->code}}</td>
+                    <td class="table-Info">{{$student->name}}</td>
+                    <td class="table-Info">{{$student->email}}</td>
+                    <td class="table-Info">{{$student->birthday}}</td>
+                    <td class="table-Info">89%</td>
+                    <td class="table-Info">
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editStudentModal">Sửa</span>
+                        <a class="link-danger" href="{{route('delete.student',['id'=>$student->id])}}">Xóa</a>
+                        <a class="link-primary" href="">Chi tiết</a>
+                    </td>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">Thêm SV</button>
+    <button type="button" class="btn btn-primary">Xóa SV đã chọn</button>
+    <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="ps-1">
+                @foreach ($errors->all() as $error)
+                <li style="list-style-type:none;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+    </div>
 </div>
 
 
@@ -63,16 +74,10 @@
                     <div class="mb-1">
                         <label for="recipient-name" class="col-form-label">Tên sinh viên:</label>
                         <input type="text" name="name" class="form-control" id="add-student-name">
-                        @error('name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                     </div>
                     <div class="mb-1">
                         <label for="add-student-email" class="col-form-label">Email:</label>
                         <input type="email" class="form-control" name="email" id="add-student-email">
-                        @error('email')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <div class="mb-1">
@@ -107,20 +112,14 @@
                         <label for="edit-student-code" class="col-form-label">Mã SV:</label>
                         <input type="text" name="code" class="form-control" id="edit-student-code" style="width: 150px;" disabled>
                     </div>
-                    
+
                     <div class="mb-1">
                         <label for="edit-student-name" class="col-form-label">Tên sinh viên:</label>
                         <input type="text" name="name" class="form-control" id="edit-student-name">
-                        @error('name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                     </div>
                     <div class="mb-1">
                         <label for="edit-student-email" class="col-form-label">Email:</label>
                         <input type="email" class="form-control" name="email" id="edit-student-email">
-                        @error('email')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <div class="mb-1">
@@ -139,7 +138,15 @@
 </div>
 
 <script>
+    var errorAlert = document.getElementById('error-box');
 
+    // Thêm lớp 'show' để hiển thị div
+    errorAlert.classList.add('show');
+
+    // Tự động mờ và biến mất sau 3 giây
+    setTimeout(function() {
+        errorAlert.classList.remove('show');
+    }, 3000);
 
     function selectAll() {
         var checkboxes = document.getElementsByName("item_ids[]");
@@ -184,21 +191,21 @@
 
 
     flatpickr("#datetimepicker1", {
-    allowInput: true,
-    enableTime: false,
-    dateFormat: "d/m/Y",
-    minDate: "01/01/1945",
-    maxDate: "31/12/2022",
-  });
+        allowInput: true,
+        enableTime: false,
+        dateFormat: "d/m/Y",
+        minDate: "01/01/1945",
+        maxDate: "31/12/2022",
+    });
 
-  flatpickr("#datetimepicker2", {
-    allowInput: true,
-    enableTime: false,
-    dateFormat: "d/m/Y",
-    minDate: "01/01/1945",
-    maxDate: "31/12/2022",
-    
-  });
+    flatpickr("#datetimepicker2", {
+        allowInput: true,
+        enableTime: false,
+        dateFormat: "d/m/Y",
+        minDate: "01/01/1945",
+        maxDate: "31/12/2022",
+
+    });
 </script>
 @endsection
 

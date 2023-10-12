@@ -14,6 +14,7 @@ class Classes extends Model
     protected $table = 'classes';
     // attribute
     protected $fillable = [
+        'id',
         'name',
         'code',
         'description',
@@ -47,7 +48,7 @@ class Classes extends Model
     }
 
     public function lessons(){
-        return $this->hasMany(Lesson::class)->where('status', 1);
+        return $this->hasMany(Lesson::class,'class_id')->where('status', 1);
     }
     
 

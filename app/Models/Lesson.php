@@ -66,7 +66,7 @@ class Lesson extends Model
 
     public function classes()
     {
-        return $this->belongsTo(Classes::class)->where('status', 1);
+        return $this->belongsTo(Classes::class,'class_id')->where('status', 1);
     }
 
     public function students()

@@ -43,6 +43,18 @@
     </div>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Tạo Lớp</button>
     <button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
+
+    <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="ps-1">
+                @foreach ($errors->all() as $error)
+                <li style="list-style-type:none;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+    </div>
 </div>
 
 

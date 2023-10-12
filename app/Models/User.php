@@ -55,10 +55,9 @@ class User extends Authenticatable
 
     public function getBirthdayAttribute($value)
     {
-        if(!empty($value)){
+        if (!empty($value)) {
             return date('d/m/Y', strtotime($value));
-        }
-        else{
+        } else {
             return null;
         }
     }
@@ -67,5 +66,10 @@ class User extends Authenticatable
     public function lessons()
     {
         return $this->belongsToMany(lesson::class, 'teacher_lesson', 'teacher_id', 'lesson_id')->where('status', 1);
+    }
+
+    public function classes()
+    {
+        return $this->hasManyThrough(Classes::class, Lesson::class,'teacher_id')->where('status',1)->orderBy('created_at', 'desc');
     }
 }

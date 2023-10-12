@@ -6,14 +6,14 @@
 
 @section('content')
 <div class="container-fluid row mt-5">
-    <div class="col-md-2">
-        <div class="list-group">
-            <b class="list-group-item list-group-item-action">Lớp của bạn</b>
-            <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 1</a>
-            <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 2</a>
-            <a href="#" class="list-group-item list-group-item-warning list-group-item-action">Class 3</a>
+<div class="col-md-2">
+        <div class="list-group scrollbar overflow-auto" style="max-height: 400px;">
+            <a href="#" class="list-group-item list-group-item-action">Danh sách lớp</a>
+            @foreach($classes as $class)
+            <a href="{{route('classLesson',['classId'=>$class->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$class->name}}</a>
+            @endforeach
         </div>
-    </div>
+</div>
 
     <div class="table-responsive col-md-10">
         <div class="row mx-3">

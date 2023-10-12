@@ -26,8 +26,7 @@ class StudentController extends Controller
                 'name.required' => 'Tên lớp không được bỏ trống',
                 'name.string' => 'Nhập tên lớp là chữ cái',
                 'name.min' => 'Tên lớp phải nhiều hơn 3 kí tự',
-            ],
-            ['stopOnFirstFailure' => true]
+            ]
         );
 
         $listExitsCode = Student::pluck('code')->all();
