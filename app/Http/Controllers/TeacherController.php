@@ -13,10 +13,16 @@ use Illuminate\Support\Carbon;
 
 class TeacherController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $teachers = User::where('is_teacher', 1)->where('status', 1)->get();
-        return view('teacher.index', compact('teachers'));
+        $records_per_page = 10;
+        $current_page = $request->query('page', 1);
+
+        $keyword = $request->input('keyword');
+
+        $teachers = User::search($keyword)->where('is_teacher', 1)
+                    ->orderBy('created_at','desc')->paginate($records_per_page);
+        return view('teacher.index', compact('teachers','keyword'));
     }
 
     public function store(Request $request): RedirectResponse

@@ -78,4 +78,10 @@ class Lesson extends Model
     {
         return $this->belongsToMany(User::class, 'teacher_lesson', 'lesson_id', 'teacher_id')->where('status', 1);
     }
+
+    // method
+    public static function search($keyword){
+        $result = Lesson::where('name','like',"%$keyword%")->orWhere('description','like',"%$keyword%");
+        return $result;
+    }
 }

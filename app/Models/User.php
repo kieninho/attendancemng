@@ -29,6 +29,7 @@ class User extends Authenticatable
         'phone',
         'password',
         'birthday',
+        'is_teacher',
     ];
 
     /**
@@ -62,6 +63,11 @@ class User extends Authenticatable
         }
     }
 
+    public function getCreatedAtAttribute($value)
+    {
+        return date('d/m/Y', strtotime($value));
+    }
+
 
     public function lessons()
     {
@@ -71,5 +77,14 @@ class User extends Authenticatable
     public function classes()
     {
         return $this->hasManyThrough(Classes::class, Lesson::class,'teacher_id')->where('status',1)->orderBy('created_at', 'desc');
+    }
+
+    public static function search($keyword){
+        $result = User::where(function($query) use ($keyword) {
+            $query->where('name', 'like', "%$keyword%")
+                  ->orWhere('email', 'like', "%$keyword%");
+        })->where('status', 1);
+        
+        return $result;
     }
 }

@@ -8,8 +8,22 @@
 @section('content')
 
 <div class="container-fluid">
+    <div class="top-box d-flex justify-content-between my-1" style="width:100%; height:24px">
+        <h5>Quản lý giáo viên</h5>
+        <div class="search-box" style="width:300px; height:30px">
+            <form class="d-flex" action="{{route('teacher')}}" method="get">
+                <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm giáo viên" aria-label="Search" value="{{$keyword}}">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </form>
+        </div>
+        <form action="{{route('delete.teachers')}}" method="post">
+            @csrf
+            <div class="button-box">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm GV</button>
+                <button type="submit" class="btn btn-primary">Xóa GV đã chọn</button>
+            </div>
+    </div>
     <div class="table-responsive">
-
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
@@ -42,9 +56,10 @@
                 @endforeach
             </tbody>
         </table>
+        </form>
+        {{$teachers->links()}}
+
     </div>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm GV</button>
-    <button type="button" class="btn btn-primary">Xóa GV đã chọn</button>
 
     <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
         @if ($errors->any())

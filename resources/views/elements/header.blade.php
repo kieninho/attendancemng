@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Auth;
             </a>
           </li>
           <li>
-            <a href="{{route('home')}}" class="nav-link text-white">
+            <a href="{{route('user')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/admin1.svg') }}">
               Người dùng
             </a>

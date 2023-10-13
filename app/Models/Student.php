@@ -65,4 +65,9 @@ class Student extends Model
         return $this->belongsToMany(Lesson::class,'student_lesson','student_id','lesson_id')->where('status', 1);
     }
 
+    public static function search($keyword){
+        $result = Student::where('name','like',"%$keyword%")->orWhere('email','like',"%$keyword%");
+        return $result;
+    }
+
 }

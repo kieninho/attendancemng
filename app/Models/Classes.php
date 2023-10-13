@@ -51,5 +51,9 @@ class Classes extends Model
         return $this->hasMany(Lesson::class,'class_id')->where('status', 1);
     }
     
+    public static function search($keyword){
+        $result = Classes::where('name','like',"%$keyword%")->orWhere('description','like',"%$keyword%");
+        return $result;
+    }
 
 }
