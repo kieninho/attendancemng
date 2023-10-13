@@ -66,8 +66,13 @@ class Student extends Model
     }
 
     public static function search($keyword){
-        $result = Student::where('name','like',"%$keyword%")->orWhere('email','like',"%$keyword%");
+        $result = Student::where(function($query) use ($keyword) {
+            $query->where('name', 'like', "%$keyword%")
+                  ->orWhere('email', 'like', "%$keyword%");
+        })->where('status', 1);
+        
         return $result;
     }
 
+    
 }

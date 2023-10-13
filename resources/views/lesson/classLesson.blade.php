@@ -166,7 +166,6 @@
     setTimeout(function() {
         errorAlert.classList.remove('show');
     }, 3000);
-    a
 
 
     function selectAll() {

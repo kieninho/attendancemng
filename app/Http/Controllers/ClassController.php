@@ -10,10 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ClassController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $classes = Classes::where('status','=',1)->get();
-        return view('class.index',compact('classes'));
+        $records_per_page = 10;
+        $current_page = $request->query('page', 1);
+
+        $keyword = $request->input('keyword');
+
+        $classes = Classes::search($keyword)
+        ->orderBy('created_at','desc')->paginate($records_per_page);
+        $classes->appends(['keyword' => $keyword]);
+        return view('class.index',compact('classes','keyword'));
     }
 
     public function store(Request $request)

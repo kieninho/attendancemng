@@ -52,7 +52,11 @@ class Classes extends Model
     }
     
     public static function search($keyword){
-        $result = Classes::where('name','like',"%$keyword%")->orWhere('description','like',"%$keyword%");
+        $result = Classes::where(function($query) use ($keyword) {
+            $query->where('name','like',"%$keyword%")
+                  ->orWhere('description','like',"%$keyword%");
+        })->where('status',1);
+        
         return $result;
     }
 

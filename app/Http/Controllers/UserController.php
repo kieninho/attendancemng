@@ -16,7 +16,7 @@ class UserController extends Controller
         $keyword = $request->input('keyword');
         $users = User::search($keyword)->where('is_teacher',0)
                 ->orderBy('created_at','desc')->paginate($records_per_page);
-
+                $users->appends(['keyword' => $keyword]);
         return view('user.index',compact('users','keyword'));
     }
 

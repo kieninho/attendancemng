@@ -6,13 +6,25 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Services\helper;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
+
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::where('status', '=', 1)->get();
-        return view('student.index', compact('students'));
+
+        $records_per_page = 10;
+        $current_page = $request->query('page', 1);
+
+        $keyword = $request->input('keyword');
+
+        $students = Student::search($keyword)
+                            ->orderBy('created_at','desc')->paginate($records_per_page);
+        
+        $students->appends(['keyword' => $keyword]);
+    
+        return view('student.index', compact('students','keyword'));
     }
 
     public function store(Request $request)
