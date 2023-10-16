@@ -46,7 +46,7 @@
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>
                         <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>
-                        <a class="link-primary" href="">Chi tiết</a>
+                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Chi tiết</a>
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>

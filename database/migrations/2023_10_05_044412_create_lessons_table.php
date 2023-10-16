@@ -18,8 +18,8 @@ class CreateLessonsTable extends Migration
             $table->unsignedInteger('class_id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->date('start_at');
-            $table->date('end_at');
+            $table->datetime('start_at');
+            $table->datetime('end_at');
             $table->boolean('status')->default(true);           
 
             $table->timestamps();

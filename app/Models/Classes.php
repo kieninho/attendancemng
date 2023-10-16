@@ -60,4 +60,15 @@ class Classes extends Model
         return $result;
     }
 
+    public static function searchLesson($classId,$keyword){
+        $class = Classes::findOrFail($classId);
+        if(!$class){
+            return;
+        }
+        
+        $lessons = $class->lessons()->where('name','like',"%$keyword%")->get();
+
+        return  $lessons;
+    }
+
 }

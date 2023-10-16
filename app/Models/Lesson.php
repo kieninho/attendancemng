@@ -21,6 +21,7 @@ class Lesson extends Model
         'class_id',
         'teacher_id',
         'name',
+        'description',
         'start_at',
         'end_at',
         'status',
@@ -31,24 +32,11 @@ class Lesson extends Model
         'end_at' => 'datetime',
     ];
 
-    //get-set format
-    public function getStartAtAttribute($value)
-    {
-        return date('H:i d/m/Y', strtotime($value));
-    }
-
-
-
-    public function getEndAtAttribute($value)
-    {
-        return date('H:i d/m/Y', strtotime($value));
-    }
-
     public function getStartAndEnd()
     {
         $start = Carbon::parse($this->start_at)->format('H:i');
         $end = Carbon::parse($this->end_at)->format('H:i');
-        $date = Carbon::parse($this->start_at)->format('d/m/y');
+        $date = Carbon::parse($this->start_at)->format('d/m/Y');
 
         return $start . ' - ' . $end . ' ' . $date;
     }

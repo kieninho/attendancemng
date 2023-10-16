@@ -49,6 +49,10 @@ Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
     Route::post('/update', [LessonController::class, 'update'])->name('update.lesson');
 });
 
+Route::group(['prefix' => 'teacherLesson', 'middleware' => 'auth'], function () {
+    Route::get('/get', [LessonController::class, 'getTeacherLesson'])->name('get.teacherLesson');
+    Route::get('/get/{id}', [LessonController::class, 'getTeacherLesson'])->name('get.teacherLesson.id');
+});
 
 
 Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {
