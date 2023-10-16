@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\StudentLessonController;
+use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TeacherController;
@@ -49,9 +51,19 @@ Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
     Route::post('/update', [LessonController::class, 'update'])->name('update.lesson');
 });
 
-Route::group(['prefix' => 'teacherLesson', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'teacherlesson', 'middleware' => 'auth'], function () {
     Route::get('/get', [LessonController::class, 'getTeacherLesson'])->name('get.teacherLesson');
     Route::get('/get/{id}', [LessonController::class, 'getTeacherLesson'])->name('get.teacherLesson.id');
+});
+
+Route::group(['prefix' => 'studentlesson', 'middleware' => 'auth'], function () {
+    Route::get('/', [StudentLessonController::class, 'index'])->name('studentLesson');
+    
+});
+
+Route::group(['prefix' => 'studentclass', 'middleware' => 'auth'], function () {
+    Route::get('/classid={classId}', [StudentClassController::class, 'index'])->name('studentclass');
+    
 });
 
 

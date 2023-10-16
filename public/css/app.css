@@ -10859,3 +10859,12 @@ a {
   text-decoration: none;
   color: rgb(4, 39, 67);
 }
+
+.divider::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  background-color: #0dcaf0;
+  margin: 0 0.25em;
+}

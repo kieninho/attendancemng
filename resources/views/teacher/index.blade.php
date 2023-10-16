@@ -33,7 +33,7 @@
                     <th scope="col">Phone</th>
                     <th scope="col">Ngày sinh</th>
                     <th scope="col">Số lớp dạy</th>
-                    <th scope="col">Action</th>
+                    <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
             </thead>
@@ -48,7 +48,9 @@
                     <td class="table-Info">5</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$teacher->id}}" data-bs-target="#editModal">Sửa</span>
+                        <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.teacher',['id'=>$teacher->id])}}">Xóa</a>
+                        <span class="divider"></span>
                         <a class="link-primary" href="">Chi tiết</a>
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>

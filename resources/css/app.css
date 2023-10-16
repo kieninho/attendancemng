@@ -10816,3 +10816,12 @@ a {
 .scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #86b7fe;
 }
+
+.divider::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    background-color: black;
+    margin: 0 0.5em;
+  }

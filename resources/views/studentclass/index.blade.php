@@ -5,15 +5,7 @@
 @endsection
 
 @section('content')
-<div class="container-fluid row">
-    <div class="col-md-2">
-        <div class="list-group scrollbar overflow-auto" style="max-height: 400px;">
-            <a href="#" class="list-group-item list-group-item-action">Danh sách lớp</a>
-            @foreach($classes as $classItem)
-            <a href="{{route('classLesson',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$classItem->name}}</a>
-            @endforeach
-        </div>
-    </div>
+<div class="container-fluid">
 
     <div class="col-md-10">
         <div class="top-box d-flex justify-content-between my-1" style="width:100%; height:24px">

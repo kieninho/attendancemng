@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container-fluid">
-<div class="top-box d-flex justify-content-between my-1" style="width:100%; height:24px">
+    <div class="top-box d-flex justify-content-between my-1" style="width:100%; height:24px">
         <h5>Quản lý lớp</h5>
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('class')}}" method="get">
@@ -14,10 +14,10 @@
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
         </div>
-            <div class="button-box">
+        <div class="button-box">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Tạo Lớp</button>
-    <button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
-            </div>
+            <button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
+        </div>
     </div>
     <div class="table-responsive">
 
@@ -30,7 +30,7 @@
                     <th scope="col">Mô tả</th>
                     <th scope="col">Sinh viên</th>
                     <th scope="col">Ngày tạo</th>
-                    <th scope="col">Action</th>
+                    <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
             </thead>
@@ -44,9 +44,10 @@
                     <td class="table-Info">{{$class->students->count()??0}}</td>
                     <td class="table-Info">{{$class->created_at}}</td>
                     <td class="table-Info">
-                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>
-                        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>
-                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Chi tiết</a>
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>   <span class="divider"></span>
+                        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>  <span class="divider"></span>
+                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a>    <span class="divider"></span>
+                        <a class="link-dark" href="{{route('classLesson',['classId'=>$class->id])}}">Sinh viên</a> 
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>

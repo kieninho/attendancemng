@@ -28,7 +28,7 @@
                     <th scope="col">Tên</th>
                     <th scope="col">Email</th>
                     <th scope="col">Ngày tạo</th>
-                    <th scope="col">Action</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
                     <td class="table-Info">{{$user->created_at}}</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$user->id}}" data-bs-target="#editModal">Sửa</span>
-                        &nbsp;
+                        <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.user',['id'=>$user->id])}}">Xóa</a>
                     </td>
                 </tr>
