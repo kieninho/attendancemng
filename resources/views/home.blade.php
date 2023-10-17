@@ -16,8 +16,8 @@
 </div>
 
     <div class="table-responsive col-md-10">
-        <div class="row mx-3">
-            <div class="col-6">
+        <div class="row my-5 mx-3">
+            <div class="col-4">
                 <a href="{{route('student')}}">
                 <div class="card" style="width: 18rem;">
                     <div class="image-container">
@@ -30,7 +30,7 @@
                 </a>
             </div>
 
-            <div class="col-6">
+            <div class="col-4">
                 <a href="{{route('teacher')}}">
                 <div class="card" style="width: 18rem;">
                     <div class="image-container">
@@ -42,9 +42,8 @@
                 </div>
                 </a>
             </div>
-        </div>
-        <div class="row mx-3 my-4">
-            <div class="col-6">
+
+            <div class="col-4">
                 <a href="{{route('class')}}">
                 <div class="card" style="width: 18rem;">
                     <div class="image-container">
@@ -52,19 +51,6 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text text-center"><b class="text-info">20 Lớp học</b></p>
-                    </div>
-                </div>
-                </a>
-            </div>
-
-            <div class="col-6">
-                <a href="{{route('lesson')}}">
-                <div class="card" style="width: 18rem;">
-                    <div class="image-container">
-                        <img src="{{ asset('images/lesson.jpg') }}" class="card-img-top" alt="class">
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text text-center"><b class="text-info">Buổi học</b></p>
                     </div>
                 </div>
                 </a>

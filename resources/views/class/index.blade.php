@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="top-box d-flex justify-content-between my-1" style="width:100%; height:24px">
+    <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
         <h5>Quản lý lớp</h5>
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('class')}}" method="get">
@@ -47,7 +47,7 @@
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>   <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>  <span class="divider"></span>
                         <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a>    <span class="divider"></span>
-                        <a class="link-dark" href="{{route('classLesson',['classId'=>$class->id])}}">Sinh viên</a> 
+                        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a> 
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>

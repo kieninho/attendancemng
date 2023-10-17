@@ -26,18 +26,21 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/class', [ClassController::class, 'index'])->name('class');
-    Route::post('/class/store', [ClassController::class, 'store'])->name('store.class');
-    Route::get('/class/delete/{id}', [ClassController::class, 'delete'])->name('delete.class');
-    Route::get('/class/getclass', [ClassController::class, 'getClass'])->name('get.class');
-    Route::get('/class/getclass/{id}', [ClassController::class, 'getClass'])->name('get.class.id');
-    Route::post('/class/update', [ClassController::class, 'update'])->name('update.class');
+Route::group(['prefix' => 'class', 'middleware' => 'auth'], function () {
+    Route::get('/', [ClassController::class, 'index'])->name('class');
+    Route::post('/store', [ClassController::class, 'store'])->name('store.class');
+    Route::get('/delete/{id}', [ClassController::class, 'delete'])->name('delete.class');
+    Route::get('/getclass', [ClassController::class, 'getClass'])->name('get.class');
+    Route::get('/getclass/{id}', [ClassController::class, 'getClass'])->name('get.class.id');
+    Route::post('/update', [ClassController::class, 'update'])->name('update.class');
+
 });
 
-
-
-
+Route::group(['prefix' => 'studentsinclass', 'middleware' => 'auth'], function () {
+    Route::get('/classid={classId}', [StudentClassController::class, 'index'])->name('studentInClass');
+    Route::get('/delete/{classId}/{studentId}', [StudentClassController::class, 'delete'])->name('delete.studentInClass');
+    Route::post('/update/{classId}', [StudentClassController::class, 'update'])->name('update.studentInClass');
+});
 
 
 

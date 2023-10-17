@@ -16,7 +16,7 @@
     </div>
 
     <div class="col-md-10">
-        <div class="top-box d-flex justify-content-between my-1" style="width:100%; height:24px">
+        <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
             <h5>Danh sách buổi học lớp: {{$class->name}}</h5>
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('classLesson',['classId'=>$class->id])}}" method="get">
@@ -59,7 +59,7 @@
                         {{$teacher->name.", "}}
                         @endforeach
                     </td>
-                    <td class="table-Info">{{$lesson->students->count()??0}}/40</td>
+                    <td class="table-Info">{{$lesson->students->count()??0}}/{{$class->students->count()??0}}</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$lesson->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>

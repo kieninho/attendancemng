@@ -8,7 +8,7 @@
 @section('content')
 
 <div class="container-fluid">
-    <div class="top-box d-flex justify-content-between my-1" style="width:100%; height:24px">
+    <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
         <h5>Quản lý giáo viên</h5>
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('teacher')}}" method="get">
