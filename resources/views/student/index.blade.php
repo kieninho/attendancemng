@@ -139,6 +139,7 @@
                     <div class="mb-1">
                         <label for="datetimepicker2" class="datetimepicker col-form-label">Ngày sinh:</label>
                         <input type="text" class="form-control" name="birthday" id="datetimepicker2" style="width: 150px;">
+                        <input class="form-control" type="time">
                     </div>
 
                 </div>

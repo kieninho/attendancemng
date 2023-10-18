@@ -94,6 +94,8 @@ class User extends Authenticatable
         ->where('teachers.id', $this->id)
         ->where('lessons.status', 1)
         ->where('classes.status', 1)
+        ->groupBy('classes.id')
+        ->select('classes.id')
         ->count();
     }
 

@@ -94,21 +94,11 @@ class LessonController extends Controller
 
     public function detail(Request $request,$id){
 
-        $user = Auth::user();
-        if ($user->is_teacher) {
-            $classes = $user->lessons->map(function ($lesson) {
-                return $lesson->classes;
-            });
-        } else {
-            $classes = Classes::where('status', 1)->orderBy('created_at','asc')->get();
-        }
-
-
         $records_per_page = 10;
 
         $keyword = $request->input('keyword');
-
         $lesson = Lesson::findOrFail($id);
+        $lessons = $lesson->classes->lessons;
         $students = Student::whereHas('classes', function ($query) use ($id) {
             $query->whereHas('lessons', function ($query) use ($id) {
                 $query->where('id', $id);
@@ -118,7 +108,7 @@ class LessonController extends Controller
         ->paginate($records_per_page);
 
         
-        return view('lesson.detail',compact('students','lesson','classes','keyword'));
+        return view('lesson.detail',compact('students','lessons','lesson','keyword'));
     }
 
     public function delete($id)

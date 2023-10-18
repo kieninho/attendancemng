@@ -8,9 +8,9 @@
 <div class="container-fluid row">
     <div class="col-md-2">
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
-            <a href="#" class="list-group-item list-group-item-action">Danh sách lớp</a>
-            @foreach($classes as $classItem)
-            <a href="{{route('classLesson',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$classItem->name}}</a>
+            <a href="#" class="list-group-item list-group-item-action">{{$lesson->classes->name}} - Danh sách buổi học</a>
+            @foreach($lessons as $lesson)
+            <a href="{{route('detail.lesson',['id'=>$lesson->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$lesson->name}}</a>
             @endforeach
         </div>
     </div>

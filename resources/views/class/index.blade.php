@@ -45,7 +45,7 @@
                     <td class="table-Info text-center">{{$class->students->count()??0}}</td>
                     <td class="table-Info text-center">{{$class->lessons->count()??0}}</td>
                     <td class="table-Info text-center">{{$class->created_at}}</td>
-                    <td class="table-Info">
+                    <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span> <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>
                         <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a> <span class="divider"></span>
