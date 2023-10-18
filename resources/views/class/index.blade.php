@@ -24,12 +24,13 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                    <th scope="col">Stt</th>
-                    <th scope="col">Mã lớp</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Mô tả</th>
-                    <th scope="col">Sinh viên</th>
-                    <th scope="col">Ngày tạo</th>
+                    <th scope="col" class="text-center">Stt</th>
+                    <th scope="col" class="text-center">Mã lớp</th>
+                    <th scope="col" class="text-center">Tên</th>
+                    <th scope="col" class="text-center">Mô tả</th>
+                    <th scope="col" class="text-center">Sinh viên</th>
+                    <th scope="col" class="text-center">Buổi học</th>
+                    <th scope="col" class="text-center">Ngày tạo</th>
                     <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
@@ -37,17 +38,18 @@
             <tbody>
                 @foreach($classes as $class)
                 <tr>
-                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
-                    <td class="table-Info">{{$class->code}}</td>
+                    <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
+                    <td class="table-Info text-center">{{$class->code}}</td>
                     <td class="table-Info">{{$class->name}}</td>
                     <td class="table-Info">{{$class->description}}</td>
-                    <td class="table-Info">{{$class->students->count()??0}}</td>
-                    <td class="table-Info">{{$class->created_at}}</td>
+                    <td class="table-Info text-center">{{$class->students->count()??0}}</td>
+                    <td class="table-Info text-center">{{$class->lessons->count()??0}}</td>
+                    <td class="table-Info text-center">{{$class->created_at}}</td>
                     <td class="table-Info">
-                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span>   <span class="divider"></span>
-                        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a>  <span class="divider"></span>
-                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a>    <span class="divider"></span>
-                        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a> 
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span> <span class="divider"></span>
+                        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>
+                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a> <span class="divider"></span>
+                        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
@@ -140,6 +142,16 @@
 </div>
 
 <script>
+    var errorAlert = document.getElementById('error-box');
+
+    // Thêm lớp 'show' để hiển thị div
+    errorAlert.classList.add('show');
+
+    // Tự động mờ và biến mất sau 3 giây
+    setTimeout(function() {
+        errorAlert.classList.remove('show');
+    }, 3000);
+
     function selectAll() {
         var checkboxes = document.getElementsByName("item_ids[]");
         var selectAllCheckbox = document.getElementById("select-all");
@@ -178,6 +190,15 @@
             });
         });
     });
+
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
+
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
+    });
+
 </script>
 @endsection
 

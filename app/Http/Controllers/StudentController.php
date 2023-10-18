@@ -15,7 +15,6 @@ class StudentController extends Controller
     {
 
         $records_per_page = 10;
-        $current_page = $request->query('page', 1);
 
         $keyword = $request->input('keyword');
 
@@ -51,7 +50,8 @@ class StudentController extends Controller
         $result = Student::create($data);
 
         if ($result) {
-            return redirect()->back();
+            $message = "Thêm mới thành công!";
+            return redirect()->back()->withErrors($message);
         }
     }
 
@@ -97,8 +97,9 @@ class StudentController extends Controller
             ]);
 
             $record->save();
+            $message="Cập nhật thành công!";
         }
 
-        return redirect()->back();
+        return redirect()->back()->withErrors($message);
     }
 }

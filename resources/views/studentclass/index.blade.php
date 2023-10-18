@@ -5,8 +5,18 @@
 @endsection
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid row">
 
+<div class="col-md-2">
+        <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
+            <a href="#" class="list-group-item list-group-item-action">Quản lý sinh viên trong lớp</a>
+            @foreach($classes as $classItem)
+            <a href="{{route('studentInClass',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$classItem->name}}</a>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="col-md-10">
     <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
         <h5>Danh sách sinh viên lớp: {{$class->name}}</h5>
         <div class="search-box" style="width:300px; height:30px">
@@ -27,7 +37,7 @@
                 <th scope="col">Tên</th>
                 <th scope="col">Email</th>
                 <th scope="col">Ngày sinh</th>
-                <th scope="col">Chuyên cần</th>
+                <th scope="col" class="text-center">Chuyên cần</th>
                 <th scope="col"></th>
                 <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
             </tr>
@@ -42,7 +52,7 @@
                 <td class="table-Info">{{$student->name}}</td>
                 <td class="table-Info">{{$student->email}}</td>
                 <td class="table-Info">{{$student->birthday}}</td>
-                <td class="table-Info">{{"15/30"}}</td>
+                <td class="table-Info text-center">{{$student->lessons->where('class_id',$class->id)->count()}}/{{$class->lessons->count()}}</td>
                 <td class="table-Info">
                     <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}">Xóa</a>
                     <span class="divider"></span>
@@ -54,8 +64,10 @@
         </tbody>
     </table>
     {{$students->links()}}
+    </div>
 
 </div>
+
 <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
     @if ($errors->any())
     <div class="alert alert-danger">

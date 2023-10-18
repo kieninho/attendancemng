@@ -31,7 +31,7 @@ class HomeController extends Controller
                 return $lesson->classes;
             });
         } else {
-            $classes = Classes::where('status', 1)->orderBy('created_at','asc')->get();
+            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
         }
         return view('home',compact('classes',));
     }

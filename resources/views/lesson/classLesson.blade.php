@@ -7,8 +7,8 @@
 @section('content')
 <div class="container-fluid row">
     <div class="col-md-2">
-        <div class="list-group scrollbar overflow-auto" style="max-height: 400px;">
-            <a href="#" class="list-group-item list-group-item-action">Danh sách lớp</a>
+        <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
+            <a href="#" class="list-group-item list-group-item-action">Quản lý bài học</a>
             @foreach($classes as $classItem)
             <a href="{{route('classLesson',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$classItem->name}}</a>
             @endforeach
@@ -65,7 +65,7 @@
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.lesson',['id'=>$lesson->id])}}">Xóa</a>
                         <span class="divider"></span>
-                        <a class="link-primary" href="">Chi tiết</a>
+                        <a class="link-primary" href="{{route('detail.lesson',['id'=>$lesson->id])}}">Điểm danh</a>
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
@@ -114,7 +114,7 @@
                         <label class="col-form-label">Thời gian:</label>
                         <input type="text" name="start" class="form-control" id="add-start-time" style="width:100px; display:inline;" placeholder="Bắt đầu">
                         <input type="text" name="end" class="form-control" id="add-end-time" style="width:100px; display:inline;" placeholder="Kết thúc">
-                        <input type="text" name="date" class="form-control" id="add-date" style="width:150px; display:inline;" placeholder="Ngày">
+                        <input type="text" name="date" class="form-control" id="add-date" style="width:150px; display:inline;" placeholder="Ngày" value="">
                     </div>
 
                     <div class="mb-1">
@@ -306,8 +306,8 @@
                     $('#edit-lesson-name').val(response.name);
                     $('#edit-lesson-description').val(response.description);
                     $('#edit-date').val(ToDate(response.start_at));
-                    $('#edit-start-time').val(ToTime(response.start_at));;
-                    $('#edit-end-time').val(ToTime(response.end_at));;
+                    $('#edit-start-time').val(ToTime(response.start_at));
+                    $('#edit-end-time').val(ToTime(response.end_at));
                 }
             });
 

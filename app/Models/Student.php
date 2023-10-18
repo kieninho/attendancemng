@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Classes;
 use App\Models\Lesson;
+use Illuminate\Support\Facades\DB;
 
 
 class Student extends Model
@@ -64,6 +65,19 @@ class Student extends Model
     public function lessons(){
         return $this->belongsToMany(Lesson::class,'student_lesson','student_id','lesson_id')->where('status', 1);
     }
+
+    public function countLessonInClass(){
+        return DB::table('students')
+        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
+        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
+        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
+        ->where('students.id', $this->id)
+        ->where('students.status', 1)
+        ->where('classes.status', 1)
+        ->where('lessons.status', 1)
+        ->count();
+    }
+    
 
     public static function search($keyword){
         $result = Student::where(function($query) use ($keyword) {

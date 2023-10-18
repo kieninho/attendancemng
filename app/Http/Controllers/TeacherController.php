@@ -16,7 +16,6 @@ class TeacherController extends Controller
     public function index(Request $request)
     {
         $records_per_page = 10;
-        $current_page = $request->query('page', 1);
 
         $keyword = $request->input('keyword');
 
@@ -68,9 +67,12 @@ class TeacherController extends Controller
         $user = User::findOrFail($id);
         if ($user) {
             $user->status = 0;
+            $user->save();
+
+            $message = "Xóa thành công!";
         }
-        $user->save();
-        return redirect()->back();
+
+        return redirect()->back()->withErrors($message);
     }
 
     public function update(Request $request)
@@ -91,15 +93,16 @@ class TeacherController extends Controller
 
             $record->fill([
                 'name' => $data['name'],
-                'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime(),
+                'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime()??"",
                 'phone' => $data['phone'],
             ]);
 
             $record->save();
+            $message = "Cập nhật thành công";
         }
 
 
-        return redirect()->back();
+        return redirect()->back()->withErrors($message);
     }
 
     public function get($id)

@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+
 
 class User extends Authenticatable
 {
@@ -74,9 +76,25 @@ class User extends Authenticatable
         return $this->belongsToMany(lesson::class, 'teacher_lesson', 'teacher_id', 'lesson_id')->where('status', 1);
     }
 
+    // public function classes()
+    // {
+    //     return $this->hasManyThrough(Classes::class, Lesson::class,'teacher_id','class_id')->where('status',1)->orderBy('created_at', 'desc');
+    // }
+
     public function classes()
     {
-        return $this->hasManyThrough(Classes::class, Lesson::class,'teacher_id')->where('status',1)->orderBy('created_at', 'desc');
+        return $this->lessons()->with('classes')->get()->pluck('classes')->unique();
+    }
+    
+    public function countClasses(){
+        return DB::table('users as teachers')
+        ->leftJoin('teacher_lesson', 'teacher_lesson.teacher_id', '=', 'teachers.id')
+        ->leftJoin('lessons', 'lessons.id', '=', 'teacher_lesson.lesson_id')
+        ->leftJoin('classes', 'classes.id', '=', 'lessons.class_id')
+        ->where('teachers.id', $this->id)
+        ->where('lessons.status', 1)
+        ->where('classes.status', 1)
+        ->count();
     }
 
     public static function search($keyword){

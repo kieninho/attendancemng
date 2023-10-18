@@ -6,14 +6,24 @@ use App\Models\Classes;
 use App\Models\Student;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentClassController extends Controller
 {
     public function index(Request $request, $classId){
+
+        $user = Auth::user();
+        if ($user->is_teacher) {
+            $classes = $user->lessons->map(function ($lesson) {
+                return $lesson->classes;
+            });
+        } else {
+            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
+        }
+
         $keyword = $request->input('keyword');
 
         $records_per_page = 10;
-        $current_page = $request->query('page', 1);
 
         $class = Classes::findOrFail($classId);
         if(!$class){
@@ -27,7 +37,7 @@ class StudentClassController extends Controller
         ->orderBy('code','asc')->paginate($records_per_page);
 
         $allStudent = Student::where('status',1)->orderBy('code','asc')->get();
-        return view('studentclass.index',compact('students','class','keyword','allStudent'));
+        return view('studentclass.index',compact('students','class','keyword','allStudent','classes'));
     }
 
     public function update(Request $request, $classId){

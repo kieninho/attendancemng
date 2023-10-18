@@ -11,7 +11,6 @@ class UserController extends Controller
 {
     public function index(Request $request){
         $records_per_page = 10;
-        $current_page = $request->query('page', 1);
 
         $keyword = $request->input('keyword');
         $users = User::search($keyword)->where('is_teacher',0)

@@ -16,7 +16,7 @@
             </form>
         </div>
             <div class="button-box">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">Thêm SV</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm SV</button>
     <button type="button" class="btn btn-primary">Xóa SV đã chọn</button>
             </div>
     </div>
@@ -25,12 +25,12 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                    <th scope="col">Stt</th>
-                    <th scope="col">Mã SV</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Ngày sinh</th>
-                    <th scope="col">Chuyên cần</th>
+                    <th scope="col" class="text-center">Stt</th>
+                    <th scope="col" class="text-center">Mã SV</th>
+                    <th scope="col" class="text-center">Tên</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Ngày sinh</th>
+                    <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
@@ -39,13 +39,13 @@
                 @foreach($students as $student)
                 <tr>
                     <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
-                    <td class="table-Info">{{$student->code}}</td>
+                    <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
-                    <td class="table-Info">{{$student->birthday}}</td>
-                    <td class="table-Info">89%</td>
+                    <td class="table-Info text-center">{{$student->birthday}}</td>
+                    <td class="table-Info text-center">{{ $student->lessons->count()??0}}/{{$student->countLessonInClass()}}</td>
                     <td class="table-Info">
-                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editStudentModal">Sửa</span>
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.student',['id'=>$student->id])}}">Xóa</a>
                         <span class="divider"></span>
@@ -74,7 +74,7 @@
 
 
 
-<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,7 +110,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -208,18 +208,22 @@
         allowInput: true,
         enableTime: false,
         dateFormat: "d/m/Y",
-        minDate: "01/01/1945",
-        maxDate: "31/12/2022",
     });
 
     flatpickr("#datetimepicker2", {
         allowInput: true,
         enableTime: false,
         dateFormat: "d/m/Y",
-        minDate: "01/01/1945",
-        maxDate: "31/12/2022",
-
     });
+
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
+
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
+    });
+
 </script>
 @endsection
 

@@ -32,7 +32,7 @@
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Ngày sinh</th>
-                    <th scope="col">Số lớp dạy</th>
+                    <th scope="col" class="text-center">Số lớp dạy</th>
                     <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
@@ -45,7 +45,7 @@
                     <td class="table-Info">{{$teacher->email}}</td>
                     <td class="table-Info">{{$teacher->phone}}</td>
                     <td class="table-Info">{{$teacher->birthday}}</td>
-                    <td class="table-Info">5</td>
+                    <td class="table-Info text-center">{{$teacher->countClasses()}}</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$teacher->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
@@ -231,6 +231,15 @@
         maxDate: "31/12/2022",
 
     });
+
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
+
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
+    });
+
 </script>
 @endsection
 

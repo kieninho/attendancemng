@@ -6,6 +6,7 @@ use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use App\Services\helper;
 use App\Models\Classes;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Auth;
 
 class ClassController extends Controller
@@ -13,7 +14,6 @@ class ClassController extends Controller
     public function index(Request $request)
     {
         $records_per_page = 10;
-        $current_page = $request->query('page', 1);
 
         $keyword = $request->input('keyword');
 
@@ -55,9 +55,20 @@ class ClassController extends Controller
         $class = Classes::findOrFail($id);
         if($class){
             $class->status = 0;
+            $class->save();
+            $lessons = $class->lessons;
+            foreach($lessons as $lesson){
+                $lesson->status = 0;
+                $lesson->save();
+            }
+            $message="Xóa thành công!";
         }
-        $class->save();
-        return redirect()->back();
+        else{
+            $message = "Xóa không thành công!";
+        }
+        
+    
+        return redirect()->back()->withErrors($message);
     }
 
     public function getClass($id){
@@ -86,8 +97,9 @@ class ClassController extends Controller
             $record->name = $data['name'];
             $record->description = $data['description'];
             $record->save();
+            $message = "Cập nhật thành công!";
         }
 
-        return redirect()->back();
+        return redirect()->back()->withErrors($message);
     }
 }

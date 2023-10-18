@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use App\Models\Lesson;
+use App\Models\Student;
 use App\Models\TeacherLesson;
+use App\Models\StudentLesson;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Symfony\Component\Console\Input\Input;
 use Whoops\Run;
+use Illuminate\Support\Facades\DB;
+
 
 class LessonController extends Controller
 {
@@ -23,11 +27,10 @@ class LessonController extends Controller
                 return $lesson->classes;
             });
         } else {
-            $classes = Classes::where('status', 1)->orderBy('created_at','asc')->get();
+            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
         }
 
         $records_per_page = 10;
-        $current_page = $request->query('page', 1);
 
         $keyword = $request->input('keyword');
         
@@ -59,7 +62,6 @@ class LessonController extends Controller
         $data['start_at']  = Carbon::createFromFormat('H:i d/m/Y', $startStr)->toDateTime();
         $data['end_at'] = Carbon::createFromFormat('H:i d/m/Y', $endStr)->toDateTime();
         $result = Lesson::create($data);
-        dd($result);
         if ($result) {
             $teacher_ids = $request->input('teacher_ids');
             if(!empty($teacher_ids)){
@@ -71,12 +73,52 @@ class LessonController extends Controller
                 }
             }
 
+            // Tự động thêm các học sinh trong lớp vào tiết học
+            $class = Classes::findOrFail($classId);
+            $studentsInClass = $class->students;
+
+            foreach($studentsInClass as $student){
+                StudentLesson::create([
+                    'student_id'=>$student->id,
+                    'lesson_id'=>$result->id,
+                ]);
+            }
+
             $message = 'Thêm mới thành công!';
         } else {
             $message = 'Thêm mới không thành công!';
         }
         
         return redirect()->back()->withErrors($message);
+    }
+
+    public function detail(Request $request,$id){
+
+        $user = Auth::user();
+        if ($user->is_teacher) {
+            $classes = $user->lessons->map(function ($lesson) {
+                return $lesson->classes;
+            });
+        } else {
+            $classes = Classes::where('status', 1)->orderBy('created_at','asc')->get();
+        }
+
+
+        $records_per_page = 10;
+
+        $keyword = $request->input('keyword');
+
+        $lesson = Lesson::findOrFail($id);
+        $students = Student::whereHas('classes', function ($query) use ($id) {
+            $query->whereHas('lessons', function ($query) use ($id) {
+                $query->where('id', $id);
+            });
+        })
+        ->where('name', 'LIKE', "%$keyword%")
+        ->paginate($records_per_page);
+
+        
+        return view('lesson.detail',compact('students','lesson','classes','keyword'));
     }
 
     public function delete($id)
@@ -148,6 +190,25 @@ class LessonController extends Controller
     public function getTeacherLesson($id){
         $data = TeacherLesson::where('lesson_id',$id)->get();
         return response()->json($data);
+    }
+
+    public function attend($lessonId,$studentId){
+        $checkExits = StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->get()->isEmpty();
+        if($checkExits){
+            $data = ['lesson_id'=>$lessonId,'student_id'=>$studentId];
+            StudentLesson::create($data);
+
+            $countStudentInLesson = Lesson::findOrFail($lessonId)->students->count();
+
+            return response()->json($countStudentInLesson);
+        }
+    }
+    public function leave($lessonId,$studentId){
+        StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->delete();
+
+        $countStudentInLesson = Lesson::findOrFail($lessonId)->students->count();
+
+        return response()->json($countStudentInLesson);
     }
 
 }
