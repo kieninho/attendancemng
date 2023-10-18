@@ -9,8 +9,8 @@
     <div class="col-md-2">
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <a href="#" class="list-group-item list-group-item-action">{{$lesson->classes->name}} - Danh sách buổi học</a>
-            @foreach($lessons as $lesson)
-            <a href="{{route('detail.lesson',['id'=>$lesson->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$lesson->name}}</a>
+            @foreach($lessons as $lessonItem)
+            <a href="{{route('detail.lesson',['id'=>$lesson->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$lessonItem->name}}</a>
             @endforeach
         </div>
     </div>
@@ -96,8 +96,8 @@
                     url: '{{ route("attend.lesson")}}/' + lessonId + "/" + studentId,
                     type: 'get',
                     success: function(response) {
-                            // AJAX request đã được gửi thành công
-                            $('#attend-count').text(response); 
+                        // AJAX request đã được gửi thành công
+                        $('#attend-count').text(response);
                     },
                 });
             } else {
@@ -105,7 +105,7 @@
                     url: '{{ route("leave.lesson")}}/' + lessonId + "/" + studentId,
                     type: 'get',
                     success: function(response) {
-                            $('#attend-count').text(response);
+                        $('#attend-count').text(response);
                     },
                 });
             }

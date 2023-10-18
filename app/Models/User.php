@@ -85,26 +85,28 @@ class User extends Authenticatable
     {
         return $this->lessons()->with('classes')->get()->pluck('classes')->unique();
     }
-    
-    public function countClasses(){
+
+    public function countClasses()
+    {
         return DB::table('users as teachers')
-        ->leftJoin('teacher_lesson', 'teacher_lesson.teacher_id', '=', 'teachers.id')
-        ->leftJoin('lessons', 'lessons.id', '=', 'teacher_lesson.lesson_id')
-        ->leftJoin('classes', 'classes.id', '=', 'lessons.class_id')
-        ->where('teachers.id', $this->id)
-        ->where('lessons.status', 1)
-        ->where('classes.status', 1)
-        ->groupBy('classes.id')
-        ->select('classes.id')
-        ->count();
+            ->leftJoin('teacher_lesson', 'teacher_lesson.teacher_id', '=', 'teachers.id')
+            ->leftJoin('lessons', 'lessons.id', '=', 'teacher_lesson.lesson_id')
+            ->leftJoin('classes', 'classes.id', '=', 'lessons.class_id')
+            ->where('teachers.id', $this->id)
+            ->where('lessons.status', 1)
+            ->where('classes.status', 1)
+            ->groupBy('classes.id')
+            ->select('classes.id')
+            ->count();
     }
 
-    public static function search($keyword){
-        $result = User::where(function($query) use ($keyword) {
+    public static function search($keyword)
+    {
+        $result = User::where(function ($query) use ($keyword) {
             $query->where('name', 'like', "%$keyword%")
-                  ->orWhere('email', 'like', "%$keyword%");
+                ->orWhere('email', 'like', "%$keyword%");
         })->where('status', 1);
-        
+
         return $result;
     }
 }
