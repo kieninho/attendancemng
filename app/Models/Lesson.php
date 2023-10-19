@@ -8,6 +8,7 @@ use App\Models\Classes;
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -71,5 +72,47 @@ class Lesson extends Model
     public static function search($keyword){
         $result = Lesson::where('name','like',"%$keyword%")->orWhere('description','like',"%$keyword%");
         return $result;
+    }
+
+    public function getStudentsInLesson()
+    {
+        $result =  DB::table('students')
+        ->select('students.*')
+        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
+        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
+        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
+        ->leftJoin('student_lesson', 'student_lesson.lesson_id', '=', 'lessons.id')
+        ->where('students.status', 1)
+        ->where('classes.status', 1)
+        ->where('lessons.status', 1)
+        ->whereRaw('student_lesson.created_at > student_class.created_at')
+        ->where('lessons.id', $this->id)
+        ->orderBy('students.id')
+        ->distinct();
+
+        return $result;
+        
+    }
+
+    public function countStudentsInLesson()
+    {
+        $sqlResult =  DB::table('students')
+        ->select('students.*')
+        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
+        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
+        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
+        ->leftJoin('student_lesson', 'student_lesson.lesson_id', '=', 'lessons.id')
+        ->where('students.status', 1)
+        ->where('classes.status', 1)
+        ->where('lessons.status', 1)
+        ->whereRaw('student_lesson.created_at > student_class.created_at')
+        ->where('lessons.id', $this->id)
+        ->orderBy('students.id')
+        ->distinct()
+        ->get()
+        ;
+
+        return count($sqlResult);
+        
     }
 }

@@ -40,6 +40,8 @@ Route::group(['prefix' => 'studentsinclass', 'middleware' => 'auth'], function (
     Route::get('/classid={classId}', [StudentClassController::class, 'index'])->name('studentInClass');
     Route::get('/delete/{classId}/{studentId}', [StudentClassController::class, 'delete'])->name('delete.studentInClass');
     Route::post('/update/{classId}', [StudentClassController::class, 'update'])->name('update.studentInClass');
+    Route::get('/add/{id}', [StudentClassController::class, 'add'])->name('add.studentsinclass');
+    Route::get('/store/{classId}/{studentId}', [StudentClassController::class, 'store'])->name('store.studentsinclass');
 });
 
 
@@ -52,6 +54,7 @@ Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
     Route::get('/get', [LessonController::class, 'get'])->name('get.lesson');
     Route::get('/get/{id}', [LessonController::class, 'get'])->name('get.lesson.id');
     Route::post('/update', [LessonController::class, 'update'])->name('update.lesson');
+    
     
     Route::get('/detail/{id}', [LessonController::class, 'detail'])->name('detail.lesson');
     Route::get('/attend', [LessonController::class, 'attend'])->name('attend.lesson');
@@ -83,6 +86,8 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {
     Route::get('/get', [StudentController::class, 'get'])->name('get.student');
     Route::get('/get/{id}', [StudentController::class, 'get'])->name('get.student.id');
     Route::post('/update', [StudentController::class, 'update'])->name('update.student');
+    Route::get('/detail/{id}', [StudentController::class, 'detail'])->name('detail.student');
+    
 });
 
 

@@ -77,7 +77,6 @@ class Student extends Model
         ->where('lessons.status', 1)
         ->count();
     }
-    
 
     public static function search($keyword){
         $result = Student::where(function($query) use ($keyword) {

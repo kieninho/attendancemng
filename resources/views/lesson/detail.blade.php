@@ -10,7 +10,7 @@
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <a href="#" class="list-group-item list-group-item-action">{{$lesson->classes->name}} - Danh sách buổi học</a>
             @foreach($lessons as $lessonItem)
-            <a href="{{route('detail.lesson',['id'=>$lesson->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$lessonItem->name}}</a>
+            <a href="{{route('detail.lesson',['id'=>$lessonItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$lessonItem->name}}</a>
             @endforeach
         </div>
     </div>
@@ -31,11 +31,11 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                    <th scope="col">Stt</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Mã SV</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Tham gia <span id="attend-count">{{$lesson->students->count()??0}}</span>/{{$lesson->classes->students->count()}}</th>
+                    <th scope="col" class="text-center">Stt</th>
+                    <th scope="col" class="text-center">Tên</th>
+                    <th scope="col" class="text-center">Mã SV</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Tham gia <span id="attend-count">{{$lesson->students->count()??0}}</span>/{{$lesson->classes->students->count()}}</th>
                 </tr>
             </thead>
 
@@ -43,11 +43,10 @@
 
                 @foreach($students as $student)
                 <tr>
-                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <th scope="row" class="text-center" class="table-Info">{{ $loop->iteration }}</th>
                     <td class="table-Info">{{$student->name}}</td>
-                    <td class="table-Info">{{$student->code}}</td>
+                    <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->email}}</td>
-                    <td class="table-Info"><input class="form-check-input check-attend" type="checkbox" @if(!$student->lessons()->wherePivot('lesson_id', $lesson->id)->get()->isEmpty()) checked @endif id="select-{{$student->id}}" data-id="{{$student->id}}"></td>
                 </tr>
                 @endforeach
             </tbody>

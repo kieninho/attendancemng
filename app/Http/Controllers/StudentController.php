@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Services\helper;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Session;
 
 
 class StudentController extends Controller
@@ -101,5 +100,18 @@ class StudentController extends Controller
         }
 
         return redirect()->back()->withErrors($message);
+    }
+
+    public function detail(Request $request, $id){
+
+        $student = Student::where('id',$id)->where('status',1)->first();
+        $keyword = $request->input('keyword');
+
+        if(!$student){
+            abort(404);
+        }
+        $classes = $student->classes()->where('name','like',"%$keyword%")->paginate(10);
+        
+        return view('student.detail',compact('student','classes','keyword'));
     }
 }

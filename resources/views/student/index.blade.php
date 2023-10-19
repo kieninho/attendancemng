@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="container-fluid">
-<div class="top-box d-flex justify-content-between my-1" style="width:100%;">
+    <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
         <h5>Quản lý sinh viên</h5>
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('student')}}" method="get">
@@ -15,10 +15,10 @@
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
         </div>
-            <div class="button-box">
+        <div class="button-box">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm SV</button>
-    <button type="button" class="btn btn-primary">Xóa SV đã chọn</button>
-            </div>
+            <button type="button" class="btn btn-primary">Xóa SV đã chọn</button>
+        </div>
     </div>
     <div class="table-responsive">
 
@@ -43,13 +43,13 @@
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
                     <td class="table-Info text-center">{{$student->birthday}}</td>
-                    <td class="table-Info text-center">{{ $student->lessons->count()??0}}/{{$student->countLessonInClass()}}</td>
+                    <td class="table-Info text-center">{{intval(($student->lessons->count()??0)/($student->countLessonInClass()??1)*100)}}%</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.student',['id'=>$student->id])}}">Xóa</a>
                         <span class="divider"></span>
-                        <a class="link-primary" href="">Chi tiết</a>
+                        <a class="link-primary" href="{{route('detail.student',['id'=>$student->id])}}">Chi tiết</a>
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
@@ -224,7 +224,6 @@
     $('#editModal').on('hidden.bs.modal', function() {
         $('#editForm')[0].reset();
     });
-
 </script>
 @endsection
 

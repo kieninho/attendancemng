@@ -88,7 +88,7 @@ class User extends Authenticatable
 
     public function countClasses()
     {
-        return DB::table('users as teachers')
+        $queryResult = DB::table('users as teachers')
             ->leftJoin('teacher_lesson', 'teacher_lesson.teacher_id', '=', 'teachers.id')
             ->leftJoin('lessons', 'lessons.id', '=', 'teacher_lesson.lesson_id')
             ->leftJoin('classes', 'classes.id', '=', 'lessons.class_id')
@@ -97,7 +97,9 @@ class User extends Authenticatable
             ->where('classes.status', 1)
             ->groupBy('classes.id')
             ->select('classes.id')
-            ->count();
+            ->get();
+
+        return count($queryResult);
     }
 
     public static function search($keyword)

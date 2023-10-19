@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Student;
 use App\Models\Lesson;
+use Illuminate\Support\Facades\DB;
+
 
 class Classes extends Model
 {
@@ -70,5 +72,23 @@ class Classes extends Model
 
         return  $lessons;
     }
+
+    public function countLessonAttend($studentId){
+        $result = DB::table('classes')
+        ->leftJoin('student_class', 'student_class.class_id', '=', 'classes.id')
+        ->leftJoin('students', 'students.id', '=', 'student_class.student_id')
+        ->leftJoin('student_lesson', 'student_lesson.student_id', '=', 'students.id')
+        ->leftJoin('lessons', 'lessons.id', '=', 'student_lesson.lesson_id')
+        ->where('lessons.class_id', '=', $this->id)
+        ->where('student_lesson.student_id', '=', $studentId)
+        ->where('lessons.status', '=', 1)
+        ->groupBy('lessons.id')
+        ->select('lessons.id')
+        ->get();
+
+        return count($result);
+    }
+
+    
 
 }

@@ -59,7 +59,7 @@
                         {{$teacher->name.", "}}
                         @endforeach
                     </td>
-                    <td class="table-Info">{{$lesson->students->count()??0}}/{{$class->students->count()??0}}</td>
+                    <td class="table-Info">{{$lesson->students->count()??0}}/{{$lesson->countStudentsInLesson()}}</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$lesson->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>

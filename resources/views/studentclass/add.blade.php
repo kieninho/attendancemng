@@ -18,15 +18,15 @@
 
     <div class="col-md-10">
     <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
-        <h5>Danh sách sinh viên lớp: {{$class->name}} - {{$students->count()}} SV</h5>
+        <h5>Thêm sinh viên vào lớp: {{$class->name}}</h5>
         <div class="search-box" style="width:300px; height:30px">
-            <form class="d-flex" action="{{route('studentInClass',['classId'=>$class->id])}}" method="get">
+            <form class="d-flex" action="{{route('add.studentsinclass',['id'=>$class->id])}}" method="get">
                 <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
         </div>
         <div class="button-box">
-            <button type="button" id="add-std-btn" class="btn btn-primary"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
+            <button type="button" id="add-std-btn" class="btn btn-primary"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm Nhiều</a></button>
         </div>
     </div>
     <table class="table table-hover table-striped mb-1">
@@ -37,7 +37,6 @@
                 <th scope="col">Tên</th>
                 <th scope="col">Email</th>
                 <th scope="col">Ngày sinh</th>
-                <th scope="col" class="text-center">Chuyên cần</th>
                 <th scope="col"></th>
                 <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
             </tr>
@@ -45,25 +44,22 @@
 
         <tbody>
 
-            @foreach($students as $student)
+            @foreach($availStudents as $student)
             <tr>
                 <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
                 <td class="table-Info">{{$student->code}}</td>
                 <td class="table-Info">{{$student->name}}</td>
                 <td class="table-Info">{{$student->email}}</td>
                 <td class="table-Info">{{$student->birthday}}</td>
-                <td class="table-Info text-center">{{$student->lessons->where('class_id',$class->id)->count()}}/{{$class->lessons->count()}}</td>
                 <td class="table-Info">
-                    <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}">Xóa</a>
-                    <span class="divider"></span>
-                    <a class="link-primary" href="">Chi tiết</a>
+                    <a class="link-primary" href="{{route('store.studentsinclass',['classId'=>$class->id,'studentId'=>$student->id])}}">Thêm vào lớp</a>
                 </td>
                 <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
             </tr>
             @endforeach
         </tbody>
     </table>
-    {{$students->links()}}
+    {{$availStudents->links()}}
     </div>
 
 </div>
@@ -79,39 +75,6 @@
     </div>
     @endif
 </div>
-
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cập nhật sinh viên lớp {{$class->name}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="addForm" action="{{route('update.studentInClass',['classId'=>$class->id])}}" method="POST">
-                @csrf
-                <div class="modal-body">
-
-                    <div class="student-container scrollbar" style="max-height:400px; overflow: auto;">
-                        @foreach($allStudent as $item)
-                        <div class="form-check">
-                            <input class="form-check-input add-student-class" name="student_ids[]" type="checkbox" value="{{$item->id}}" id="student-{{$item->id}}">
-                            <label class="form-check-label" for="student-{{$item->id}}">
-                                {{$item->code." - ".$item->name}}
-                            </label>
-                        </div>
-                        @endforeach
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 
 <script>
     var errorAlert = document.getElementById('error-box');
@@ -146,26 +109,6 @@
             selectAllCheckbox.checked = true;
         }
     }
-
-    //
-    $(document).ready(function() {
-        $('#update-btn').click(function() {
-            var students = <?=json_encode($students);?>;
-            console.log(students);
-            for (var i = 0; i < students.length; i++){
-                console.log("#student-" + students[i].id);
-                idBox = "#student-" + students[i].id;
-                $(idBox).prop("checked", true);
-            }
-
-
-        });
-    });
-
-    // getdata from server
-    $('#updateModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
 </script>
 @endsection
 

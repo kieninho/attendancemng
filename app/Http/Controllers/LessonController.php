@@ -98,15 +98,19 @@ class LessonController extends Controller
 
         $keyword = $request->input('keyword');
         $lesson = Lesson::findOrFail($id);
+        if(!$lesson){
+            abort(404);
+        }
         $lessons = $lesson->classes->lessons;
-        $students = Student::whereHas('classes', function ($query) use ($id) {
-            $query->whereHas('lessons', function ($query) use ($id) {
-                $query->where('id', $id);
-            });
-        })
-        ->where('name', 'LIKE', "%$keyword%")
-        ->paginate($records_per_page);
-
+        // $students = Student::whereHas('classes', function ($query) use ($id) {
+        //     $query->whereHas('lessons', function ($query) use ($id) {
+        //         $query->where('id', $id);
+        //     });
+        // })
+        // ->orderBy('code')
+        // ->where('name', 'LIKE', "%$keyword%")
+        // ->paginate($records_per_page);
+        $students = $lesson->getStudentsInLesson()->orderBy('code')->paginate($records_per_page);
         
         return view('lesson.detail',compact('students','lessons','lesson','keyword'));
     }

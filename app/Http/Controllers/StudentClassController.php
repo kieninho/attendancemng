@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StudentClassController extends Controller
 {
@@ -60,6 +61,61 @@ class StudentClassController extends Controller
         StudentClass::where('class_id',$classId)->where('student_id',$studentId)->delete();
 
         $message = "Xóa sinh viên khỏi lớp thành công!";
+        return redirect()->back()->withErrors($message);
+    }
+
+    public function add(Request $request, $classId){
+        $user = Auth::user();
+        if ($user->is_teacher) {
+            $classes = $user->lessons->map(function ($lesson) {
+                return $lesson->classes;
+            });
+        } else {
+            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
+        }
+
+        $class = Classes::findOrFail($classId);
+        // $students = Student::where('status',1)->get();
+        // $listIdStudentinClass = StudentClass::where('class_id',$classId)->get();
+
+        // $availStudents = $students->reject(function ($student) use ($listIdStudentinClass) {
+        //     return $listIdStudentinClass->contains($student['id']);
+        // });
+        $keyword = $request->input('keyword');
+
+        $records_per_page = 10;
+
+        $availStudents = DB::table('students')
+        ->whereNotIn('id', function ($query) use ($classId) {
+            $query->select('student_id')
+                ->from('student_class')
+                ->where('class_id', $classId);
+        })
+        ->where('status',1)
+        ->where('name','like',"%$keyword%")
+        ->orderBy('code','asc')
+        ->paginate($records_per_page);
+
+        return view('studentclass.add',compact('keyword','class','availStudents','classes'));
+    }
+
+
+    public function store($classId, $studentId){
+        $class = Classes::where('id',$classId)->where('status',1)->First(); 
+        $student = Student::where('id',$studentId)->where('status',1)->First();
+
+        if( $class &&  $student){
+            StudentClass::create([
+                'student_id'=>$studentId,
+                'class_id'=>$classId,
+            ]);
+
+            $message = "Thêm thành công $student->name vào lớp!!!";
+        }
+        else{
+            $message = "Thêm vào lớp không thành công !!!";
+        }
+
         return redirect()->back()->withErrors($message);
     }
 }
