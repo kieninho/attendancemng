@@ -39,7 +39,7 @@ class LessonController extends Controller
         $lessons = Classes::searchLesson($classId,$keyword);
         $teachers = User::where('is_teacher',1)->where('status',1)->get();
 
-        return view('lesson.classLesson', compact('lessons', 'classes','class','keyword','teachers'));
+        return view('lesson.classlesson', compact('lessons', 'classes','class','keyword','teachers'));
     }
 
 
@@ -102,15 +102,15 @@ class LessonController extends Controller
             abort(404);
         }
         $lessons = $lesson->classes->lessons;
-        // $students = Student::whereHas('classes', function ($query) use ($id) {
-        //     $query->whereHas('lessons', function ($query) use ($id) {
-        //         $query->where('id', $id);
-        //     });
-        // })
-        // ->orderBy('code')
-        // ->where('name', 'LIKE', "%$keyword%")
-        // ->paginate($records_per_page);
-        $students = $lesson->getStudentsInLesson()->orderBy('code')->paginate($records_per_page);
+        $students = Student::whereHas('classes', function ($query) use ($id) {
+            $query->whereHas('lessons', function ($query) use ($id) {
+                $query->where('id', $id);
+            });
+        })
+        ->orderBy('code')
+        ->where('name', 'LIKE', "%$keyword%")
+        ->paginate($records_per_page);
+        // $students = $lesson->getStudentsInLesson()->orderBy('code')->paginate($records_per_page);
         
         return view('lesson.detail',compact('students','lessons','lesson','keyword'));
     }

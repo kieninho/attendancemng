@@ -47,6 +47,9 @@
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->email}}</td>
+                    <td class="table-Info"><input class="form-check-input check-attend" type="checkbox" 
+                    @if(!$student->lessons()->wherePivot('lesson_id', $lesson->id)->get()->isEmpty()) checked @endif 
+                    id="select-{{$student->id}}" data-id="{{$student->id}}"></td>
                 </tr>
                 @endforeach
             </tbody>
