@@ -17,9 +17,10 @@ class ClassController extends Controller
 
         $keyword = $request->input('keyword');
 
-        $classes = Classes::search($keyword)
-        ->orderBy('created_at','desc')->paginate($records_per_page);
+        $classes = Classes::search($keyword, $records_per_page);
+
         $classes->appends(['keyword' => $keyword]);
+
         return view('class.index',compact('classes','keyword'));
     }
 
@@ -53,6 +54,7 @@ class ClassController extends Controller
 
     public function delete($id){
         $class = Classes::findOrFail($id);
+        
         if($class){
             $class->status = 0;
             $class->save();
@@ -81,6 +83,7 @@ class ClassController extends Controller
 
         $data = $request->all();
         $record = Classes::findOrFail($data['classId']);
+
         if(isset($record)){
             $request->validate(
                 [
@@ -97,6 +100,7 @@ class ClassController extends Controller
             $record->name = $data['name'];
             $record->description = $data['description'];
             $record->save();
+
             $message = "Cập nhật thành công!";
         }
 

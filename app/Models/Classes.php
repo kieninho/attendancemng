@@ -53,11 +53,11 @@ class Classes extends Model
         return $this->hasMany(Lesson::class,'class_id')->where('status', 1);
     }
     
-    public static function search($keyword){
+    public static function search($keyword, $records_per_page){
         $result = Classes::where(function($query) use ($keyword) {
             $query->where('name','like',"%$keyword%")
                   ->orWhere('description','like',"%$keyword%");
-        })->where('status',1);
+        })->where('status',1)->orderBy('created_at','desc')->paginate($records_per_page);
         
         return $result;
     }
@@ -89,6 +89,28 @@ class Classes extends Model
         return count($result);
     }
 
-    
+    public static function getClassesByUser($user){
+        if ($user->is_teacher) {
+            $classes = $user->lessons->map(function ($lesson) {
+                return $lesson->classes;
+            });
+        } else {
+            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
+        }
+        return $classes;
+    }
+
+
+    public static function getClass(){
+        return Classes::where('status',1);
+    }
+
+    public static function getClassById($classId){
+        $class = Classes::where('id',$classId)->where('status',1)->first();
+        if($class){
+            return $class;
+        }
+        return null;
+    }
 
 }

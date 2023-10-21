@@ -14,14 +14,8 @@ class StudentClassController extends Controller
     public function index(Request $request, $classId){
 
         $user = Auth::user();
-        if ($user->is_teacher) {
-            $classes = $user->lessons->map(function ($lesson) {
-                return $lesson->classes;
-            });
-        } else {
-            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
-        }
 
+        $classes = Classes::getClassesByUser($user);
         $keyword = $request->input('keyword');
 
         $records_per_page = 10;
@@ -66,13 +60,8 @@ class StudentClassController extends Controller
 
     public function add(Request $request, $classId){
         $user = Auth::user();
-        if ($user->is_teacher) {
-            $classes = $user->lessons->map(function ($lesson) {
-                return $lesson->classes;
-            });
-        } else {
-            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
-        }
+        
+        $classes = Classes::getClassesByUser($user);
 
         $class = Classes::findOrFail($classId);
         // $students = Student::where('status',1)->get();

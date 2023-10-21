@@ -32,30 +32,21 @@ class Student extends Model
         return date('d/m/Y', strtotime($value));
     }
 
-    // public function setBirthdayAttribute($value)
-    // {
-    //     $this->attributes['birthday'] = date(' d/m/yy', strtotime($value));
-    // }
+  
 
     public function getCreatedAtAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
     }
 
-    // public function setCreatedAtAttribute($value)
-    // {
-    //     $this->attributes['created_at'] = date('H:i:s d/m/y', strtotime($value));
-    // }
+ 
 
     public function getUpdatedAtAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
     }
 
-    // public function setUpdatedAtAttribute($value)
-    // {
-    //     $this->attributes['updated_at'] = date('H:i:s d/m/y', strtotime($value));
-    // }
+   
 
     // relationship
     public function classes(){
@@ -87,5 +78,18 @@ class Student extends Model
         return $result;
     }
 
-    
+    public static function getStudents(){
+        return Student::where('status',1);
+    }
+
+    public static function getStudentInLessonDetail($lessonId, $keyword, $records_per_page){
+        return Student::whereHas('classes', function ($query) use ($lessonId) {
+            $query->whereHas('lessons', function ($query) use ($lessonId) {
+                $query->where('id', $lessonId);
+            });
+        })
+        ->orderBy('code')
+        ->where('name', 'LIKE', "%$keyword%")
+        ->paginate($records_per_page);
+    }
 }

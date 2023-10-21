@@ -22,19 +22,14 @@ class LessonController extends Controller
     public function classLesson(Request $request,$classId)
     {
         $user = Auth::user();
-        if ($user->is_teacher) {
-            $classes = $user->lessons->map(function ($lesson) {
-                return $lesson->classes;
-            });
-        } else {
-            $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
-        }
+        
+        $classes = Classes::getClassesByUser($user);
 
         $records_per_page = 10;
 
         $keyword = $request->input('keyword');
         
-        $class = Classes::where('id',$classId)->where('status',1)->first();
+        $class = Classes::getClassById($classId);
 
         $lessons = Classes::searchLesson($classId,$keyword);
         $teachers = User::where('is_teacher',1)->where('status',1)->get();
@@ -102,15 +97,8 @@ class LessonController extends Controller
             abort(404);
         }
         $lessons = $lesson->classes->lessons;
-        $students = Student::whereHas('classes', function ($query) use ($id) {
-            $query->whereHas('lessons', function ($query) use ($id) {
-                $query->where('id', $id);
-            });
-        })
-        ->orderBy('code')
-        ->where('name', 'LIKE', "%$keyword%")
-        ->paginate($records_per_page);
-        // $students = $lesson->getStudentsInLesson()->orderBy('code')->paginate($records_per_page);
+        $students = Student::getStudentInLessonDetail($id,$keyword,$records_per_page);
+        // $students = $lesson->getStudentsInLesson()->orderBy('code')->paginate($records_per_page); -- e chua xoa di do van chua xong hoan toan
         
         return view('lesson.detail',compact('students','lessons','lesson','keyword'));
     }
@@ -161,6 +149,7 @@ class LessonController extends Controller
 
             $teacher_ids = $request->input('teacher_ids');
             TeacherLesson::Where('lesson_id',$record->id)->delete();
+            
             if(!empty($teacher_ids)){
                 foreach($teacher_ids as $teacher_id){
                     TeacherLesson::create([

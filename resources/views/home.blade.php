@@ -24,7 +24,7 @@
                         <img src="{{ asset('images/student.jpg') }}" class="card-img-top" alt="class">
                     </div>
                     <div class="card-body">
-                        <p class="card-text text-center"><b class="text-info">Sinh Viên</b></p>
+                        <p class="card-text text-center"><b class="text-info">{{$countStudent}} Sinh Viên</b></p>
                     </div>
                 </div>
                 </a>
@@ -37,7 +37,7 @@
                         <img src="{{ asset('images/teacher.jpg') }}" class="card-img-top" alt="class">
                     </div>
                     <div class="card-body">
-                        <p class="card-text text-center"><b class="text-info">Giáo Viên</b></p>
+                        <p class="card-text text-center"><b class="text-info">{{$countTeacher}} Giáo Viên</b></p>
                     </div>
                 </div>
                 </a>
@@ -50,7 +50,7 @@
                         <img src="{{ asset('images/class.jpg') }}" class="card-img-top" alt="class">
                     </div>
                     <div class="card-body">
-                        <p class="card-text text-center"><b class="text-info">20 Lớp học</b></p>
+                        <p class="card-text text-center"><b class="text-info">{{$countClass}} Lớp học</b></p>
                     </div>
                 </div>
                 </a>
@@ -60,47 +60,6 @@
 
 </div>
 
-
-<!-- <script>
-    function selectAll() {
-        var checkboxes = document.getElementsByName("item_ids[]");
-        var selectAllCheckbox = document.getElementById("select-all");
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = selectAllCheckbox.checked;
-        }
-    }
-
-    function setCheckedSelectAll() {
-        var checkboxes = document.getElementsByName("item_ids[]");
-        var selectAllCheckbox = document.getElementById("select-all");
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked == false) {
-                selectAllCheckbox.checked = false;
-                return;
-            }
-            selectAllCheckbox.checked = true;
-        }
-    }
-
-    $(document).ready(function() {
-        $('.edit-button').click(function() {
-            var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            $('#classId').val(classId); // Gán giá trị ID vào hidden input
-            console.log(classId);
-            
-            $.ajax({
-                url: '{{ route("get.class") }}/' + classId,
-                type: 'get',
-                success: function(response) {
-                    $('#edit-class-name').val(response.name);
-                    $('#edit-class-description').val(response.description);
-                }
-            });
-        });
-    });
-</script> -->
 @endsection
 
 @section('footer')

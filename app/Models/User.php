@@ -76,10 +76,6 @@ class User extends Authenticatable
         return $this->belongsToMany(lesson::class, 'teacher_lesson', 'teacher_id', 'lesson_id')->where('status', 1);
     }
 
-    // public function classes()
-    // {
-    //     return $this->hasManyThrough(Classes::class, Lesson::class,'teacher_id','class_id')->where('status',1)->orderBy('created_at', 'desc');
-    // }
 
     public function classes()
     {
@@ -110,5 +106,9 @@ class User extends Authenticatable
         })->where('status', 1);
 
         return $result;
+    }
+
+    public static function getTeachers(){
+        return User::where('is_teacher',1)->where('status',1);
     }
 }
