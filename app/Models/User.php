@@ -98,12 +98,24 @@ class User extends Authenticatable
         return count($queryResult);
     }
 
-    public static function search($keyword)
+    public static function searchAdmin($keyword, $records_per_page)
     {
         $result = User::where(function ($query) use ($keyword) {
             $query->where('name', 'like', "%$keyword%")
                 ->orWhere('email', 'like', "%$keyword%");
-        })->where('status', 1);
+        })->where('status', 1)->where('is_teacher',0)
+        ->orderBy('created_at','desc')->paginate($records_per_page);
+
+        return $result;
+    }
+
+    public static function searchTeacher($keyword, $records_per_page)
+    {
+        $result = User::where(function ($query) use ($keyword) {
+            $query->where('name', 'like', "%$keyword%")
+                ->orWhere('email', 'like', "%$keyword%");
+        })->where('status', 1)->where('is_teacher',1)
+        ->orderBy('created_at','desc')->paginate($records_per_page);
 
         return $result;
     }

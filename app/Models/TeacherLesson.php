@@ -25,4 +25,16 @@ class TeacherLesson extends Model
     {
         return date('d/m/Y', strtotime($value));
     }
+
+    public static function deleteByLessonId($lessonId){
+        TeacherLesson::Where('lesson_id',$lessonId)->delete();
+    }
+
+    public static function getItemById($id){
+        $result = TeacherLesson::where('id',$id)->first();
+        if($result){
+            return $result;
+        }
+        return null;
+    }
 }

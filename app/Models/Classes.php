@@ -29,20 +29,12 @@ class Classes extends Model
         return date('d/m/Y', strtotime($value));
     }
 
-    // public function setCreatedAtAttribute($value)
-    // {
-    //     $this->attributes['created_at'] = date('H:i:s d/m/y', strtotime($value));
-    // }
 
     public function getUpdatedAtAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
     }
 
-    // public function setUpdatedAtAttribute($value)
-    // {
-    //     $this->attributes['updated_at'] = date('d/m/y H:i:s', strtotime($value));
-    // }
     
     // Relationship
     public function students(){
@@ -104,6 +96,14 @@ class Classes extends Model
     public static function getClass(){
         return Classes::where('status',1);
     }
+
+    public static function getItemById($id){
+        $result = Classes::where('status',1)->where('id',$id)->first();
+        if($result){
+         return $result;
+        }
+        return null;
+     }
 
     public static function getClassById($classId){
         $class = Classes::where('id',$classId)->where('status',1)->first();

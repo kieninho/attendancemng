@@ -28,4 +28,12 @@ class StudentLesson extends Model
         return date('d/m/Y', strtotime($value));
     }
 
+
+    public static function deleteItem($lessonId,$studentId){
+        StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->delete();
+    }
+
+    public static function checkExits($lessonId, $studentId){
+        return StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->get()->isEmpty();
+    }
 }

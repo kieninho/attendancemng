@@ -26,4 +26,21 @@ class StudentClass extends Model
     {
         return date('d/m/Y', strtotime($value));
     }
+
+    public static function deleteByClassId($classId){
+        StudentClass::where('class_id',$classId)->delete();
+    }
+
+    public static function addListStudentClass($classId, $student_ids){
+        foreach($student_ids as $student_id){
+            StudentClass::create([
+                'student_id'=>$student_id,
+                'class_id'=>$classId
+            ]);
+        }
+    }
+
+    public static function deleteItem($classId, $studentId){
+        StudentClass::where('class_id',$classId)->where('student_id',$studentId)->delete();
+    }
 }

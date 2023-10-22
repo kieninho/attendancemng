@@ -32,7 +32,8 @@ class LessonController extends Controller
         $class = Classes::getClassById($classId);
 
         $lessons = Classes::searchLesson($classId,$keyword);
-        $teachers = User::where('is_teacher',1)->where('status',1)->get();
+        
+        $teachers = User::getTeachers()->get();
 
         return view('lesson.classlesson', compact('lessons', 'classes','class','keyword','teachers'));
     }
@@ -148,7 +149,7 @@ class LessonController extends Controller
             $record->save();
 
             $teacher_ids = $request->input('teacher_ids');
-            TeacherLesson::Where('lesson_id',$record->id)->delete();
+            TeacherLesson::deleteByLessonId($record->id);
             
             if(!empty($teacher_ids)){
                 foreach($teacher_ids as $teacher_id){
@@ -171,12 +172,12 @@ class LessonController extends Controller
     }
 
     public function getTeacherLesson($id){
-        $data = TeacherLesson::where('lesson_id',$id)->get();
+        $data = TeacherLesson::getItemById($id);
         return response()->json($data);
     }
 
     public function attend($lessonId,$studentId){
-        $checkExits = StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->get()->isEmpty();
+        $checkExits = StudentLesson::checkExits($lessonId, $studentId);
         if($checkExits){
             $data = ['lesson_id'=>$lessonId,'student_id'=>$studentId];
             StudentLesson::create($data);
@@ -187,7 +188,7 @@ class LessonController extends Controller
         }
     }
     public function leave($lessonId,$studentId){
-        StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->delete();
+        StudentLesson::deleteItem($lessonId,$studentId);
 
         $countStudentInLesson = Lesson::findOrFail($lessonId)->students->count();
 

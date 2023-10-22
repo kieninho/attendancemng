@@ -69,17 +69,25 @@ class Student extends Model
         ->count();
     }
 
-    public static function search($keyword){
+    public static function search($keyword,$records_per_page){
         $result = Student::where(function($query) use ($keyword) {
             $query->where('name', 'like', "%$keyword%")
                   ->orWhere('email', 'like', "%$keyword%");
-        })->where('status', 1);
+        })->where('status', 1)->orderBy('created_at','desc')->paginate($records_per_page);;
         
         return $result;
     }
 
     public static function getStudents(){
         return Student::where('status',1);
+    }
+
+    public static function getItemById($id){
+       $result = Student::where('status',1)->where('id',$id)->first();
+       if($result){
+        return $result;
+       }
+       return null;
     }
 
     public static function getStudentInLessonDetail($lessonId, $keyword, $records_per_page){
@@ -90,6 +98,31 @@ class Student extends Model
         })
         ->orderBy('code')
         ->where('name', 'LIKE', "%$keyword%")
+        ->paginate($records_per_page);
+    }
+
+    public static function searchStudentsInClass($keyword, $classId, $records_per_page){
+        return Student::where('name', 'like', '%' . $keyword . '%')
+        ->whereHas('classes', function ($query) use ($classId) {
+        $query->where('class_id', $classId);
+        })
+        ->orderBy('code','asc')->paginate($records_per_page);
+    }
+
+    public static function getAllStudent(){
+        return Student::where('status',1)->orderBy('code','asc')->get();
+    }
+
+    public static function getAvailStudents($classId, $keyword, $records_per_page){
+       return DB::table('students')
+        ->whereNotIn('id', function ($query) use ($classId) {
+            $query->select('student_id')
+                ->from('student_class')
+                ->where('class_id', $classId);
+        })
+        ->where('status',1)
+        ->where('name','like',"%$keyword%")
+        ->orderBy('code','asc')
         ->paginate($records_per_page);
     }
 }

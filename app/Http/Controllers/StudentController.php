@@ -17,8 +17,7 @@ class StudentController extends Controller
 
         $keyword = $request->input('keyword');
 
-        $students = Student::search($keyword)
-                            ->orderBy('created_at','desc')->paginate($records_per_page);
+        $students = Student::search($keyword, $records_per_page);
         
         $students->appends(['keyword' => $keyword]);
     
@@ -75,7 +74,9 @@ class StudentController extends Controller
     {
 
         $data = $request->all();
+
         $record = Student::findOrFail($data['studentId']);
+
         if (isset($record)) {
             $request->validate(
                 [

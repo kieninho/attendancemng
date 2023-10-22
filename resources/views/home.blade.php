@@ -24,7 +24,7 @@
                         <img src="{{ asset('images/student.jpg') }}" class="card-img-top" alt="class">
                     </div>
                     <div class="card-body">
-                        <p class="card-text text-center"><b class="text-info">{{$countStudent}} Sinh Viên</b></p>
+                        <p class="card-text text-center"><b class="text-info">{{$countStudent??0}} Sinh Viên</b></p>
                     </div>
                 </div>
                 </a>
@@ -37,7 +37,7 @@
                         <img src="{{ asset('images/teacher.jpg') }}" class="card-img-top" alt="class">
                     </div>
                     <div class="card-body">
-                        <p class="card-text text-center"><b class="text-info">{{$countTeacher}} Giáo Viên</b></p>
+                        <p class="card-text text-center"><b class="text-info">{{$countTeacher??0}} Giáo Viên</b></p>
                     </div>
                 </div>
                 </a>
@@ -50,7 +50,7 @@
                         <img src="{{ asset('images/class.jpg') }}" class="card-img-top" alt="class">
                     </div>
                     <div class="card-body">
-                        <p class="card-text text-center"><b class="text-info">{{$countClass}} Lớp học</b></p>
+                        <p class="card-text text-center"><b class="text-info">{{$countClass??0}} Lớp học</b></p>
                     </div>
                 </div>
                 </a>

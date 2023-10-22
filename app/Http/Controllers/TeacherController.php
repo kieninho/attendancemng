@@ -19,8 +19,8 @@ class TeacherController extends Controller
 
         $keyword = $request->input('keyword');
 
-        $teachers = User::search($keyword)->where('is_teacher', 1)
-            ->orderBy('name', 'asc')->paginate($records_per_page);
+        $teachers = User::searchTeacher($keyword, $records_per_page);
+        
         $teachers->appends(['keyword' => $keyword]);
         return view('teacher.index', compact('teachers', 'keyword'));
     }
