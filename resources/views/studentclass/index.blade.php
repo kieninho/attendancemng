@@ -18,7 +18,7 @@
 
     <div class="col-md-10">
     <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
-        <h5>Danh sách sinh viên lớp: {{$class->name}} - {{$students->count()}} SV</h5>
+        <h5>Danh sách sinh viên lớp: {{$class->name}}</h5>
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('studentInClass',['classId'=>$class->id])}}" method="get">
                 <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">

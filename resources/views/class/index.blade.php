@@ -15,7 +15,7 @@
             </form>
         </div>
         <div class="button-box">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Tạo Lớp</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Tạo Lớp</button>
             <button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
         </div>
     </div>
@@ -46,7 +46,7 @@
                     <td class="table-Info text-center">{{$class->lessons->count()??0}}</td>
                     <td class="table-Info text-center">{{$class->created_at}}</td>
                     <td class="table-Info text-center">
-                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editClassModal">Sửa</span> <span class="divider"></span>
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>
                         <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a> <span class="divider"></span>
                         <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
@@ -73,14 +73,14 @@
 </div>
 
 
-<div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tạo lớp</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('store.class')}}" method="POST">
+            <form action="{{route('store.class')}}" method="POST" id="addForm">
                 @csrf
                 <div class="modal-body">
 
@@ -106,14 +106,14 @@
     </div>
 </div>
 
-<div class="modal fade" id="editClassModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tạo lớp</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('update.class')}}" method="POST">
+            <form action="{{route('update.class')}}" method="POST" id="editForm">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" id="classId" name="classId">
@@ -139,6 +139,32 @@
     </div>
 </div>
 <script src="{{asset('js/class/index.js')}}"></script>
+<script>
+    $(document).ready(function () {
+    $('.edit-button').click(function () {
+        var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+        $('#classId').val(classId); // Gán giá trị ID vào hidden input
+        console.log(classId);
+
+        $.ajax({
+            url: '{{ route("get.class") }}/' + classId,
+            type: 'get',
+            success: function (response) {
+                $('#edit-class-name').val(response.name);
+                $('#edit-class-description').val(response.description);
+            }
+        });
+    });
+});
+
+$('#addModal').on('hidden.bs.modal', function () {
+    $('#addForm')[0].reset();
+});
+
+$('#editModal').on('hidden.bs.modal', function () {
+    $('#editForm')[0].reset();
+});
+</script>
 @endsection
 
 

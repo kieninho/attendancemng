@@ -192,6 +192,45 @@
     </div>
 </div>
 <script src="{{asset('js/lesson/classlesson.js')}}"></script>
+
+<script>
+    // getdata from server
+    $(document).ready(function() {
+        $('.edit-button').click(function() {
+            var lessonId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            $('#lessonId').val(lessonId); // Gán giá trị ID vào hidden input
+            $.ajax({
+                url: '{{ route("get.lesson") }}/' + lessonId,
+                type: 'get',
+                success: function(response) {
+                    $('#edit-lesson-name').val(response.name);
+                    $('#edit-lesson-description').val(response.description);
+                    $('#edit-date').val(ToDate(response.start_at));
+                    $('#edit-start-time').val(ToTime(response.start_at));
+                    $('#edit-end-time').val(ToTime(response.end_at));
+                }
+            });
+
+            // teacher lesson
+            $.ajax({
+                url: '{{ route("get.teacherLesson") }}/' + lessonId,
+                type: 'get',
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response, function(index, item) {
+                        // Duyệt qua từng 
+                        idBox = "#ck-teacher-" + item.teacher_id;
+                        console.log(idBox);
+                        $(idBox).prop("checked", true);
+
+                        // ...
+                    });
+                }
+            });
+
+        });
+    });
+</script>
 @endsection
 
 @section('footer')

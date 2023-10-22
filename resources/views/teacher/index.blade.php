@@ -161,6 +161,25 @@
     </div>
 </div>
 <script src="{{asset('js/teacher/index.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        $('.edit-button').click(function() {
+            var teacherId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            $('#teacherId').val(teacherId); // Gán giá trị ID vào hidden input
+            console.log(teacherId);
+            $.ajax({
+                url: '{{ route("get.teacher") }}/' + teacherId,
+                type: 'get',
+                success: function(response) {
+                    $('#edit-teacher-name').val(response.name);
+                    $('#edit-teacher-email').val(response.email);
+                    $('#edit-teacher-phone').val(response.phone);
+                    $('#datetimepicker2').val(response.birthday);
+                }
+            });
+        });
+    });
+</script>
 @endsection
 
 @section('footer')

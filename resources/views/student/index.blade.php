@@ -152,6 +152,27 @@
     </div>
 </div>
 <script src="{{asset('js/student/index.js')}}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.edit-button').click(function() {
+            var studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            $('#studentId').val(studentId); // Gán giá trị ID vào hidden input
+            console.log(studentId);
+
+            $.ajax({
+                url: '{{ route("get.student") }}/' + studentId,
+                type: 'get',
+                success: function(response) {
+                    $('#edit-student-code').val(response.code);
+                    $('#edit-student-name').val(response.name);
+                    $('#edit-student-email').val(response.email);
+                    $('#datetimepicker2').val(response.birthday);
+                }
+            });
+        });
+    });
+</script>
 @endsection
 
 @section('footer')
