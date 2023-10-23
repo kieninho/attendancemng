@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRequest;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Services\helper;
@@ -24,19 +25,9 @@ class StudentController extends Controller
         return view('student.index', compact('students','keyword'));
     }
 
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
-        $request->validate(
-            [
-                'name' => 'required|string|min:3|max:255',
-                'email' => 'required|string|email|max:255'
-            ],
-            [
-                'name.required' => 'Tên lớp không được bỏ trống',
-                'name.string' => 'Nhập tên lớp là chữ cái',
-                'name.min' => 'Tên lớp phải nhiều hơn 3 kí tự',
-            ]
-        );
+        $request->validated();
 
         $listExitsCode = Student::pluck('code')->all();
 
@@ -70,7 +61,7 @@ class StudentController extends Controller
         return response()->json($data);
     }
 
-    public function update(Request $request)
+    public function update(StudentRequest $request)
     {
 
         $data = $request->all();
@@ -78,18 +69,7 @@ class StudentController extends Controller
         $record = Student::findOrFail($data['studentId']);
 
         if (isset($record)) {
-            $request->validate(
-                [
-                    'name' => 'required|string|min:3|max:100',
-                    'email' => 'required|string|email|max:150'
-                ],
-                [
-                    'name.required' => 'Tên lớp không được bỏ trống',
-                    'name.string' => 'Nhập tên lớp là chữ cái',
-                    'name.min' => 'Tên lớp phải nhiều hơn 3 kí tự',
-                ],
-                ['stopOnFirstFailure' => true]
-            );
+            $request->validated();
             $record->fill([
                 'name' => $data['name'],
                 'email' => $data['email'],

@@ -36,4 +36,9 @@ class StudentLesson extends Model
     public static function checkExits($lessonId, $studentId){
         return StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->get()->isEmpty();
     }
+
+    public function lesson()
+    {
+        return $this->belongsTo(Lesson::class);
+    }
 }

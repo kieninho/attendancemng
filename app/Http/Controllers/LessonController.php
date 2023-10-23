@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateLesson;
+use App\Http\Requests\LessonRequest;
 use App\Models\Classes;
 use App\Models\Lesson;
 use App\Models\Student;
 use App\Models\TeacherLesson;
 use App\Models\StudentLesson;
 use App\Models\User;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
@@ -39,18 +42,8 @@ class LessonController extends Controller
     }
 
 
-    public function store(Request $request,$classId){
-        $request->validate(
-            [
-                'name' => 'required',
-                'start' => 'required',
-                'end' => 'required',
-                'date' => 'required',
-            ],
-            [
-                'name.required' => 'Tên không được bỏ trống',
-            ]
-        );
+    public function store(LessonRequest $request,$classId){
+        $request->validated();
         $data = $request->all();
         $startStr = $data['start']." ".$data['date'];
         $endStr = $data['end']." ".$data['date'];
@@ -121,22 +114,14 @@ class LessonController extends Controller
         return response()->json($data);
     }
 
-    public function update(Request $request)
+    public function update(LessonRequest $request)
     {
 
         $data = $request->all();
         $record = Lesson::findOrFail($data['lessonId']);
 
         if (isset($record)) {
-            $request->validate([
-                'name' => 'required',
-                'start' => 'required',
-                'end' => 'required',
-                'date' => 'required',
-            ], [
-                'name.required' => 'Tên không được bỏ trống!',
-                'name.min' => 'Tên phải nhiều hơn 3 kí tự!',
-            ]);
+            $request->validated();
 
             $startStr = $data['start']." ".$data['date'];
             $endStr = $data['end']." ".$data['date'];

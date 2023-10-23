@@ -42,6 +42,8 @@ Route::group(['prefix' => 'studentsinclass', 'middleware' => 'auth'], function (
     Route::post('/update/{classId}', [StudentClassController::class, 'update'])->name('update.studentInClass');
     Route::get('/add/{id}', [StudentClassController::class, 'add'])->name('add.studentsinclass');
     Route::get('/store/{classId}/{studentId}', [StudentClassController::class, 'store'])->name('store.studentsinclass');
+
+    Route::post('/addmulti/{classId}', [StudentClassController::class, 'addMulti'])->name('addmulti.studentInClass');
 });
 
 
@@ -73,10 +75,6 @@ Route::group(['prefix' => 'studentlesson', 'middleware' => 'auth'], function () 
     
 });
 
-Route::group(['prefix' => 'studentclass', 'middleware' => 'auth'], function () {
-    Route::get('/classid={classId}', [StudentClassController::class, 'index'])->name('studentclass');
-    
-});
 
 
 Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {

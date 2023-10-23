@@ -84,6 +84,29 @@ class StudentClassController extends Controller
             $message = "Thêm vào lớp không thành công !!!";
         }
 
-        return redirect()->back()->withErrors($message);
+        return redirect(route('studentInClass',['classId'=>$classId]))->withErrors($message);
+    }
+
+    public function addMulti(Request $request, $classId){
+        $studentIds = $request->input('item_ids');
+
+        $countStd = count($studentIds);
+        
+        if($countStd <= 0 ){
+            $message = "Thêm vào lớp không thành công !!!";
+
+            return redirect(route('studentInClass',['classId'=>$classId]))->withErrors($message);
+        }
+
+
+        foreach($studentIds as $studentId){
+            StudentClass::create([
+                'student_id'=>$studentId,
+                'class_id'=>$classId,
+            ]);
+        }
+        $message = "Thêm thành công $countStd sinh viên vào lớp !!!";
+
+        return redirect(route('studentInClass',['classId'=>$classId]))->withErrors($message);
     }
 }

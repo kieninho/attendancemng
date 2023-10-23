@@ -7,7 +7,7 @@
 @section('content')
 <div class="container-fluid row">
 
-<div class="col-md-2">
+    <div class="col-md-2">
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <a href="#" class="list-group-item list-group-item-action">Quản lý sinh viên trong lớp</a>
             @foreach($classes as $classItem)
@@ -17,60 +17,61 @@
     </div>
 
     <div class="col-md-10">
-    <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
-        <h5>Danh sách sinh viên lớp: {{$class->name}}</h5>
-        <div class="search-box" style="width:300px; height:30px">
-            <form class="d-flex" action="{{route('studentInClass',['classId'=>$class->id])}}" method="get">
-                <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
-            </form>
+        <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
+            <h5>Danh sách sinh viên lớp: {{$class->name}}</h5>
+            <div class="search-box" style="width:300px; height:30px">
+                <form class="d-flex" action="{{route('studentInClass',['classId'=>$class->id])}}" method="get">
+                    <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="button-box">
+                <button type="button" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+                <button type="button" id="add-std-btn" class="btn btn-primary"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
+            </div>
         </div>
-        <div class="button-box">
-            <button type="button" id="add-std-btn" class="btn btn-primary"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
-        </div>
-    </div>
-    <table class="table table-hover table-striped mb-1">
-        <thead>
-            <tr>
-                <th scope="col">Stt</th>
-                <th scope="col">Mã SV</th>
-                <th scope="col">Tên</th>
-                <th scope="col">Email</th>
-                <th scope="col">Ngày sinh</th>
-                <th scope="col" class="text-center">Chuyên cần</th>
-                <th scope="col"></th>
-                <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
-            </tr>
-        </thead>
+        <table class="table table-hover table-striped mb-1">
+            <thead>
+                <tr>
+                    <th scope="col">Stt</th>
+                    <th scope="col">Mã SV</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Ngày sinh</th>
+                    <th scope="col" class="text-center">Chuyên cần</th>
+                    <th scope="col"></th>
+                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+                </tr>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-            @foreach($students as $student)
-            <tr>
-                <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
-                <td class="table-Info">{{$student->code}}</td>
-                <td class="table-Info">{{$student->name}}</td>
-                <td class="table-Info">{{$student->email}}</td>
-                <td class="table-Info">{{$student->birthday}}</td>
-                <td class="table-Info text-center">{{$student->lessons->where('class_id',$class->id)->count()}}/{{$class->lessons->count()}}</td>
-                <td class="table-Info">
-                    <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}">Xóa</a>
-                    <span class="divider"></span>
-                    <a class="link-primary" href="">Chi tiết</a>
-                </td>
-                <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    {{$students->links()}}
+                @foreach($students as $student)
+                <tr>
+                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <td class="table-Info">{{$student->code}}</td>
+                    <td class="table-Info">{{$student->name}}</td>
+                    <td class="table-Info">{{$student->email}}</td>
+                    <td class="table-Info">{{$student->birthday}}</td>
+                    <td class="table-Info text-center">{{$student->lessons->where('class_id',$class->id)->count()}}/{{$class->lessons->count()}}</td>
+                    <td class="table-Info">
+                        <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}">Xóa</a>
+                        <span class="divider"></span>
+                        <a class="link-primary" href="">Chi tiết</a>
+                    </td>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{$students->links()}}
     </div>
 
 </div>
 
 <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger px-2 py-1">
         <ul class="ps-1">
             @foreach ($errors->all() as $error)
             <li style="list-style-type:none;">{{ $error }}</li>
@@ -126,8 +127,8 @@
 
 
     function selectAll() {
-        var checkboxes = document.getElementsByName("item_ids[]");
-        var selectAllCheckbox = document.getElementById("select-all");
+        let checkboxes = document.getElementsByName("item_ids[]");
+        let selectAllCheckbox = document.getElementById("select-all");
 
         for (var i = 0; i < checkboxes.length; i++) {
             checkboxes[i].checked = selectAllCheckbox.checked;
@@ -135,10 +136,12 @@
     }
 
     function setCheckedSelectAll() {
-        var checkboxes = document.getElementsByName("item_ids[]");
-        var selectAllCheckbox = document.getElementById("select-all");
+        let checkboxes = document.getElementsByName("item_ids[]");
+        let selectAllCheckbox = document.getElementById("select-all");
+        
 
         for (var i = 0; i < checkboxes.length; i++) {
+
             if (checkboxes[i].checked == false) {
                 selectAllCheckbox.checked = false;
                 return;
@@ -150,16 +153,26 @@
     //
     $(document).ready(function() {
         $('#update-btn').click(function() {
-            var students = <?=json_encode($students);?>;
+            var students = <?= json_encode($students); ?>;
             console.log(students);
-            for (var i = 0; i < students.length; i++){
+            for (var i = 0; i < students.length; i++) {
                 console.log("#student-" + students[i].id);
                 idBox = "#student-" + students[i].id;
                 $(idBox).prop("checked", true);
             }
-
-
         });
+
+            $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+                if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+                    $('#delete-mul').prop('disabled', false);
+                } else {
+                    $('#delete-mul').prop('disabled', true);
+                }
+            });
+
+
     });
 
     // getdata from server

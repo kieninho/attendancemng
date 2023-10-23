@@ -63,6 +63,10 @@ class Lesson extends Model
         return $this->belongsToMany(Student::class, 'student_lesson', 'lesson_id', 'student_id')->where('status', 1);
     }
 
+    public function studentlessons(){
+        return $this->hasMany(StudentLesson::class);
+    }
+
     public function teachers()
     {
         return $this->belongsToMany(User::class, 'teacher_lesson', 'lesson_id', 'teacher_id')->where('status', 1);

@@ -15,12 +15,12 @@
             </form>
         </div>
         <div class="button-box">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Tạo Lớp</button>
-            <button type="button" class="btn btn-primary">Xóa lớp đã chọn</button>
+            <button type="button" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+            <button type="button" id="export" class="btn btn-primary  ms-2">Xuất Excel</button>
+            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Tạo Lớp</button>
         </div>
     </div>
     <div class="table-responsive">
-
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
@@ -30,6 +30,7 @@
                     <th scope="col" class="text-center">Mô tả</th>
                     <th scope="col" class="text-center">Sinh viên</th>
                     <th scope="col" class="text-center">Buổi học</th>
+                    <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col" class="text-center">Ngày tạo</th>
                     <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
@@ -44,6 +45,7 @@
                     <td class="table-Info">{{$class->description}}</td>
                     <td class="table-Info text-center">{{$class->students->count()??0}}</td>
                     <td class="table-Info text-center">{{$class->lessons->count()??0}}</td>
+                    <td class="table-Info text-center">{{$class->getAverageAttendance()??0}}%</td>
                     <td class="table-Info text-center">{{$class->created_at}}</td>
                     <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
@@ -61,7 +63,7 @@
 
     <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
         @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger px-2 py-1">
             <ul class="ps-1">
                 @foreach ($errors->all() as $error)
                 <li style="list-style-type:none;">{{ $error }}</li>
@@ -88,7 +90,9 @@
                         <label for="recipient-name" class="col-form-label">Tên lớp:</label>
                         <input type="text" name="name" class="form-control" id="add-class-name">
                         @error('name')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="alert alert-danger mt-2">
+                            <p>{{ $message }}</p>
+                        </div>
                         @enderror
                     </div>
                     <div class="mb-1">
@@ -110,7 +114,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tạo lớp</h5>
+                <h5 class="modal-title">Chỉnh sửa:</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{route('update.class')}}" method="POST" id="editForm">
@@ -140,31 +144,54 @@
 </div>
 <script src="{{asset('js/class/index.js')}}"></script>
 <script>
-    $(document).ready(function () {
-    $('.edit-button').click(function () {
-        var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-        $('#classId').val(classId); // Gán giá trị ID vào hidden input
-        console.log(classId);
+    $(document).ready(function() {
+        $('.edit-button').click(function() {
+            var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            $('#classId').val(classId); // Gán giá trị ID vào hidden input
+            console.log(classId);
 
-        $.ajax({
-            url: '{{ route("get.class") }}/' + classId,
-            type: 'get',
-            success: function (response) {
-                $('#edit-class-name').val(response.name);
-                $('#edit-class-description').val(response.description);
+            $.ajax({
+                url: '{{ route("get.class") }}/' + classId,
+                type: 'get',
+                success: function(response) {
+                    $('#edit-class-name').val(response.name);
+                    $('#edit-class-description').val(response.description);
+                }
+            });
+        });
+
+        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+            if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+                $('#delete-mul').prop('disabled', false);
+            } else {
+                $('#delete-mul').prop('disabled', true);
             }
         });
     });
-});
 
-$('#addModal').on('hidden.bs.modal', function () {
-    $('#addForm')[0].reset();
-});
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
 
-$('#editModal').on('hidden.bs.modal', function () {
-    $('#editForm')[0].reset();
-});
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
+    });
+
+    
 </script>
+
+
+@if ($errors->any())
+<script>
+    // Kiểm tra nếu có lỗi thì hiển thị modal
+    $(document).ready(function() {
+            $('#addModal').modal('show');
+    });
+</script>
+@endif
+
 @endsection
 
 

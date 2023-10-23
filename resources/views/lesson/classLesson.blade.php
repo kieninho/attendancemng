@@ -25,7 +25,9 @@
                 </form>
             </div>
             <div class="button-box">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm buổi học</button>
+                <button type="button" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</button>
+                <button type="button" id="export" class="btn btn-primary  ms-2">Xuất Excel</button>
+                <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm buổi học</button>
             </div>
         </div>
         <table class="table table-hover table-striped mb-1">
@@ -78,7 +80,7 @@
 </div>
 <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger px-2 py-1">
         <ul class="ps-1">
             @foreach ($errors->all() as $error)
             <li style="list-style-type:none;">{{ $error }}</li>
@@ -218,16 +220,24 @@
                 dataType: 'json',
                 success: function(response) {
                     $.each(response, function(index, item) {
+                        console.log('{{ route("get.teacherLesson") }}/' + lessonId);
                         // Duyệt qua từng 
                         idBox = "#ck-teacher-" + item.teacher_id;
-                        console.log(idBox);
                         $(idBox).prop("checked", true);
-
-                        // ...
                     });
                 }
             });
 
+        });
+
+        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+            if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+                $('#delete-mul').prop('disabled', false);
+            } else {
+                $('#delete-mul').prop('disabled', true);
+            }
         });
     });
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -20,29 +21,11 @@ class UserController extends Controller
         return view('user.index',compact('users','keyword'));
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         $data = $request->all();
 
-        $request->validate(
-            [
-                'name' => 'required|string|min:3|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|min:6|',
-            ],
-            [
-                'name.required' => 'Tên không được bỏ trống',
-                'name.string' => 'Nhập tên là chữ cái',
-                'name.min' => 'Tên phải nhiều hơn 3 kí tự',
-                'email.required' => 'Email không được bỏ trống',
-                'email.email' => 'Email không hợp lệ',
-                'email.string' => 'Email không hợp lệ',
-                'email.unique' => 'Email này đã được đăng ký',
-                'password.required' => 'Mật khẩu không được bỏ trống',
-                'password.min' => 'Độ dài mật khẩu lớn hơn 6 ký tự',
-
-            ],
-        );
+        $request->validated();
 
         if($data['password'] != $data['password2']){
             $message = 'Mật khẩu không khớp';
@@ -70,15 +53,9 @@ class UserController extends Controller
         return response()->json($data);
     }
 
-    public function update(Request $request){
+    public function update(UserRequest $request){
         $data = $request->all();
-        $request->validate([
-            'name' => 'required|string|min:3|max:255',
-        ],[
-            'name.required' => 'Tên không được bỏ trống',
-            'name.string' => 'Nhập tên là chữ cái',
-            'name.min' => 'Tên phải nhiều hơn 3 kí tự',
-        ]);
+        $request->validated();
 
         $record = User::findOrFail($data['userId']);
         $record->name =  $data['name'];

@@ -16,8 +16,9 @@
             </form>
         </div>
         <div class="button-box">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm SV</button>
-            <button type="button" class="btn btn-primary">Xóa SV đã chọn</button>
+        <button type="button" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</button>
+        <button type="button" id="export" class="btn btn-primary ms-2">Xuất Excel</button>
+            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm SV</button>
         </div>
     </div>
     <div class="table-responsive">
@@ -43,7 +44,7 @@
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
                     <td class="table-Info text-center">{{$student->birthday}}</td>
-                    <td class="table-Info text-center">{{intval(($student->lessons->count()??0)/($student->countLessonInClass()??1)*100)}}%</td>
+                    <td class="table-Info text-center">{{round(($student->lessons->count()??0)/($student->countLessonInClass()??1)*100)}}%</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
@@ -60,7 +61,7 @@
     </div>
     <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
         @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger px-2 py-1">
             <ul class="ps-1">
                 @foreach ($errors->all() as $error)
                 <li style="list-style-type:none;">{{ $error }}</li>
@@ -158,7 +159,6 @@
         $('.edit-button').click(function() {
             var studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
             $('#studentId').val(studentId); // Gán giá trị ID vào hidden input
-            console.log(studentId);
 
             $.ajax({
                 url: '{{ route("get.student") }}/' + studentId,
@@ -171,6 +171,16 @@
                 }
             });
         });
+
+        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+    $('#delete-mul').prop('disabled', false);
+} else {
+    $('#delete-mul').prop('disabled', true);
+}
+});
     });
 </script>
 @endsection

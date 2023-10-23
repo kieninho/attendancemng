@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClassRequest;
+use App\Http\Requests\CreateClass;
+use App\Http\Requests\UpdateClass;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use App\Services\helper;
@@ -24,19 +27,9 @@ class ClassController extends Controller
         return view('class.index',compact('classes','keyword'));
     }
 
-    public function store(Request $request)
+    public function store(ClassRequest $request)
     {
-        $request->validate(
-            [
-                'name' => 'required|string|min:2',
-            ],
-            [
-                'name.required' => 'Tên lớp không được bỏ trống',
-                'name.string' => 'Nhập tên lớp là chữ cái',
-                'name.min' => 'Tên lớp phải nhiều hơn 2 kí tự',
-            ],
-            ['stopOnFirstFailure' => true]
-        );
+        $request->validated();
 
         $listExitsCode = Classes::pluck('code')->all();
 
@@ -79,23 +72,13 @@ class ClassController extends Controller
         return response()->json($data);
     }
 
-    public function update(Request $request){
+    public function update(ClassRequest $request){
 
         $data = $request->all();
         $record = Classes::findOrFail($data['classId']);
 
         if(isset($record)){
-            $request->validate(
-                [
-                    'name' => 'required|string|min:2',
-                ],
-                [
-                    'name.required' => 'Tên lớp không được bỏ trống',
-                    'name.string' => 'Nhập tên lớp là chữ cái',
-                    'name.min' => 'Tên lớp phải nhiều hơn 2 kí tự',
-                ],
-                ['stopOnFirstFailure' => true]
-            );
+            $request->validated();
             $record->id = $data['classId'];
             $record->name = $data['name'];
             $record->description = $data['description'];

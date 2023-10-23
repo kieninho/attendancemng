@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TeacherRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,26 +26,11 @@ class TeacherController extends Controller
         return view('teacher.index', compact('teachers', 'keyword'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(TeacherRequest $request): RedirectResponse
     {
         $data = $request->all();
 
-        $request->validate(
-            [
-                'name' => 'required|string|min:3|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-            ],
-            [
-                'name.required' => 'Tên không được bỏ trống',
-                'name.string' => 'Nhập tên là chữ cái',
-                'name.min' => 'Tên phải nhiều hơn 3 kí tự',
-                'email.required' => 'Email không được bỏ trống',
-                'email.email' => 'Email không hợp lệ',
-                'email.string' => 'Email không hợp lệ',
-                'email.unique' => 'Email này đã được đăng ký',
-
-            ],
-        );
+        $request->validated();
 
         $data['status'] = 1;
         $data['is_teacher'] = 1;
@@ -75,20 +61,14 @@ class TeacherController extends Controller
         return redirect()->back()->withErrors($message);
     }
 
-    public function update(Request $request)
+    public function update(TeacherRequest $request)
     {
 
         $data = $request->all();
         $record = User::findOrFail($data['teacherId']);
 
         if (isset($record)) {
-            $request->validate([
-                'name' => 'required|string|min:3|max:100',
-            ], [
-                'name.required' => 'Tên không được bỏ trống',
-                'name.string' => 'Nhập tên là chữ cái',
-                'name.min' => 'Tên phải nhiều hơn 3 kí tự',
-            ]);
+            $request->validated();
 
 
             $record->fill([

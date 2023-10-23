@@ -19,8 +19,8 @@
         <form action="{{route('delete.teachers')}}" method="post">
             @csrf
             <div class="button-box">
+            <button type="submit" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm GV</button>
-                <button type="submit" class="btn btn-primary">Xóa GV đã chọn</button>
             </div>
     </div>
     <div class="table-responsive">
@@ -65,7 +65,7 @@
 
     <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
         @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger px-2 py-1">
             <ul class="ps-1">
                 @foreach ($errors->all() as $error)
                 <li style="list-style-type:none;">{{ $error }}</li>
@@ -178,6 +178,16 @@
                 }
             });
         });
+
+        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+    $('#delete-mul').prop('disabled', false);
+} else {
+    $('#delete-mul').prop('disabled', true);
+}
+});
     });
 </script>
 @endsection

@@ -113,4 +113,21 @@ class Classes extends Model
         return null;
     }
 
+    public function getAverageAttendance(){
+
+        $Lessons =  Classes::findOrFail($this->id)->lessons;
+        $countAttend = 0;
+        $countStudentInLesson = 0;
+        foreach($Lessons as $lesson){
+            $countAttend += $lesson->studentlessons()->count();
+            $countStudentInLesson += $lesson->countStudentsInLesson();
+        }
+
+       if($countStudentInLesson==0){
+        return 0;
+       }
+        
+        return round(($countAttend/ $countStudentInLesson) *100);
+    }
+
 }

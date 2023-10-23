@@ -4640,10 +4640,10 @@ textarea.form-control-lg {
 }
 
 .alert {
+  margin-left: 8px;
+  margin-top: 8px;
   position: relative;
-  padding: 1rem 1rem;
   margin-bottom: 1rem;
-  border: 1px solid transparent;
   border-radius: 0.25rem;
 }
 

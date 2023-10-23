@@ -52,7 +52,7 @@
 
     <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
         @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger px-2 py-1">
             <ul class="ps-1">
                 @foreach ($errors->all() as $error)
                 <li style="list-style-type:none;">{{ $error }}</li>
