@@ -91,8 +91,6 @@
             var isChecked = $(this).is(':checked');
             var studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
             var lessonId = <?= json_encode($lesson->id); ?>;
-            console.log(studentId);
-            console.log('{{ route("attend.lesson")}}/' + lessonId + "/" + studentId, );
             if (isChecked) {
                 $.ajax({
                     url: '{{ route("attend.lesson")}}/' + lessonId + "/" + studentId,
@@ -119,9 +117,4 @@
 
 @section('footer')
 @include('elements.footer')
-@endsection
-
-@section('scripts')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection

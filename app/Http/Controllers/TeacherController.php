@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TeacherRequest;
+use App\Http\Requests\TeacherUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -36,8 +37,9 @@ class TeacherController extends Controller
         $data['is_teacher'] = 1;
         $data['password'] = '123456';
         $data['password'] = Hash::make($data['password']);
-        $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime();
-
+        if(!empty($data['birthday'])){
+            $data['birthday'] = Carbon::createFromFormat('Y-m-d', $data['birthday'])->toDateTime();
+        }
         $result = User::create($data);
 
         if ($result) {
@@ -61,7 +63,7 @@ class TeacherController extends Controller
         return redirect()->back()->withErrors($message);
     }
 
-    public function update(TeacherRequest $request)
+    public function update(TeacherUpdateRequest $request)
     {
 
         $data = $request->all();
@@ -73,9 +75,13 @@ class TeacherController extends Controller
 
             $record->fill([
                 'name' => $data['name'],
-                'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime()??"",
                 'phone' => $data['phone'],
             ]);
+
+            if(!empty($data['birthday'])){
+                $data['birthday'] = Carbon::createFromFormat('Y-m-d', $data['birthday'])->toDateTime();
+            }
+            $record->birthday = $data['birthday'];
 
             $record->save();
             $message = "Cập nhật thành công";

@@ -10,7 +10,11 @@ use Illuminate\Http\Request;
 use App\Services\helper;
 use App\Models\Classes;
 use App\Models\Lesson;
+use App\Models\StudentClass;
+use App\Models\StudentLesson;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ClassExport;
 
 class ClassController extends Controller
 {
@@ -49,6 +53,15 @@ class ClassController extends Controller
         $class = Classes::findOrFail($id);
         
         if($class){
+            
+
+            // xóa học viên trong lớp
+            StudentClass::deleteByClass($id);
+            // xóa học viên trong buổi học
+            StudentLesson::deleteByClass($id);
+            $message="Xóa thành công!";
+
+            //--
             $class->status = 0;
             $class->save();
             $lessons = $class->lessons;
@@ -56,7 +69,6 @@ class ClassController extends Controller
                 $lesson->status = 0;
                 $lesson->save();
             }
-            $message="Xóa thành công!";
         }
         else{
             $message = "Xóa không thành công!";
@@ -88,5 +100,16 @@ class ClassController extends Controller
         }
 
         return redirect()->back()->withErrors($message);
+    }
+
+    public function export(){
+
+        $classes = Classes::getAllClass();
+
+        return Excel::download(new ClassExport($classes), 'Classes.xlsx');
+    }
+
+    public function exportLessons($classId){
+        
     }
 }

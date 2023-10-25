@@ -27,6 +27,7 @@
             </div>
             <div class="button-box">
                 <button type="button" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+                <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.studentInClass',['classId'=>$class->id])}}">Xuất Excel</a></button>
                 <button type="button" id="add-std-btn" class="btn btn-primary"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
             </div>
         </div>
@@ -154,9 +155,7 @@
     $(document).ready(function() {
         $('#update-btn').click(function() {
             var students = <?= json_encode($students); ?>;
-            console.log(students);
             for (var i = 0; i < students.length; i++) {
-                console.log("#student-" + students[i].id);
                 idBox = "#student-" + students[i].id;
                 $(idBox).prop("checked", true);
             }

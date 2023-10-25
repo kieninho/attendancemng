@@ -16,8 +16,8 @@
             </form>
         </div>
         <div class="button-box">
-        <button type="button" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</button>
-        <button type="button" id="export" class="btn btn-primary ms-2">Xuất Excel</button>
+            <button type="button" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</button>
+            <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.student')}}">Xuất Excel</a></button>
             <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm SV</button>
         </div>
     </div>
@@ -44,7 +44,7 @@
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
                     <td class="table-Info text-center">{{$student->birthday}}</td>
-                    <td class="table-Info text-center">{{round(($student->lessons->count()??0)/($student->countLessonInClass()??1)*100)}}%</td>
+                    <td class="table-Info text-center">{{round(($student->lessons->count())/($student->countLessonInClass())*100)}}%{{$student->countLessonInClass()}}</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
@@ -96,10 +96,9 @@
                     </div>
 
                     <div class="mb-1">
-                        <label for="datetimepicker1" class="datetimepicker col-form-label">Ngày sinh:</label>
-                        <input type="text" class="form-control" name="birthday" id="datetimepicker1" style="width: 150px;">
+                        <label for="add-birthday" class="col-form-label">Ngày sinh:</label>
+                        <input type="date" class="form-control" name="birthday" id="add-birthday" style="width: 150px;">
                     </div>
-
 
                 </div>
                 <div class="modal-footer">
@@ -138,9 +137,8 @@
                     </div>
 
                     <div class="mb-1">
-                        <label for="datetimepicker2" class="datetimepicker col-form-label">Ngày sinh:</label>
-                        <input type="text" class="form-control" name="birthday" id="datetimepicker2" style="width: 150px;">
-                        <input class="form-control" type="time">
+                        <label for="edit-birthday" class="col-form-label">Ngày sinh:</label>
+                        <input type="date" class="form-control" name="birthday" id="edit-birthday" style="width: 150px;">
                     </div>
 
                 </div>
@@ -167,29 +165,35 @@
                     $('#edit-student-code').val(response.code);
                     $('#edit-student-name').val(response.name);
                     $('#edit-student-email').val(response.email);
-                    $('#datetimepicker2').val(response.birthday);
+
+                    let parts = response.birthday.split("/");
+                    let formattedDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    $('#edit-birthday').val(formattedDate);
                 }
             });
         });
 
         $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
 
-if ($('input[name="item_ids[]"]:checked').length > 0) {
+            if ($('input[name="item_ids[]"]:checked').length > 0) {
 
-    $('#delete-mul').prop('disabled', false);
-} else {
-    $('#delete-mul').prop('disabled', true);
-}
-});
+                $('#delete-mul').prop('disabled', false);
+            } else {
+                $('#delete-mul').prop('disabled', true);
+            }
+        });
+    });
+
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
+
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
     });
 </script>
 @endsection
 
 @section('footer')
 @include('elements.footer')
-@endsection
-
-@section('scripts')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection

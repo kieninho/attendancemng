@@ -7,9 +7,6 @@
             $exists = true;
             while ($exists) {
                 $code = rand(1, 9999);
-                var_dump($code);
-                echo "<br>"."<br>"."<br>";
-                var_dump($listExitsCode);
 
                 if (!in_array($code, $listExitsCode)) {
                     $exists = false;

@@ -57,16 +57,22 @@ class Student extends Model
         return $this->belongsToMany(Lesson::class,'student_lesson','student_id','lesson_id')->where('status', 1);
     }
 
+    // trả về tổng số lesson mà 1 student đã tham gia
+
     public function countLessonInClass(){
-        return DB::table('students')
-        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
-        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
-        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
-        ->where('students.id', $this->id)
-        ->where('students.status', 1)
-        ->where('classes.status', 1)
-        ->where('lessons.status', 1)
-        ->count();
+        $result = DB::table('students') 
+        ->select('lessons.id') 
+        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id') 
+        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id') 
+        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id') 
+        ->where('lessons.created_at', '>', 'student_class.created_at') 
+        ->where('classes.status', 1) ->where('lessons.status', 1) 
+        ->where('students.id', $this->id) 
+        ->groupBy('lessons.id') 
+        ->get();
+
+        //dd(count($result));
+        return count($result);
     }
 
     public static function search($keyword,$records_per_page){
@@ -124,5 +130,15 @@ class Student extends Model
         ->where('name','like',"%$keyword%")
         ->orderBy('code','asc')
         ->paginate($records_per_page);
+    }
+
+    // trả về tỷ lệ chuyên cần của sinh viên trong các lớp
+    public function attendRate(){
+        return 69;
+    }
+
+    // trả về tỷ lệ chuyên cần của sinh viên trong 1 lớp
+    public function classAttendRate($classId){
+        return $classId;
     }
 }

@@ -19,7 +19,7 @@
         <form action="{{route('delete.teachers')}}" method="post">
             @csrf
             <div class="button-box">
-            <button type="submit" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+                <button type="submit" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm GV</button>
             </div>
     </div>
@@ -83,7 +83,7 @@
                 <h5 class="modal-title">Thêm Giáo Viên</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('store.teacher')}}" method="POST">
+            <form action="{{route('store.teacher')}}" id="addForm" method="POST">
                 @csrf
                 <div class="modal-body">
 
@@ -103,8 +103,8 @@
                     </div>
 
                     <div class="mb-1">
-                        <label for="datetimepicker1" class="datetimepicker col-form-label">Ngày sinh:</label>
-                        <input type="text" class="form-control" name="birthday" id="datetimepicker1" style="width: 150px;">
+                        <label for="add-birthday" class="col-form-label">Ngày sinh:</label>
+                        <input type="date" class="form-control" name="birthday" id="add-birthday" style="width: 150px;">
                     </div>
 
 
@@ -125,7 +125,7 @@
                 <h5 class="modal-title">Sửa Thông Tin Giáo Viên</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('update.teacher')}}" method="POST">
+            <form action="{{route('update.teacher')}}" id="editForm" method="POST">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" id="teacherId" name="teacherId">
@@ -147,8 +147,8 @@
                     </div>
 
                     <div class="mb-1">
-                        <label for="datetimepicker2" class="datetimepicker col-form-label">Ngày sinh:</label>
-                        <input type="text" class="form-control" name="birthday" id="datetimepicker2" style="width: 150px;">
+                        <label for="edit-birthday" class="col-form-label">Ngày sinh:</label>
+                        <input type="date" class="form-control" name="birthday" id="edit-birthday" style="width: 150px;">
                     </div>
 
                 </div>
@@ -166,7 +166,6 @@
         $('.edit-button').click(function() {
             var teacherId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
             $('#teacherId').val(teacherId); // Gán giá trị ID vào hidden input
-            console.log(teacherId);
             $.ajax({
                 url: '{{ route("get.teacher") }}/' + teacherId,
                 type: 'get',
@@ -174,29 +173,35 @@
                     $('#edit-teacher-name').val(response.name);
                     $('#edit-teacher-email').val(response.email);
                     $('#edit-teacher-phone').val(response.phone);
-                    $('#datetimepicker2').val(response.birthday);
+
+                    let parts = response.birthday.split("/");
+                    let formattedDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    $('#edit-birthday').val(formattedDate);
                 }
             });
         });
 
         $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
 
-if ($('input[name="item_ids[]"]:checked').length > 0) {
+            if ($('input[name="item_ids[]"]:checked').length > 0) {
 
-    $('#delete-mul').prop('disabled', false);
-} else {
-    $('#delete-mul').prop('disabled', true);
-}
-});
+                $('#delete-mul').prop('disabled', false);
+            } else {
+                $('#delete-mul').prop('disabled', true);
+            }
+        });
+    });
+
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
+
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
     });
 </script>
 @endsection
 
 @section('footer')
 @include('elements.footer')
-@endsection
-
-@section('scripts')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection

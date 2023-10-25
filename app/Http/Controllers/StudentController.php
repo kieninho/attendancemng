@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Services\helper;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StudentExport;
 
 
 class StudentController extends Controller
@@ -34,8 +36,9 @@ class StudentController extends Controller
         $data = $request->all();
         $data['status'] = 1;
         $data['code'] = helper::genCode('SV', $listExitsCode);
-        $data['birthday'] = Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime();
-
+        if(!empty($data['birthday'])){
+            $data['birthday'] = Carbon::createFromFormat('Y-m-d', $data['birthday'])->toDateTime();
+        }
         $result = Student::create($data);
 
         if ($result) {
@@ -51,7 +54,8 @@ class StudentController extends Controller
             $student->status = 0;
         }
         $student->save();
-        return redirect()->back();
+        $message = "Xóa thành công!";
+        return redirect()->back()->withErrors($message);
     }
 
     public function get($id)
@@ -73,8 +77,12 @@ class StudentController extends Controller
             $record->fill([
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'birthday' => Carbon::createFromFormat('d/m/Y', $data['birthday'])->toDateTime(),
             ]);
+
+            if(!empty($data['birthday'])){
+                $data['birthday'] = Carbon::createFromFormat('Y-m-d', $data['birthday'])->toDateTime();
+            }
+            $record->birthday = $data['birthday'];
 
             $record->save();
             $message="Cập nhật thành công!";
@@ -94,5 +102,12 @@ class StudentController extends Controller
         $classes = $student->classes()->where('name','like',"%$keyword%")->paginate(10);
         
         return view('student.detail',compact('student','classes','keyword'));
+    }
+
+    public function export(){
+
+        $students = Student::getStudents()->get();
+
+        return Excel::download(new StudentExport($students), 'students.xlsx');
     }
 }

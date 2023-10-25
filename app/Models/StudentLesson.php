@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Builder\Class_;
 
 class StudentLesson extends Model
 {
@@ -40,5 +41,24 @@ class StudentLesson extends Model
     public function lesson()
     {
         return $this->belongsTo(Lesson::class);
+    }
+
+    public static function deleteByLessonId($lessonId){
+        StudentLesson::where('lesson_id',$lessonId)->delete();
+    }
+
+    public static function deleteByClass($classId){
+        $lessons = Classes::findOrFail($classId)->lessons()->get();
+        foreach($lessons as $lesson){
+            StudentLesson::deleteByLessonId($lesson->id);
+        }
+    }
+
+    public static function deleteByStudentAndClass($studentId, $classId){
+        $lessons = Classes::findOrFail($classId)->lessons()->get();
+
+        foreach($lessons as $lesson){
+            StudentLesson::where('lessson_id',$lesson->id)->where('student_id',$studentId)->delete();
+        }
     }
 }

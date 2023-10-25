@@ -30,8 +30,8 @@ class TeacherLesson extends Model
         TeacherLesson::Where('lesson_id',$lessonId)->delete();
     }
 
-    public static function getItemById($id){
-        $result = TeacherLesson::where('id',$id)->first();
+    public static function getItemByLessonId($lessonId){
+        $result = TeacherLesson::where('lesson_id',$lessonId)->get();
         if($result){
             return $result;
         }

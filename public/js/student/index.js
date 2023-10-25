@@ -30,24 +30,4 @@ var errorAlert = document.getElementById('error-box');
         }
     }
 
-
-
-    flatpickr("#datetimepicker1", {
-        allowInput: true,
-        enableTime: false,
-        dateFormat: "d/m/Y",
-    });
-
-    flatpickr("#datetimepicker2", {
-        allowInput: true,
-        enableTime: false,
-        dateFormat: "d/m/Y",
-    });
-
-    $('#addModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
-
-    $('#editModal').on('hidden.bs.modal', function() {
-        $('#editForm')[0].reset();
-    });
+   

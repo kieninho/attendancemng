@@ -34,7 +34,8 @@ class LessonController extends Controller
         
         $class = Classes::getClassById($classId);
 
-        $lessons = Classes::searchLesson($classId,$keyword);
+        $lessons = Classes::searchLesson($classId,$keyword, $records_per_page);
+        $lessons->appends(['keyword' => $keyword]);
         
         $teachers = User::getTeachers()->get();
 
@@ -48,8 +49,10 @@ class LessonController extends Controller
         $startStr = $data['start']." ".$data['date'];
         $endStr = $data['end']." ".$data['date'];
 
-        $data['start_at']  = Carbon::createFromFormat('H:i d/m/Y', $startStr)->toDateTime();
-        $data['end_at'] = Carbon::createFromFormat('H:i d/m/Y', $endStr)->toDateTime();
+        $data['start_at']  = Carbon::createFromFormat('H:i Y-m-d', $startStr)->toDateTime();
+
+        $data['end_at'] = Carbon::createFromFormat('H:i Y-m-d', $endStr)->toDateTime();
+
         $result = Lesson::create($data);
         if ($result) {
             $teacher_ids = $request->input('teacher_ids');
@@ -102,9 +105,15 @@ class LessonController extends Controller
         $lesson = Lesson::findOrFail($id);
         if ($lesson) {
             $lesson->status = 0;
+            $lesson->save();
+
+            StudentLesson::deleteByLessonId($id);
+            $message = "Xóa thành công !";
         }
-        $lesson->save();
-        $message = "Xóa thành công !";
+        else{
+            $message = "Xóa không thành công !";
+        }
+        
         return redirect()->back()->withErrors($message);
     }
 
@@ -125,9 +134,8 @@ class LessonController extends Controller
 
             $startStr = $data['start']." ".$data['date'];
             $endStr = $data['end']." ".$data['date'];
-    
-            $record->start_at  = Carbon::createFromFormat('H:i d/m/Y', $startStr)->toDateTime();
-            $record->end_at = Carbon::createFromFormat('H:i d/m/Y', $endStr)->toDateTime();
+            $record->start_at  = Carbon::createFromFormat('H:i Y-m-d', $startStr)->toDateTime();
+            $record->end_at = Carbon::createFromFormat('H:i Y-m-d', $endStr)->toDateTime();
             $record->name = $data['name'];
             $record->description = $data['description'];
 
@@ -156,8 +164,8 @@ class LessonController extends Controller
         return redirect()->back()->withErrors($message);
     }
 
-    public function getTeacherLesson($id){
-        $data = TeacherLesson::getItemById($id);
+    public function getTeacherLesson($lessonId){
+        $data = TeacherLesson::getItemByLessonId($lessonId);
         return response()->json($data);
     }
 

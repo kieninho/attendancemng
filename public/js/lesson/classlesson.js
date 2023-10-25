@@ -32,78 +32,18 @@
         }
     }
 
-    function ToDatetime(strDatetime) {
-        return new Date(strDatetime);
+    function getTimeFromString(dateTimeString){
+        const dateTime = new Date(dateTimeString)
+
+        return dateTime.toTimeString().slice(0, 5);
     }
 
-    function ToTime(strDatetime) {
-        var dateTime = new Date(strDatetime);
-        var hours = dateTime.getHours();
-        var minutes = dateTime.getMinutes();
-
-        var time = hours + ":" + (minutes < 10 ? "0" + minutes : minutes);
-        return time;
+    function getDateFromString(dateTimeString){
+        const dateTime = new Date(dateTimeString);
+        const year = dateTime.getFullYear();
+        const month = ("0" + (dateTime.getMonth() + 1)).slice(-2);
+        const day = ("0" + dateTime.getDate()).slice(-2);
+    
+        const dateString = `${year}-${month}-${day}`;
+        return dateString;
     }
-
-    function ToDate(strDatetime) {
-        var dateTime = new Date(strDatetime);
-        var day = dateTime.getDate();
-        var month = dateTime.getMonth() + 1;
-        var year = dateTime.getFullYear();
-
-        return day + "/" + month + "/" + year;
-    }
-
-    flatpickr("#add-date", {
-        allowInput: true,
-        enableTime: false,
-        dateFormat: "d/m/Y",
-    });
-
-    flatpickr("#edit-date", {
-        allowInput: true,
-        enableTime: false,
-        dateFormat: "d/m/Y",
-
-    });
-
-    flatpickr("#add-start-time", {
-        allowInput: true,
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true
-    });
-
-    flatpickr("#add-end-time", {
-        allowInput: true,
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true
-    });
-
-    flatpickr("#edit-start-time", {
-        allowInput: true,
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true
-    });
-
-    flatpickr("#edit-end-time", {
-        allowInput: true,
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: true
-    });
-
-
-    $('#addModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
-
-    $('#editModal').on('hidden.bs.modal', function() {
-        $('#editForm')[0].reset();
-    });

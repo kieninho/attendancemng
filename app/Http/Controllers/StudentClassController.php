@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Classes;
 use App\Models\Student;
 use App\Models\StudentClass;
+use App\Models\StudentLesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StudentClassExport;
 
 class StudentClassController extends Controller
 {
@@ -46,6 +49,7 @@ class StudentClassController extends Controller
 
     public function delete($classId, $studentId){
         StudentClass::deleteItem($classId, $studentId);
+        StudentLesson::deleteByStudentAndClass($studentId, $classId);
 
         $message = "Xóa sinh viên khỏi lớp thành công!";
         return redirect()->back()->withErrors($message);
@@ -109,4 +113,11 @@ class StudentClassController extends Controller
 
         return redirect(route('studentInClass',['classId'=>$classId]))->withErrors($message);
     }
+
+    public function export($classId){
+        $students = StudentClass::getStudentsInClass($classId);
+
+        return Excel::download(new StudentClassExport($students, $classId), "StudentInClass$classId.xlsx");
+    }
+
 }

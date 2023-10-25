@@ -14,7 +14,7 @@
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Email: {{$student->email}}</p>
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Ngày sinh: {{$student->birthday}}</p>
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Số lớp đang học: {{$student->classes->count()}}</p>
-            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Tỷ lệ chuyên cần: {{intval(($student->lessons->count()??0)/($student->countLessonInClass()??1)*100)}}%</p>
+            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Tỷ lệ chuyên cần: {{intval(($student->lessons->count()??0)/($student->countLessonInClass()??1)*100)}}%{{$student->countLessonInClass()}}</p>
         </div>
     </div>
 

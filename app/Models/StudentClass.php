@@ -43,4 +43,13 @@ class StudentClass extends Model
     public static function deleteItem($classId, $studentId){
         StudentClass::where('class_id',$classId)->where('student_id',$studentId)->delete();
     }
+
+    public static function deleteByClass($classId){
+        StudentClass::where('class_id',$classId)->delete();
+    }
+
+    public static function getStudentsInClass($classId){
+        $class = Classes::findOrFail($classId);
+        return $class->students;
+    }
 }

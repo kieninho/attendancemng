@@ -31,30 +31,3 @@ var errorAlert = document.getElementById('error-box');
             selectAllCheckbox.checked = true;
         }
     }
-
-
-
-    flatpickr("#datetimepicker1", {
-        allowInput: true,
-        enableTime: false,
-        dateFormat: "d/m/Y",
-        minDate: "01/01/1945",
-        maxDate: "31/12/2022",
-    });
-
-    flatpickr("#datetimepicker2", {
-        allowInput: true,
-        enableTime: false,
-        dateFormat: "d/m/Y",
-        minDate: "01/01/1945",
-        maxDate: "31/12/2022",
-
-    });
-
-    $('#addModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
-
-    $('#editModal').on('hidden.bs.modal', function() {
-        $('#editForm')[0].reset();
-    });

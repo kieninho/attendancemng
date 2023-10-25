@@ -54,13 +54,13 @@ class Classes extends Model
         return $result;
     }
 
-    public static function searchLesson($classId,$keyword){
+    public static function searchLesson($classId,$keyword, $records_per_page){
         $class = Classes::findOrFail($classId);
         if(!$class){
             return;
         }
         
-        $lessons = $class->lessons()->where('name','like',"%$keyword%")->get();
+        $lessons = $class->lessons()->where('name','like',"%$keyword%")->orderBy('start_at','asc')->paginate($records_per_page);
 
         return  $lessons;
     }
@@ -113,6 +113,7 @@ class Classes extends Model
         return null;
     }
 
+    // Trả về tỷ lệ tham gia điểm danh của lớp
     public function getAverageAttendance(){
 
         $Lessons =  Classes::findOrFail($this->id)->lessons;
@@ -128,6 +129,33 @@ class Classes extends Model
        }
         
         return round(($countAttend/ $countStudentInLesson) *100);
+    }
+
+    public static function getAllClass(){
+        return Classes::where('status',1)->orderBy('code','asc')->get();
+    }
+
+    public function countLesson(){
+        $lessons = $this->lessons;
+        $count = count($lessons);
+        if($count){
+            return $count;
+        }
+        else{
+            return "0";
+        }
+    }
+
+    public function countStudent(){
+        $students = $this->students;
+        $count = count($students);
+
+        if($count){
+            return $count;
+        }
+        else{
+            return "0";
+        }
     }
 
 }

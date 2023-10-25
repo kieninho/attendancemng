@@ -74,7 +74,7 @@
                 @endforeach
             </tbody>
         </table>
-
+        {{$lessons->links()}}
     </div>
 
 </div>
@@ -114,9 +114,10 @@
 
                     <div class="mb-3">
                         <label class="col-form-label">Thời gian:</label>
-                        <input type="text" name="start" class="form-control" id="add-start-time" style="width:100px; display:inline;" placeholder="Bắt đầu">
-                        <input type="text" name="end" class="form-control" id="add-end-time" style="width:100px; display:inline;" placeholder="Kết thúc">
-                        <input type="text" name="date" class="form-control" id="add-date" style="width:150px; display:inline;" placeholder="Ngày" value="">
+                        <br>
+                        <input type="time" name="start" class="form-control" id="add-start-time" style="width:150px; display:inline;" placeholder="Bắt đầu">
+                        <input type="time" name="end" class="form-control" id="add-end-time" style="width:150px; display:inline;" placeholder="Kết thúc">
+                        <input type="date" name="date" class="form-control" id="add-date" style="width:150px; display:inline;" placeholder="Ngày">
                     </div>
 
                     <div class="mb-1">
@@ -166,9 +167,10 @@
 
                     <div class="mb-3">
                         <label class="col-form-label">Thời gian:</label>
-                        <input type="text" name="start" class="form-control" id="edit-start-time" style="width:100px; display:inline;" placeholder="Bắt đầu">
-                        <input type="text" name="end" class="form-control" id="edit-end-time" style="width:100px; display:inline;" placeholder="Kết thúc">
-                        <input type="text" name="date" class="form-control" id="edit-date" style="width:150px; display:inline;" placeholder="Ngày">
+                        <br>
+                        <input type="time" name="start" class="form-control" id="edit-start-time" style="width:150px; display:inline;" placeholder="Bắt đầu">
+                        <input type="time" name="end" class="form-control" id="edit-end-time" style="width:150px; display:inline;" placeholder="Kết thúc">
+                        <input type="date" name="date" class="form-control" id="edit-date" style="width:150px; display:inline;" placeholder="Ngày">
                     </div>
 
                     <div class="mb-1">
@@ -207,9 +209,10 @@
                 success: function(response) {
                     $('#edit-lesson-name').val(response.name);
                     $('#edit-lesson-description').val(response.description);
-                    $('#edit-date').val(ToDate(response.start_at));
-                    $('#edit-start-time').val(ToTime(response.start_at));
-                    $('#edit-end-time').val(ToTime(response.end_at));
+                    
+                    $('#edit-start-time').val(getTimeFromString(response.start_at));
+                    $('#edit-end-time').val(getTimeFromString(response.end_at));
+                    $('#edit-date').val(getDateFromString(response.start_at));
                 }
             });
 
@@ -220,8 +223,7 @@
                 dataType: 'json',
                 success: function(response) {
                     $.each(response, function(index, item) {
-                        console.log('{{ route("get.teacherLesson") }}/' + lessonId);
-                        // Duyệt qua từng 
+                        // Duyệt qua từng bản ghi
                         idBox = "#ck-teacher-" + item.teacher_id;
                         $(idBox).prop("checked", true);
                     });
@@ -240,14 +242,17 @@
             }
         });
     });
+
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
+
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
+    });
 </script>
 @endsection
 
 @section('footer')
 @include('elements.footer')
-@endsection
-
-@section('scripts')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection

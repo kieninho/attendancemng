@@ -16,7 +16,7 @@
         </div>
         <div class="button-box">
             <button type="button" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
-            <button type="button" id="export" class="btn btn-primary  ms-2">Xuất Excel</button>
+            <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.class')}}">Xuất Excel</a></button>
             <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Tạo Lớp</button>
         </div>
     </div>
@@ -43,8 +43,8 @@
                     <td class="table-Info text-center">{{$class->code}}</td>
                     <td class="table-Info">{{$class->name}}</td>
                     <td class="table-Info">{{$class->description}}</td>
-                    <td class="table-Info text-center">{{$class->students->count()??0}}</td>
-                    <td class="table-Info text-center">{{$class->lessons->count()??0}}</td>
+                    <td class="table-Info text-center">{{$class->countStudent()}}</td>
+                    <td class="table-Info text-center">{{$class->countLesson()}}</td>
                     <td class="table-Info text-center">{{$class->getAverageAttendance()??0}}%</td>
                     <td class="table-Info text-center">{{$class->created_at}}</td>
                     <td class="table-Info text-center">
@@ -148,7 +148,6 @@
         $('.edit-button').click(function() {
             var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
             $('#classId').val(classId); // Gán giá trị ID vào hidden input
-            console.log(classId);
 
             $.ajax({
                 url: '{{ route("get.class") }}/' + classId,

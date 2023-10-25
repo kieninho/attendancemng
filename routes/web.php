@@ -34,6 +34,8 @@ Route::group(['prefix' => 'class', 'middleware' => 'auth'], function () {
     Route::get('/getclass/{id}', [ClassController::class, 'getClass'])->name('get.class.id');
     Route::post('/update', [ClassController::class, 'update'])->name('update.class');
 
+    Route::get('/export',[ClassController::class,'export'])->name('export.class');
+    Route::get('/exportlessons/classid={classId}',[ClassController::class,'exportLessons'])->name('export.lessons');
 });
 
 Route::group(['prefix' => 'studentsinclass', 'middleware' => 'auth'], function () {
@@ -42,8 +44,8 @@ Route::group(['prefix' => 'studentsinclass', 'middleware' => 'auth'], function (
     Route::post('/update/{classId}', [StudentClassController::class, 'update'])->name('update.studentInClass');
     Route::get('/add/{id}', [StudentClassController::class, 'add'])->name('add.studentsinclass');
     Route::get('/store/{classId}/{studentId}', [StudentClassController::class, 'store'])->name('store.studentsinclass');
-
     Route::post('/addmulti/{classId}', [StudentClassController::class, 'addMulti'])->name('addmulti.studentInClass');
+    Route::get('/export/classid={classId}',[StudentClassController::class,'export'])->name('export.studentInClass');
 });
 
 
@@ -63,6 +65,8 @@ Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
     Route::get('/attend/{lessonId}/{studentId}', [LessonController::class, 'attend'])->name('attend.lesson.id');
     Route::get('/leave', [LessonController::class, 'leave'])->name('leave.lesson');
     Route::get('/leave/{lessonId}/{studentId}', [LessonController::class, 'leave'])->name('attend.lesson.id');
+
+
 });
 
 Route::group(['prefix' => 'teacherlesson', 'middleware' => 'auth'], function () {
@@ -86,6 +90,7 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {
     Route::post('/update', [StudentController::class, 'update'])->name('update.student');
     Route::get('/detail/{id}', [StudentController::class, 'detail'])->name('detail.student');
     
+    Route::get('/export',[StudentController::class,'export'])->name('export.student');
 });
 
 
