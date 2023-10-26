@@ -93,14 +93,15 @@ class StudentController extends Controller
 
     public function detail(Request $request, $id){
 
+        $records_per_page =10;
         $student = Student::where('id',$id)->where('status',1)->first();
         $keyword = $request->input('keyword');
 
         if(!$student){
             abort(404);
         }
-        $classes = $student->classes()->where('name','like',"%$keyword%")->paginate(10);
-        
+        $classes = $student->searchJoinClass($keyword, $records_per_page);
+        $classes->appends(['keyword' => $keyword]);
         return view('student.detail',compact('student','classes','keyword'));
     }
 

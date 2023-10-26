@@ -93,9 +93,8 @@ class LessonController extends Controller
         if(!$lesson){
             abort(404);
         }
-        $lessons = $lesson->classes->lessons;
+        $lessons = $lesson->classes->lessons->sortBy('start_at');
         $students = Student::getStudentInLessonDetail($id,$keyword,$records_per_page);
-        // $students = $lesson->getStudentsInLesson()->orderBy('code')->paginate($records_per_page); -- e chua xoa di do van chua xong hoan toan
         
         return view('lesson.detail',compact('students','lessons','lesson','keyword'));
     }
@@ -170,11 +169,10 @@ class LessonController extends Controller
     }
 
     public function attend($lessonId,$studentId){
-        $checkExits = StudentLesson::checkExits($lessonId, $studentId);
-        if($checkExits){
-            $data = ['lesson_id'=>$lessonId,'student_id'=>$studentId];
-            StudentLesson::create($data);
-
+        $record = StudentLesson::getItemByStudentAndLesson($lessonId, $studentId);
+        if($record){
+            $record->status = 1;
+            
             $countStudentInLesson = Lesson::findOrFail($lessonId)->students->count();
 
             return response()->json($countStudentInLesson);

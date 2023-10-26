@@ -45,7 +45,7 @@
                     <td class="table-Info">{{$class->description}}</td>
                     <td class="table-Info text-center">{{$class->countStudent()}}</td>
                     <td class="table-Info text-center">{{$class->countLesson()}}</td>
-                    <td class="table-Info text-center">{{$class->getAverageAttendance()??0}}%</td>
+                    <td class="table-Info text-center">{{$class->getAverageAttendance()}}%</td>
                     <td class="table-Info text-center">{{$class->created_at}}</td>
                     <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>

@@ -35,7 +35,9 @@
                     <th scope="col" class="text-center">Tên</th>
                     <th scope="col" class="text-center">Mã SV</th>
                     <th scope="col" class="text-center">Email</th>
-                    <th scope="col" class="text-center">Tham gia <span id="attend-count">{{$lesson->students->count()??0}}</span>/{{$lesson->classes->students->count()}}</th>
+                    <th scope="col" class="text-center">Tham gia</th>
+                    <th scope="col" class="text-center">Có phép</th>
+                    <th scope="col" class="text-center">Không phép</th>
                 </tr>
             </thead>
 
@@ -47,9 +49,15 @@
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->email}}</td>
-                    <td class="table-Info"><input class="form-check-input check-attend" type="checkbox" 
-                    @if(!$student->lessons()->wherePivot('lesson_id', $lesson->id)->get()->isEmpty()) checked @endif 
-                    id="select-{{$student->id}}" data-id="{{$student->id}}"></td>
+                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" type="checkbox" @if($student->checkAttendLesson($lesson->id)==1) checked @endif
+                        id="select-{{$student->id}}" data-id="{{$student->id}}"></td>
+
+                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" type="checkbox" @if($student->checkAttendLesson($lesson->id)==2) checked @endif
+                        id="ask-{{$student->id}}" data-id="{{$student->id}}"></td>
+
+                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}"  type="checkbox" @if($student->checkAttendLesson($lesson->id)==0) checked @endif
+                        id="leave-{{$student->id}}" data-id="{{$student->id}}"></td>
+
                 </tr>
                 @endforeach
             </tbody>
@@ -87,11 +95,15 @@
 
     // getdata from server
     $(document).ready(function() {
-        $('.check-attend').click(function() {
-            var isChecked = $(this).is(':checked');
+
+        $('.form-check-input').click(function() {
             var studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            var isChecked = $(this).is(':checked');
             var lessonId = <?= json_encode($lesson->id); ?>;
+            $(this).prop('checked', true);
             if (isChecked) {
+                console.log('.check-attend-'+studentId);
+                $('.check-attend-'+studentId).not(this).prop('checked', false);
                 $.ajax({
                     url: '{{ route("attend.lesson")}}/' + lessonId + "/" + studentId,
                     type: 'get',
@@ -100,17 +112,10 @@
                         $('#attend-count').text(response);
                     },
                 });
-            } else {
-                $.ajax({
-                    url: '{{ route("leave.lesson")}}/' + lessonId + "/" + studentId,
-                    type: 'get',
-                    success: function(response) {
-                        $('#attend-count').text(response);
-                    },
-                });
             }
 
         });
+
     });
 </script>
 @endsection

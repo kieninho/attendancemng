@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use App\Models\Student;
+use App\Models\Lesson;
 use App\Models\StudentClass;
 use App\Models\StudentLesson;
 use Illuminate\Http\Request;
@@ -82,6 +83,17 @@ class StudentClassController extends Controller
                 'class_id'=>$classId,
             ]);
 
+            // Thêm sinh viên vào những lesson chưa bắt đầu
+            $afterLessons = Lesson::findAfterLesson($classId);
+            foreach ($afterLessons as $afterLesson){
+                
+                $result = StudentLesson::create([
+                    'student_id'=>$studentId,
+                    'lesson_id'=>$afterLesson->id,
+                ]);
+            }
+
+
             $message = "Thêm thành công $student->name vào lớp!!!";
         }
         else{
@@ -108,6 +120,14 @@ class StudentClassController extends Controller
                 'student_id'=>$studentId,
                 'class_id'=>$classId,
             ]);
+
+            $afterLessons = Lesson::findAfterLesson($classId);
+            foreach ($afterLessons as $afterLesson){
+                StudentLesson::create([
+                    'student_id'=>$studentId,
+                    'lesson_id'=>$afterLesson->id,
+                ]);
+            }
         }
         $message = "Thêm thành công $countStd sinh viên vào lớp !!!";
 

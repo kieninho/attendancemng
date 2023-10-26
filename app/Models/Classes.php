@@ -116,12 +116,12 @@ class Classes extends Model
     // Trả về tỷ lệ tham gia điểm danh của lớp
     public function getAverageAttendance(){
 
-        $Lessons =  Classes::findOrFail($this->id)->lessons;
+        $Lessons =  Classes::findOrFail($this->id)->lessons->where('start_at','<',now());
         $countAttend = 0;
         $countStudentInLesson = 0;
         foreach($Lessons as $lesson){
-            $countAttend += $lesson->studentlessons()->count();
-            $countStudentInLesson += $lesson->countStudentsInLesson();
+            $countAttend += $lesson->countAttend();
+            $countStudentInLesson += $lesson->countStudent();
         }
 
        if($countStudentInLesson==0){
@@ -156,6 +156,19 @@ class Classes extends Model
         else{
             return "0";
         }
+    }
+
+    // tra ve so buoi hoc cua sinh vien co the di trong 1 lop
+    public function countLessonWithStudentId($studentId){
+        $student = Student::where('id',$studentId)->first();
+        $result = $student->countLessonInClass($this->id);
+        return $result;
+    }
+
+    public function countAttendWithStudentId($studentId){
+        $student = Student::where('id',$studentId)->first();
+        $result = $student->countAttendInClass($this->id);
+        return $result;
     }
 
 }

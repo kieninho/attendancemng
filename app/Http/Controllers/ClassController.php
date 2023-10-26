@@ -53,14 +53,17 @@ class ClassController extends Controller
         $class = Classes::findOrFail($id);
         
         if($class){
-            
+            // xóa học viên trong buổi học
+            StudentLesson::deleteByClass($id);
 
             // xóa học viên trong lớp
             StudentClass::deleteByClass($id);
-            // xóa học viên trong buổi học
-            StudentLesson::deleteByClass($id);
-            $message="Xóa thành công!";
 
+            //Xóa các buổi hoc
+            Lesson::deleteByClassId($id);
+
+            $message="Xóa thành công!";
+            
             //--
             $class->status = 0;
             $class->save();

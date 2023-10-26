@@ -38,7 +38,7 @@
                     <th scope="col">Mã SV</th>
                     <th scope="col">Tên</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Ngày sinh</th>
+                    <th scope="col">Vào lớp</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
@@ -53,8 +53,8 @@
                     <td class="table-Info">{{$student->code}}</td>
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
-                    <td class="table-Info">{{$student->birthday}}</td>
-                    <td class="table-Info text-center">{{$student->lessons->where('class_id',$class->id)->count()}}/{{$class->lessons->count()}}</td>
+                    <td class="table-Info">{{$student->getJoinDate($class->id)}}</td>
+                    <td class="table-Info text-center">{{$student->classAttendRate($class->id)}}%</td>
                     <td class="table-Info">
                         <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}">Xóa</a>
                         <span class="divider"></span>

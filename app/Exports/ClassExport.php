@@ -47,7 +47,7 @@ class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMa
             $class->description,
             $class->countStudent(),
             $class->countLesson(),
-            ($class->getAverageAttendance()??0)."%",
+            ($class->getAverageAttendance())."%",
             $class->created_at,
         ];
     }

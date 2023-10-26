@@ -119,4 +119,34 @@ class Lesson extends Model
         return count($sqlResult);
         
     }
+
+    public static function deleteByClassId($classId){
+        Lesson::where('class_id',$classId)->delete();
+    }
+
+    // trả về số sinh viên tham gia buổi học đó
+    public function countAttend(){
+        return StudentLesson::where('lesson_id',$this->id)
+        ->where(function ($query) {
+            $query->where('status', 1)
+                  ->orWhere('status', 2);
+        })
+        ->count();
+    }
+
+    public function countNumberAttend(){
+        return StudentLesson::where('lesson_id',$this->id)
+        ->where('status', 1)
+        ->count();
+    }
+
+    public function countStudent(){
+        return StudentLesson::where('lesson_id',$this->id)->count();
+    }
+
+    public static function findAfterLesson($classId){
+        return Lesson::where('class_id', $classId)
+                ->where('start_at', '>', now())
+                ->get();
+    }
 }

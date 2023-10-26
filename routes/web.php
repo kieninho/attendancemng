@@ -64,7 +64,7 @@ Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
     Route::get('/attend', [LessonController::class, 'attend'])->name('attend.lesson');
     Route::get('/attend/{lessonId}/{studentId}', [LessonController::class, 'attend'])->name('attend.lesson.id');
     Route::get('/leave', [LessonController::class, 'leave'])->name('leave.lesson');
-    Route::get('/leave/{lessonId}/{studentId}', [LessonController::class, 'leave'])->name('attend.lesson.id');
+    Route::get('/leave/{lessonId}/{studentId}', [LessonController::class, 'leave'])->name('leave.lesson.id');
 
 
 });
@@ -115,3 +115,5 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+
+Route::get('/test', [App\Http\Controllers\HomeController::class, 'test'])->name('test')->middleware('auth');

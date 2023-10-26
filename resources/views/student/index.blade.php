@@ -44,7 +44,7 @@
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
                     <td class="table-Info text-center">{{$student->birthday}}</td>
-                    <td class="table-Info text-center">{{round(($student->lessons->count())/($student->countLessonInClass())*100)}}%{{$student->countLessonInClass()}}</td>
+                    <td class="table-Info text-center">{{$student->attendRate()}}%</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>

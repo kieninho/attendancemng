@@ -14,7 +14,7 @@
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Email: {{$student->email}}</p>
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Ngày sinh: {{$student->birthday}}</p>
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Số lớp đang học: {{$student->classes->count()}}</p>
-            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Tỷ lệ chuyên cần: {{intval(($student->lessons->count()??0)/($student->countLessonInClass()??1)*100)}}%{{$student->countLessonInClass()}}</p>
+            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Tỷ lệ chuyên cần: {{$student->attendRate()}}%</p>
         </div>
     </div>
 
@@ -52,12 +52,10 @@
                 <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
                 <td class="table-Info text-center"><a href="{{route('classLesson',['classId'=>$class->id])}}">{{$class->code}}</a></td>
                 <td class="table-Info">{{$class->name}}</td>
-                <?php $countLesson = $class->lessons()->count()??0 ?>
-                <td class="table-Info text-center">{{$countLesson}}</td>
-                <?php $countLessonAttend = $class->countLessonAttend($student->id)??0 ?>
-                <td class="table-Info text-center">{{$countLessonAttend}}</td>
-                <td class="table-Info text-center">{{$countLesson - $countLessonAttend}}</td>
-                <td class="table-Info text-center">@if($countLesson == 0) {{ 0 }}% @else {{intval($countLessonAttend/$countLesson*100)}}% @endif</td>
+                <td class="table-Info text-center">{{$all = $class->countLessonWithStudentId($student->id)}}</td>
+                <td class="table-Info text-center">{{$attend = $class->countAttendWithStudentId($student->id)}}</td>
+                <td class="table-Info text-center">{{$all - $attend}}</td>
+                <td class="table-Info text-center">@if($attend == 0) {{0}}% @else {{round($attend/$all*100)}}%  @endif </td>
             </tr>
             @endforeach
         </tbody>

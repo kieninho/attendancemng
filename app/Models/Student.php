@@ -57,22 +57,8 @@ class Student extends Model
         return $this->belongsToMany(Lesson::class,'student_lesson','student_id','lesson_id')->where('status', 1);
     }
 
-    // trả về tổng số lesson mà 1 student đã tham gia
-
-    public function countLessonInClass(){
-        $result = DB::table('students') 
-        ->select('lessons.id') 
-        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id') 
-        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id') 
-        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id') 
-        ->where('lessons.created_at', '>', 'student_class.created_at') 
-        ->where('classes.status', 1) ->where('lessons.status', 1) 
-        ->where('students.id', $this->id) 
-        ->groupBy('lessons.id') 
-        ->get();
-
-        //dd(count($result));
-        return count($result);
+    public function studentlessons(){
+        return $this->hasMany(StudentLesson::class,'student_id');
     }
 
     public static function search($keyword,$records_per_page){
@@ -97,10 +83,8 @@ class Student extends Model
     }
 
     public static function getStudentInLessonDetail($lessonId, $keyword, $records_per_page){
-        return Student::whereHas('classes', function ($query) use ($lessonId) {
-            $query->whereHas('lessons', function ($query) use ($lessonId) {
-                $query->where('id', $lessonId);
-            });
+        return Student::whereHas('studentlessons', function ($query) use ($lessonId) {
+            $query->where('lesson_id', $lessonId);
         })
         ->orderBy('code')
         ->where('name', 'LIKE', "%$keyword%")
@@ -134,11 +118,92 @@ class Student extends Model
 
     // trả về tỷ lệ chuyên cần của sinh viên trong các lớp
     public function attendRate(){
-        return 69;
+        $countAttend = StudentLesson::where('student_id',$this->id)
+        ->whereHas('lesson', function ($query) {
+            $query->where('start_at','<', now());
+            })
+        ->where(function ($query) {
+            $query->where('status', 1)
+                  ->orWhere('status', 2);
+        })
+        ->count();
+        if($countAttend==0)
+        {
+            return 0;
+        }
+        $countLesson = StudentLesson::where('student_id',$this->id)
+        ->whereHas('lesson', function ($query) {
+            $query->where('start_at','<', now());
+            })
+        ->count();
+
+        $result = round(($countAttend/$countLesson)*100);
+        return $result;
     }
 
     // trả về tỷ lệ chuyên cần của sinh viên trong 1 lớp
     public function classAttendRate($classId){
-        return $classId;
+        $countAttend = $this->countAttendInClass($classId);
+        if($countAttend==0)
+        {
+            return 0;
+        }
+        $countLesson = $this->countLessonInClass($classId);
+
+        $result = round(($countAttend/$countLesson)*100);
+        return $result;
     }
+
+    // trả về số tiết học mà 1 sinh viên tham gia trong 1 lớp
+    public function countAttendInClass($classId){
+        $lessons = Lesson::where('class_id',$classId)
+        ->where('status', 1)
+        ->get();
+        $result = 0;
+        foreach($lessons as $lesson){
+            $result += StudentLesson::where('student_id',$this->id)
+            ->whereHas('lesson', function ($query) {
+                $query->where('start_at', now());
+                })
+            ->where(function ($query) {
+                $query->where('status', 1)
+                      ->orWhere('status', 2);
+            })
+            ->where('lesson_id',$lesson->id)->count();
+        }
+        return $result;
+    }
+
+    // trả về tổng số lesson mà sinh viên đã tham gia trong 1 class (cả nghỉ và đi)
+    public function countLessonInClass($classId){
+        $lessons = Lesson::where('class_id',$classId)->where('status',1)->get();
+        $result = 0;
+        foreach($lessons as $lesson){
+            $result+= StudentLesson::where('student_id',$this->id)
+            ->whereHas('lesson', function ($query) {
+                $query->where('start_at', now());
+                })
+            ->where('lesson_id',$lesson->id)
+            ->count();
+        }
+        return $result;
+    }
+
+    // trả về trạng thái của sinh viên trong 1 lesson
+    public function checkAttendLesson($lessonId){
+        $result = StudentLesson::where('student_id',$this->id)->where('lesson_id',$lessonId)->first();
+        if ($result) {
+            return (int) $result->status;
+        }
+        return 0;
+    }
+
+    public function searchJoinClass($keyword,$records_per_page){
+        return $this->classes()->where('name','like',"%$keyword%")->paginate($records_per_page);
+    }
+
+    public function getJoinDate($classId){
+        return StudentClass::where('student_id',$this->id)->where('class_id', $classId)->first()->created_at;
+    }
+
 }

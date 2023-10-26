@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Lesson;
 use App\Models\Classes;
 use App\Models\Student;
 use App\Models\User;
@@ -35,5 +36,11 @@ class HomeController extends Controller
         $countClass = Classes::getClass()->count();
 
         return view('home',compact('classes','countStudent','countTeacher','countClass'));
+    }
+
+    public function test(){
+        $result = Lesson::findOrFail(45)->getStudentsInLesson();
+        dd($result);
+        return "Hello";
     }
 }

@@ -38,6 +38,10 @@ class StudentLesson extends Model
         return StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->get()->isEmpty();
     }
 
+    public static function getItemByStudentAndLesson($lessonId, $studentId){
+        return StudentLesson::where('lesson_id',$lessonId)->where('student_id',$studentId)->first();
+    }
+
     public function lesson()
     {
         return $this->belongsTo(Lesson::class);
