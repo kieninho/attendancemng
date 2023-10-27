@@ -7,8 +7,13 @@
 @section('content')
 <div class="container-fluid row">
     <div class="col-md-2">
+        <div class="d-flex justify-content-evenly mt-2">
+            <a class="text-primary" href="{{route('class')}}">DS lớp</a>
+            <span class="divider"></span>
+            <a class="text-primary" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
+        </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
-            <a href="#" class="list-group-item list-group-item-action">Quản lý bài học</a>
+            <span class="list-group-item list-group-item-action">Quản lý bài học</span>
             @foreach($classes as $classItem)
             <a href="{{route('classLesson',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$classItem->name}}</a>
             @endforeach
@@ -17,7 +22,7 @@
 
     <div class="col-md-10">
         <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
-            <h5>Danh sách buổi học lớp: {{$class->name}}</h5>
+            <h5>Danh sách bài học lớp: {{$class->name}}</h5>
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('classLesson',['classId'=>$class->id])}}" method="get">
                     <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
@@ -25,22 +30,23 @@
                 </form>
             </div>
             <div class="button-box">
-                <button type="button" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</button>
-                <button type="button" id="export" class="btn btn-primary  ms-2">Xuất Excel</button>
-                <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm buổi học</button>
+                <button type="submit" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</input>
+                    <button type="button" id="export" class="btn btn-primary  ms-2">Xuất Excel</button>
+                    <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm bài học</button>
             </div>
         </div>
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                    <th scope="col">Stt</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Mô tả</th>
-                    <th scope="col">Thời gian</th>
-                    <th scope="col">GV</th>
-                    <th scope="col">Sĩ số</th>
+                    <th scope="col" class="text-center">Stt</th>
+                    <th scope="col" class="text-center">Tên</th>
+                    <th scope="col" class="text-center">Mô tả</th>
+                    <th scope="col" class="text-center">Thời gian</th>
+                    <th scope="col" class="text-center">GV</th>
+                    <th scope="col" class="text-center">Sĩ số</th>
+                    <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col"></th>
-                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+                    <th scope="col" class="text-center" scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
             </thead>
 
@@ -61,15 +67,16 @@
                         {{$teacher->name.", "}}
                         @endforeach
                     </td>
-                    <td class="table-Info">{{$lesson->countNumberAttend()}}/{{$lesson->countStudent()}}</td>
-                    <td class="table-Info">
+                    <td class="table-Info text-center">{{$lesson->countNumberAttend()}}/{{$lesson->countStudent()}}</td>
+                    <td class="table-Info text-center">{{$lesson->getAttendRate()}}%</td>
+                    <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$lesson->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.lesson',['id'=>$lesson->id])}}">Xóa</a>
                         <span class="divider"></span>
                         <a class="link-primary" href="{{route('detail.lesson',['id'=>$lesson->id])}}">Điểm danh</a>
                     </td>
-                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                    <td class="table-Info text-center"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
                 @endforeach
             </tbody>
@@ -94,7 +101,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tạo Buổi Học</h5>
+                <h5 class="modal-title">Tạo Bài học</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addForm" action="{{route('store.lesson',['classId'=>$class->id])}}" method="POST">
@@ -209,7 +216,7 @@
                 success: function(response) {
                     $('#edit-lesson-name').val(response.name);
                     $('#edit-lesson-description').val(response.description);
-                    
+
                     $('#edit-start-time').val(getTimeFromString(response.start_at));
                     $('#edit-end-time').val(getTimeFromString(response.end_at));
                     $('#edit-date').val(getDateFromString(response.start_at));

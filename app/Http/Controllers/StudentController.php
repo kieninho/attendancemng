@@ -9,6 +9,7 @@ use App\Services\helper;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StudentExport;
+use Maatwebsite\Excel\Events\BeforeExport;
 
 
 class StudentController extends Controller

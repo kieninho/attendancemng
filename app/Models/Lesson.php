@@ -81,7 +81,6 @@ class Lesson extends Model
     public function getStudentsInLesson()
     {
         $result =  DB::table('students')
-        ->select('students.*')
         ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
         ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
         ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
@@ -98,33 +97,11 @@ class Lesson extends Model
         
     }
 
-    public function countStudentsInLesson()
-    {
-        $sqlResult =  DB::table('students')
-        ->select('students.*')
-        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
-        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
-        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
-        ->leftJoin('student_lesson', 'student_lesson.lesson_id', '=', 'lessons.id')
-        ->where('students.status', 1)
-        ->where('classes.status', 1)
-        ->where('lessons.status', 1)
-        ->whereRaw('student_lesson.created_at > student_class.created_at')
-        ->where('lessons.id', $this->id)
-        ->orderBy('students.id')
-        ->distinct()
-        ->get()
-        ;
-
-        return count($sqlResult);
-        
-    }
-
     public static function deleteByClassId($classId){
         Lesson::where('class_id',$classId)->delete();
     }
 
-    // trả về số sinh viên tham gia buổi học đó
+    // trả về số sinh viên tham gia và xin nghỉ buổi học đó
     public function countAttend(){
         return StudentLesson::where('lesson_id',$this->id)
         ->where(function ($query) {
@@ -148,5 +125,9 @@ class Lesson extends Model
         return Lesson::where('class_id', $classId)
                 ->where('start_at', '>', now())
                 ->get();
+    }
+
+    public function getAttendRate(){
+        return round(($this->countAttend()/$this->countStudent()) * 100);
     }
 }

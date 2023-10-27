@@ -8,6 +8,11 @@
 <div class="container-fluid row">
 
     <div class="col-md-2">
+
+    <div class="d-flex justify-content-evenly mt-2">
+            <a class="text-primary" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên trong lớp</a>
+    </div>
+
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <a href="#" class="list-group-item list-group-item-action">Quản lý sinh viên trong lớp</a>
             @foreach($classes as $classItem)

@@ -6,9 +6,10 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
 
-class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMapping
+class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMapping, WithTitle
 {
     private $row = 0;
     protected $classes;
@@ -30,7 +31,7 @@ class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMa
             'Tên',
             'Mô tả',
             'Sinh viên',
-            'Buổi học',
+            'Bài học',
             'Chuyên cần',
             'Ngày tạo',
         ];
@@ -50,5 +51,10 @@ class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMa
             ($class->getAverageAttendance())."%",
             $class->created_at,
         ];
+    }
+
+    public function title(): string
+    {
+        return 'Danh sách học sinh';
     }
 }

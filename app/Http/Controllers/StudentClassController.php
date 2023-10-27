@@ -49,8 +49,8 @@ class StudentClassController extends Controller
     }
 
     public function delete($classId, $studentId){
-        StudentClass::deleteItem($classId, $studentId);
         StudentLesson::deleteByStudentAndClass($studentId, $classId);
+        StudentClass::deleteItem($classId, $studentId);
 
         $message = "Xóa sinh viên khỏi lớp thành công!";
         return redirect()->back()->withErrors($message);
@@ -138,6 +138,26 @@ class StudentClassController extends Controller
         $students = StudentClass::getStudentsInClass($classId);
 
         return Excel::download(new StudentClassExport($students, $classId), "StudentInClass$classId.xlsx");
+    }
+
+    public function deleteMulti(Request $request, $classId){
+        $studentIds = $request->input('item_ids');
+        $countStd = count($studentIds);
+
+        if($countStd <= 0 ){
+            $message = "Thao tác không thành công !!!";
+
+            return redirect()->back()->withErrors($message);
+        }
+
+        foreach($studentIds as $studentId){
+            StudentLesson::deleteByStudentAndClass($studentId, $classId);
+            StudentClass::deleteItem($classId,$studentId);
+        }
+
+        $message = "Xóa thành công $countStd sinh viên khỏi lớp !!!";
+
+        return redirect()->back()->withErrors($message);
     }
 
 }

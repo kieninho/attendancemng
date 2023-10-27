@@ -29,7 +29,7 @@
                     <th scope="col" class="text-center">Tên</th>
                     <th scope="col" class="text-center">Mô tả</th>
                     <th scope="col" class="text-center">Sinh viên</th>
-                    <th scope="col" class="text-center">Buổi học</th>
+                    <th scope="col" class="text-center">Bài học</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col" class="text-center">Ngày tạo</th>
                     <th scope="col"></th>
@@ -50,7 +50,7 @@
                     <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>
-                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a> <span class="divider"></span>
+                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a> <span class="divider"></span>
                         <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>

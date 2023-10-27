@@ -8,8 +8,13 @@
 <div class="container-fluid row">
 
     <div class="col-md-2">
+    <div class="d-flex justify-content-evenly mt-2">
+            <a class="text-primary" href="{{route('class')}}">DS lớp</a>
+            <span class="divider"></span>
+            <a class="text-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a>
+    </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
-            <a href="#" class="list-group-item list-group-item-action">Quản lý sinh viên trong lớp</a>
+            <span class="list-group-item list-group-item-action">Quản lý sinh viên trong lớp</span>
             @foreach($classes as $classItem)
             <a href="{{route('studentInClass',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$classItem->name}}</a>
             @endforeach
@@ -26,7 +31,9 @@
                 </form>
             </div>
             <div class="button-box">
-                <button type="button" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+            <form action="{{route('deleteMulti.studentInClass',['classId'=>$class->id])}}" method="post">
+                    @csrf
+                <button type="submit" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
                 <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.studentInClass',['classId'=>$class->id])}}">Xuất Excel</a></button>
                 <button type="button" id="add-std-btn" class="btn btn-primary"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
             </div>
@@ -58,13 +65,14 @@
                     <td class="table-Info">
                         <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}">Xóa</a>
                         <span class="divider"></span>
-                        <a class="link-primary" href="">Chi tiết</a>
+                        <a class="link-primary" href="{{route('detail.student',['id'=>$student->id])}}">Chi tiết</a>
                     </td>
-                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+</form>
         {{$students->links()}}
     </div>
 

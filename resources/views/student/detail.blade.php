@@ -8,8 +8,11 @@
 <div class="container-fluid row">
 
 <div class="col-md-2">
+    <div class="d-flex justify-content-evenly mt-2">
+            <a class="text-primary" href="{{route('student')}}">Danh sách sinh viên</a>
+    </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
-            <h5 class="list-group-item list-group-item-action">Sinh viên: {{$student->code}}</h5>
+            <span class="list-group-item list-group-item-action">Sinh viên: {{$student->code}}</span>
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Tên: {{$student->name}}</p>
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Email: {{$student->email}}</p>
             <p class="list-group-item list-group-item-warning list-group-item-action my-0">Ngày sinh: {{$student->birthday}}</p>

@@ -71,7 +71,7 @@ class Student extends Model
     }
 
     public static function getStudents(){
-        return Student::where('status',1);
+        return Student::where('status',1)->orderBy('code','asc');
     }
 
     public static function getItemById($id){
@@ -163,7 +163,7 @@ class Student extends Model
         foreach($lessons as $lesson){
             $result += StudentLesson::where('student_id',$this->id)
             ->whereHas('lesson', function ($query) {
-                $query->where('start_at', now());
+                $query->where('start_at','<', now());
                 })
             ->where(function ($query) {
                 $query->where('status', 1)
@@ -181,7 +181,7 @@ class Student extends Model
         foreach($lessons as $lesson){
             $result+= StudentLesson::where('student_id',$this->id)
             ->whereHas('lesson', function ($query) {
-                $query->where('start_at', now());
+                $query->where('start_at','<', now());
                 })
             ->where('lesson_id',$lesson->id)
             ->count();

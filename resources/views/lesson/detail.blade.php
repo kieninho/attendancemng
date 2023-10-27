@@ -7,8 +7,13 @@
 @section('content')
 <div class="container-fluid row">
     <div class="col-md-2">
+    <div class="d-flex justify-content-evenly mt-2">
+            <a class="text-primary" href="{{route('classLesson',['classId'=>$lesson->classes->id])}}">QL Bài học</a>
+            <span class="divider"></span>
+            <a class="text-primary" href="{{route('studentInClass',['classId'=>$lesson->classes->id])}}">SV trong lớp</a>
+    </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
-            <a href="#" class="list-group-item list-group-item-action">{{$lesson->classes->name}} - Danh sách buổi học</a>
+            <span class="list-group-item list-group-item-action">{{$lesson->classes->name}}</span>
             @foreach($lessons as $lessonItem)
             <a href="{{route('detail.lesson',['id'=>$lessonItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$lessonItem->name}}</a>
             @endforeach

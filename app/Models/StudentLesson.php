@@ -62,7 +62,7 @@ class StudentLesson extends Model
         $lessons = Classes::findOrFail($classId)->lessons()->get();
 
         foreach($lessons as $lesson){
-            StudentLesson::where('lessson_id',$lesson->id)->where('student_id',$studentId)->delete();
+            StudentLesson::where('lesson_id',$lesson->id)->where('student_id',$studentId)->delete();
         }
     }
 }

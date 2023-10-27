@@ -2,13 +2,15 @@
 
 namespace App\Exports;
 
+use App\Models\Classes;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
 
-class StudentClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMapping
+class StudentClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMapping, WithTitle
 {
     private $row = 0;
     protected $students;
@@ -31,7 +33,7 @@ class StudentClassExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Mã SV',
             'Tên',
             'Email',
-            'Ngày sinh',
+            'Vào lớp',
             'Chuyên cần',
         ];
     }
@@ -45,8 +47,14 @@ class StudentClassExport implements FromCollection, WithHeadings, ShouldAutoSize
             $student->code,
             $student->name,
             $student->email,
-            $student->birthday,
+            $student->getJoinDate($this->classId),
             $student->classAttendRate($this->classId)."%",
         ];
+    }
+
+    public function title(): string
+    {   
+        $class = Classes::findOrFail($this->classId);
+        return "DS sinh viên lớp $class->name";
     }
 }
