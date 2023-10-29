@@ -55,7 +55,7 @@ class Lesson extends Model
 
     public function classes()
     {
-        return $this->belongsTo(Classes::class,'class_id')->where('status', 1);
+        return $this->belongsTo(Classes::class, 'class_id')->where('status', 1);
     }
 
     public function students()
@@ -63,7 +63,8 @@ class Lesson extends Model
         return $this->belongsToMany(Student::class, 'student_lesson', 'lesson_id', 'student_id')->where('status', 1);
     }
 
-    public function studentlessons(){
+    public function studentlessons()
+    {
         return $this->hasMany(StudentLesson::class);
     }
 
@@ -73,61 +74,71 @@ class Lesson extends Model
     }
 
     // method
-    public static function search($keyword){
-        $result = Lesson::where('name','like',"%$keyword%")->orWhere('description','like',"%$keyword%");
+    public static function search($keyword)
+    {
+        $result = Lesson::where('name', 'like', "%$keyword%")->orWhere('description', 'like', "%$keyword%");
         return $result;
     }
 
     public function getStudentsInLesson()
     {
         $result =  DB::table('students')
-        ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
-        ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
-        ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
-        ->leftJoin('student_lesson', 'student_lesson.lesson_id', '=', 'lessons.id')
-        ->where('students.status', 1)
-        ->where('classes.status', 1)
-        ->where('lessons.status', 1)
-        ->whereRaw('student_lesson.created_at > student_class.created_at')
-        ->where('lessons.id', $this->id)
-        ->orderBy('students.id')
-        ->distinct();
+            ->leftJoin('student_class', 'student_class.student_id', '=', 'students.id')
+            ->leftJoin('classes', 'classes.id', '=', 'student_class.class_id')
+            ->leftJoin('lessons', 'lessons.class_id', '=', 'classes.id')
+            ->leftJoin('student_lesson', 'student_lesson.lesson_id', '=', 'lessons.id')
+            ->where('students.status', 1)
+            ->where('classes.status', 1)
+            ->where('lessons.status', 1)
+            ->whereRaw('student_lesson.created_at > student_class.created_at')
+            ->where('lessons.id', $this->id)
+            ->orderBy('students.id')
+            ->distinct();
 
         return $result;
-        
     }
 
-    public static function deleteByClassId($classId){
-        Lesson::where('class_id',$classId)->delete();
+    public static function deleteByClassId($classId)
+    {
+        Lesson::where('class_id', $classId)->delete();
     }
 
     // trả về số sinh viên tham gia và xin nghỉ buổi học đó
-    public function countAttend(){
-        return StudentLesson::where('lesson_id',$this->id)
-        ->where(function ($query) {
-            $query->where('status', 1)
-                  ->orWhere('status', 2);
-        })
-        ->count();
+    public function countAttend()
+    {
+        return StudentLesson::where('lesson_id', $this->id)
+            ->where(function ($query) {
+                $query->where('status', 1)
+                    ->orWhere('status', 2);
+            })
+            ->count();
     }
 
-    public function countNumberAttend(){
-        return StudentLesson::where('lesson_id',$this->id)
-        ->where('status', 1)
-        ->count();
+    public function countNumberAttend()
+    {
+        return StudentLesson::where('lesson_id', $this->id)
+            ->where('status', 1)
+            ->count();
     }
 
-    public function countStudent(){
-        return StudentLesson::where('lesson_id',$this->id)->count();
+    public function countStudent()
+    {
+        return StudentLesson::where('lesson_id', $this->id)->count();
     }
 
-    public static function findAfterLesson($classId){
+    public static function findAfterLesson($classId)
+    {
         return Lesson::where('class_id', $classId)
-                ->where('start_at', '>', now())
-                ->get();
+            ->where('start_at', '>', now())
+            ->get();
     }
 
-    public function getAttendRate(){
-        return round(($this->countAttend()/$this->countStudent()) * 100);
+    public function getAttendRate()
+    {
+        if ($this->countStudent() == 0) {
+            return 0;
+        }
+
+        return round(($this->countAttend() / $this->countStudent()) * 100);
     }
 }

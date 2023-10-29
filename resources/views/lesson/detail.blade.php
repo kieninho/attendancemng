@@ -7,11 +7,11 @@
 @section('content')
 <div class="container-fluid row">
     <div class="col-md-2">
-    <div class="d-flex justify-content-evenly mt-2">
+        <div class="d-flex justify-content-evenly mt-2">
             <a class="text-primary" href="{{route('classLesson',['classId'=>$lesson->classes->id])}}">QL Bài học</a>
             <span class="divider"></span>
             <a class="text-primary" href="{{route('studentInClass',['classId'=>$lesson->classes->id])}}">SV trong lớp</a>
-    </div>
+        </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <span class="list-group-item list-group-item-action">{{$lesson->classes->name}}</span>
             @foreach($lessons as $lessonItem)
@@ -60,7 +60,7 @@
                     <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" type="checkbox" @if($student->checkAttendLesson($lesson->id)==2) checked @endif
                         id="ask-{{$student->id}}" data-id="{{$student->id}}"></td>
 
-                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}"  type="checkbox" @if($student->checkAttendLesson($lesson->id)==0) checked @endif
+                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" type="checkbox" @if($student->checkAttendLesson($lesson->id)==0) checked @endif
                         id="leave-{{$student->id}}" data-id="{{$student->id}}"></td>
 
                 </tr>
@@ -107,8 +107,8 @@
             var lessonId = <?= json_encode($lesson->id); ?>;
             $(this).prop('checked', true);
             if (isChecked) {
-                console.log('.check-attend-'+studentId);
-                $('.check-attend-'+studentId).not(this).prop('checked', false);
+                console.log('.check-attend-' + studentId);
+                $('.check-attend-' + studentId).not(this).prop('checked', false);
                 $.ajax({
                     url: '{{ route("attend.lesson")}}/' + lessonId + "/" + studentId,
                     type: 'get',
