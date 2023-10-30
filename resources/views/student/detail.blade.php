@@ -13,11 +13,11 @@
     </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <span class="list-group-item list-group-item-action">Sinh viên: {{$student->code}}</span>
-            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Tên: {{$student->name}}</p>
-            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Email: {{$student->email}}</p>
-            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Ngày sinh: {{$student->birthday}}</p>
-            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Số lớp đang học: {{$student->classes->count()}}</p>
-            <p class="list-group-item list-group-item-warning list-group-item-action my-0">Tỷ lệ chuyên cần: {{$student->attendRate()}}%</p>
+            <p class="list-group-item list-group-item-light list-group-item-action my-0">Tên: {{$student->name}}</p>
+            <p class="list-group-item list-group-item-light list-group-item-action my-0">Email: {{$student->email}}</p>
+            <p class="list-group-item list-group-item-light list-group-item-action my-0">Ngày sinh: {{$student->birthday}}</p>
+            <p class="list-group-item list-group-item-light list-group-item-action my-0">Số lớp đang học: {{$student->classes->count()}}</p>
+            <p class="list-group-item list-group-item-light list-group-item-action my-0">Tỷ lệ chuyên cần: {{$student->attendRate()}}%</p>
         </div>
     </div>
 

@@ -15,7 +15,7 @@
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <span class="list-group-item list-group-item-action">{{$lesson->classes->name}}</span>
             @foreach($lessons as $lessonItem)
-            <a href="{{route('detail.lesson',['id'=>$lessonItem->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$lessonItem->name}}</a>
+            <a href="{{route('detail.lesson',['id'=>$lessonItem->id])}}" class="list-group-item list-group-item-light list-group-item-action">{{$lessonItem->name}}</a>
             @endforeach
         </div>
     </div>
@@ -54,15 +54,14 @@
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->email}}</td>
-                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" type="checkbox" @if($student->checkAttendLesson($lesson->id)==1) checked @endif
+                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" value="1" type="checkbox" @if($student->checkAttendLesson($lesson->id)==1) checked @endif
                         id="select-{{$student->id}}" data-id="{{$student->id}}"></td>
 
-                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" type="checkbox" @if($student->checkAttendLesson($lesson->id)==2) checked @endif
+                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" value="2" type="checkbox" @if($student->checkAttendLesson($lesson->id)==2) checked @endif
                         id="ask-{{$student->id}}" data-id="{{$student->id}}"></td>
 
-                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}"  type="checkbox" @if($student->checkAttendLesson($lesson->id)==0) checked @endif
+                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" value="0" type="checkbox" @if($student->checkAttendLesson($lesson->id)==0) checked @endif
                         id="leave-{{$student->id}}" data-id="{{$student->id}}"></td>
-
                 </tr>
                 @endforeach
             </tbody>
@@ -77,7 +76,7 @@
     <div class="alert alert-danger px-2 py-1">
         <ul class="ps-1">
             @foreach ($errors->all() as $error)
-            <li style="list-style-type:none;">{{ $error }}</li>
+            <li class="error-message" style="list-style-type:none;">{{ $error }}</li>
             @endforeach
         </ul>
     </div>
@@ -102,19 +101,20 @@
     $(document).ready(function() {
 
         $('.form-check-input').click(function() {
-            var studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            var isChecked = $(this).is(':checked');
-            var lessonId = <?= json_encode($lesson->id); ?>;
+            let studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            let isChecked = $(this).is(':checked');
+            let lessonId = <?= json_encode($lesson->id); ?>;
+            let value = $(this).val();
             $(this).prop('checked', true);
             if (isChecked) {
-                console.log('.check-attend-'+studentId);
                 $('.check-attend-'+studentId).not(this).prop('checked', false);
                 $.ajax({
-                    url: '{{ route("attend.lesson")}}/' + lessonId + "/" + studentId,
+                    url: '{{ route("attend.lesson")}}/' + lessonId + "/" + studentId + "/" + value,
                     type: 'get',
                     success: function(response) {
                         // AJAX request đã được gửi thành công
-                        $('#attend-count').text(response);
+                        $('.error-message').text("Cập nhật thành công");
+                        console.log('{{ route("attend.lesson")}}/' + lessonId + "/" + studentId + "/" + value);
                     },
                 });
             }

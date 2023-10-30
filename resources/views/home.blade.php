@@ -10,7 +10,7 @@
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <span class="list-group-item list-group-item-action">Danh sách lớp</span>
             @foreach($classes as $class)
-            <a href="{{route('classLesson',['classId'=>$class->id])}}" class="list-group-item list-group-item-warning list-group-item-action">{{$class->name}}</a>
+            <a href="{{route('classLesson',['classId'=>$class->id])}}" class="list-group-item list-group-item-light list-group-item-action">{{$class->name}}</a>
             @endforeach
         </div>
 </div>

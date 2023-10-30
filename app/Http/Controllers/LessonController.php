@@ -168,14 +168,19 @@ class LessonController extends Controller
         return response()->json($data);
     }
 
-    public function attend($lessonId,$studentId){
+    public function attend($lessonId,$studentId,$value){
         $record = StudentLesson::getItemByStudentAndLesson($lessonId, $studentId);
         if($record){
-            $record->status = 1;
+            $record->status = $value;
             
-            $countStudentInLesson = Lesson::findOrFail($lessonId)->students->count();
+            $record->save();
+
+            $countStudentInLesson = "zzzzzzzz";
 
             return response()->json($countStudentInLesson);
+        }
+        else{
+            return response()->json("error");
         }
     }
     public function leave($lessonId,$studentId){
