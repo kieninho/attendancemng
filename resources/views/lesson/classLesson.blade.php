@@ -53,7 +53,12 @@
             <tbody>
 
                 @foreach($lessons as $lesson)
-                <tr>
+                <tr @if($lesson->start_at > now()) class="un-available"
+                    @elseif($lesson->checkedAttendance())
+                    class="row-checked"
+                    @elseif(!$lesson->checkedAttendance())
+                    class="row-unchecked"
+                @endif >
                     <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
                     <td class="table-Info">{{$lesson->name}}</td>
                     <td class="table-Info">{{$lesson->description}}</td>
@@ -74,7 +79,7 @@
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.lesson',['id'=>$lesson->id])}}">Xóa</a>
                         <span class="divider"></span>
-                        <a class="link-primary" href="{{route('detail.lesson',['id'=>$lesson->id])}}">Điểm danh</a>
+                        <a class="link-primary @if($lesson->start_at > now()) disabled-link @endif" href="{{route('detail.lesson',['id'=>$lesson->id])}}">Điểm danh</a>
                     </td>
                     <td class="table-Info text-center"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>

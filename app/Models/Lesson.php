@@ -26,6 +26,7 @@ class Lesson extends Model
         'start_at',
         'end_at',
         'status',
+        'checked_attendance',
     ];
 
     protected $casts = [
@@ -128,6 +129,18 @@ class Lesson extends Model
     }
 
     public function getAttendRate(){
+        if($this->countStudent()==0){
+            return 0;
+        }
+
         return round(($this->countAttend()/$this->countStudent()) * 100);
+    }
+
+    public function checkedAttendance(){
+        $result = Lesson::where('id',$this->id)->first()->checked_attendance;
+        if( $result==0 ){
+            return false;
+        }
+        return true;
     }
 }

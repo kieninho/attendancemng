@@ -31,7 +31,9 @@
                     <th scope="col" class="text-center">Sinh viên</th>
                     <th scope="col" class="text-center">Bài học</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
-                    <th scope="col" class="text-center">Ngày tạo</th>
+                    <th scope="col" class="text-center">Khai giảng</th>
+                    <th scope="col" class="text-center">Kết thúc</th>
+                    <th scope="col" class="text-center">Trạng thái</th>
                     <th scope="col"></th>
                     <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
@@ -46,7 +48,9 @@
                     <td class="table-Info text-center">{{$class->countStudent()}}</td>
                     <td class="table-Info text-center">{{$class->countLesson()}}</td>
                     <td class="table-Info text-center">{{$class->getAverageAttendance()}}%</td>
-                    <td class="table-Info text-center">{{$class->created_at}}</td>
+                    <td class="table-Info text-center">{{$class->startDay()}}</td>
+                    <td class="table-Info text-center">{{$class->endDay()}}</td>
+                    <td class="table-Info text-center">{{$class->getStatus()}} </div></td>
                     <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>

@@ -10,14 +10,11 @@ use App\Models\Student;
 use App\Models\TeacherLesson;
 use App\Models\StudentLesson;
 use App\Models\User;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
-use Symfony\Component\Console\Input\Input;
-use Whoops\Run;
-use Illuminate\Support\Facades\DB;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LessonDetailExport;
 
 class LessonController extends Controller
 {
@@ -65,17 +62,6 @@ class LessonController extends Controller
                 }
             }
 
-            // Tự động thêm các học sinh trong lớp vào tiết học
-            $class = Classes::findOrFail($classId);
-            $studentsInClass = $class->students;
-
-            foreach($studentsInClass as $student){
-                StudentLesson::create([
-                    'student_id'=>$student->id,
-                    'lesson_id'=>$result->id,
-                ]);
-            }
-
             $message = 'Thêm mới thành công!';
         } else {
             $message = 'Thêm mới không thành công!';
@@ -90,6 +76,24 @@ class LessonController extends Controller
 
         $keyword = $request->input('keyword');
         $lesson = Lesson::findOrFail($id);
+
+        // nếu là lần đầu điểm danh thì đưa tất cả các sinh viên vào lớp, chuyển nó thành đã điểm danh
+        if(!$lesson->checkedAttendance()){
+            // Tự động thêm các học sinh trong lớp vào tiết học
+            $class = $lesson->classes;
+            $studentsInClass = $class->students;
+
+            foreach($studentsInClass as $student){
+                StudentLesson::create([
+                    'student_id'=>$student->id,
+                    'lesson_id'=>$lesson->id,
+                ]);
+            }
+
+            $lesson->checked_attendance = 1;
+             $lesson->update();
+        }
+
         if(!$lesson){
             abort(404);
         }
@@ -189,6 +193,13 @@ class LessonController extends Controller
         $countStudentInLesson = Lesson::findOrFail($lessonId)->students->count();
 
         return response()->json($countStudentInLesson);
+    }
+
+    public function exportLessonDetail($id){
+        $students = Student::getStudentInLesson($id);
+        $lesson = Lesson::where('id',$id)->first();
+
+        return Excel::download(new LessonDetailExport($students, $lesson), "LessonDetail$id.xlsx");
     }
 
 }

@@ -66,7 +66,7 @@ Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
     Route::get('/leave', [LessonController::class, 'leave'])->name('leave.lesson');
     Route::get('/leave/{lessonId}/{studentId}', [LessonController::class, 'leave'])->name('leave.lesson.id');
 
-
+    Route::get('/export-lesson-detail/{id}',[LessonController::class,'exportLessonDetail'])->name('export.lessonDetail');
 });
 
 Route::group(['prefix' => 'teacherlesson', 'middleware' => 'auth'], function () {

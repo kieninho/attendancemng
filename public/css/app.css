@@ -10868,3 +10868,21 @@ a {
   background-color: #0dcaf0;
   margin: 0 0.25em;
 }
+
+.un-available{
+  background-color: #DCDCDC	;
+}
+
+.row-unchecked{
+  background-color: #FFA07A	;
+}
+
+.row-checked{
+  background-color: #98FB98	;
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.6;
+}

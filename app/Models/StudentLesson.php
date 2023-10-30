@@ -14,6 +14,7 @@ class StudentLesson extends Model
     protected $fillable = [
         'student_id',
         'lesson_id',
+        'status',
     ];
 
     //get-set format 

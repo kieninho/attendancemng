@@ -91,6 +91,14 @@ class Student extends Model
         ->paginate($records_per_page);
     }
 
+    public static function getStudentInLesson($lessonId){
+        return Student::whereHas('studentlessons', function ($query) use ($lessonId) {
+            $query->where('lesson_id', $lessonId);
+        })
+        ->orderBy('code')
+        ->get();
+    }
+
     public static function searchStudentsInClass($keyword, $classId, $records_per_page){
         return Student::where('name', 'like', '%' . $keyword . '%')
         ->whereHas('classes', function ($query) use ($classId) {
@@ -206,4 +214,17 @@ class Student extends Model
         return StudentClass::where('student_id',$this->id)->where('class_id', $classId)->first()->created_at;
     }
 
+    public function attendString($lessonId){
+        $status = StudentLesson::where('student_id',$this->id)->where('lesson_id',$lessonId)->value('status');
+        if($status==0){
+            return "Nghỉ không phép";
+        }
+        else if($status==1){
+            return "Tham gia";
+        }
+        else if($status==2){
+            return "Nghỉ có phép";
+        }
+        return "";
+    }
 }

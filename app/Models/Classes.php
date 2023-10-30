@@ -29,7 +29,6 @@ class Classes extends Model
         return date('d/m/Y', strtotime($value));
     }
 
-
     public function getUpdatedAtAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
@@ -169,6 +168,51 @@ class Classes extends Model
         $student = Student::where('id',$studentId)->first();
         $result = $student->countAttendInClass($this->id);
         return $result;
+    }
+
+    public function startDay(){
+        $lesson = $this->lessons->sortBy('start_at')->first();
+
+        if($lesson == null){
+            return "";
+        }
+
+        if($lesson->start_at == null){
+            return "";
+        }
+        return $lesson->start_at->format('d/m/Y');
+    }
+
+    public function endDay(){
+        $lesson = $this->lessons->sortBy('start_at')->last();
+
+        if($lesson == null){
+            return "";
+        }
+        
+        if($lesson->start_at == null){
+            return "";
+        }
+        return $lesson->start_at->format('d/m/Y');
+    }
+
+    public function getStatus(){
+        $lesson = $this->lessons->sortBy('start_at')->first();
+        if($lesson == null){
+            return "Chưa bắt đầu";
+        }
+        
+        $start =  $lesson->start_at;
+        $end = $this->lessons->sortBy('start_at')->last()->start_at;
+
+        if($start > now()){
+            return "Chưa bắt đầu";
+        }else if( $start <= now() && $end > now()){
+            return "Hoạt động";
+        }
+        else{
+            return "Kết thúc";
+        }
     }
 
 }

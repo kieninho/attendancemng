@@ -55,6 +55,6 @@ class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMa
 
     public function title(): string
     {
-        return 'Danh sách học sinh';
+        return 'Danh sách lớp học';
     }
 }
