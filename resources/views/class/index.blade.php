@@ -29,6 +29,7 @@
                     <th scope="col" class="text-center">Tên</th>
                     <th scope="col" class="text-center">Mô tả</th>
                     <th scope="col" class="text-center">Sinh viên</th>
+                    <th scope="col" class="text-center">Giáo viên</th>
                     <th scope="col" class="text-center">Bài học</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col" class="text-center">Khai giảng</th>
@@ -46,6 +47,7 @@
                     <td class="table-Info">{{$class->name}}</td>
                     <td class="table-Info">{{$class->description}}</td>
                     <td class="table-Info text-center">{{$class->countStudent()}}</td>
+                    <td class="table-Info text-center">{{$class->getTeachersStringByClass()}}</td>
                     <td class="table-Info text-center">{{$class->countLesson()}}</td>
                     <td class="table-Info text-center">{{$class->getAverageAttendance()}}%</td>
                     <td class="table-Info text-center">{{$class->startDay()}}</td>
@@ -93,11 +95,9 @@
                     <div class="mb-1">
                         <label for="recipient-name" class="col-form-label">Tên lớp:</label>
                         <input type="text" name="name" class="form-control" id="add-class-name">
-                        @error('name')
                         <div class="alert alert-danger mt-2">
-                            <p>{{ $message }}</p>
+                            <p id="add-name-err"></p>
                         </div>
-                        @enderror
                     </div>
                     <div class="mb-1">
                         <label for="description-class-name" class="col-form-label">Chi tiết:</label>
@@ -107,7 +107,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary" id="addBtn">Thêm mới</button>
                 </div>
             </form>
         </div>
@@ -136,11 +136,10 @@
                         <label for="description-class-name" name="name" class="col-form-label">Chi tiết:</label>
                         <textarea class="form-control" name="description" id="edit-class-description"></textarea>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="submit" class="btn btn-primary" id="editBtn">Lưu</button>
                 </div>
             </form>
         </div>
@@ -172,6 +171,33 @@
                 $('#delete-mul').prop('disabled', true);
             }
         });
+
+        $('#editBtn').click(function(event) {
+            event.preventDefault(); // Ngăn chặn việc gửi form
+
+            // Kiểm tra điều kiện trước khi gửi form
+            if (1) {
+                // Hiển thị thông báo lỗi hoặc thực hiện các hành động khác
+                alert('Điều kiện không thỏa mãn');
+            } else {
+                // Điều kiện thỏa mãn, tiến hành gửi form
+                $('#editForm').submit();
+            }
+        });
+
+        $('#addBtn').click(function(event) {
+            event.preventDefault(); // Ngăn chặn việc gửi form
+
+            
+
+            // Kiểm tra điều kiện trước khi gửi form
+            if (1) {
+               $('#add-name-err').text("Tên không được bỏ trống")
+            } else {
+                // Điều kiện thỏa mãn, tiến hành gửi form
+                $('#addForm').submit();
+            }
+        });
     });
 
     $('#addModal').on('hidden.bs.modal', function() {
@@ -185,15 +211,6 @@
     
 </script>
 
-
-@if ($errors->any())
-<script>
-    // Kiểm tra nếu có lỗi thì hiển thị modal
-    $(document).ready(function() {
-            $('#addModal').modal('show');
-    });
-</script>
-@endif
 
 @endsection
 

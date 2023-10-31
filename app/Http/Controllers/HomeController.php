@@ -39,8 +39,16 @@ class HomeController extends Controller
     }
 
     public function test(){
-        $result = Lesson::findOrFail(45)->getStudentsInLesson();
-        dd($result);
+        $class = Classes::where('id',46)->first();
+        $lessons = $class->lessons;
+        dd($lessons);
+        $teachers = $lessons->flatMap(function ($lesson) {
+            return $lesson->teachers;
+        })->unique('id');
+        foreach($teachers as $teacher){
+            echo $teacher->name.", ";
+        }
+        
         return "Hello";
     }
 }

@@ -215,4 +215,28 @@ class Classes extends Model
         }
     }
 
+    public function getTeachersStringByClass(){
+        $class = Classes::where('id',$this->id)->first();
+        $lessons = $class->lessons;
+
+        if(empty($lessons)){
+            return "";
+        }
+
+        $teachers = $lessons->flatMap(function ($lesson) {
+            return $lesson->teachers;
+        })->unique('id');
+        $result = "";
+        
+        if(empty($teachers)){
+            return "";
+        }
+
+        foreach($teachers as $teacher){
+            $result = $result . $teacher->name.", ";
+        }
+        $result = substr($result, 0, -2);
+        return $result;
+    }
+
 }

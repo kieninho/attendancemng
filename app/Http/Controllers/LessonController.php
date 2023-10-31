@@ -143,6 +143,12 @@ class LessonController extends Controller
             $record->name = $data['name'];
             $record->description = $data['description'];
 
+            // nếu chỉnh tiết học về tương lai thì set là chưa điểm danh
+            if($record->start_at->isFuture()){
+                StudentLesson::where('lesson_id',$record->id)->delete();
+                $record->checked_attendance = 0;
+            }
+
             $record->save();
 
             $teacher_ids = $request->input('teacher_ids');
