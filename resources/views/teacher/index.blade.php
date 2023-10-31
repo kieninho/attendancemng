@@ -20,6 +20,7 @@
             @csrf
             <div class="button-box">
                 <button type="submit" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+                <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.teacher')}}">Xuất Excel</a></button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm GV</button>
             </div>
     </div>
@@ -50,8 +51,6 @@
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$teacher->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.teacher',['id'=>$teacher->id])}}">Xóa</a>
-                        <span class="divider"></span>
-                        <a class="link-primary" href="">Chi tiết</a>
                     </td>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>

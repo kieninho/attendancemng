@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LessonDetailExport;
+use App\Exports\ClassLessonExport;
 
 class LessonController extends Controller
 {
@@ -200,6 +201,18 @@ class LessonController extends Controller
         $lesson = Lesson::where('id',$id)->first();
 
         return Excel::download(new LessonDetailExport($students, $lesson), "LessonDetail$id.xlsx");
+    }
+
+    public function exportClassLesson($classId){
+        $class = Classes::where('id',$classId)->first();
+        if(empty($class)){
+            return redirect()->back();
+        }
+
+        $lessons = $class->lessons->sortBy('start_at');
+
+        return Excel::download(new ClassLessonExport($class, $lessons), "DS_Buoi_Hoc_". $class->name . ".xlsx");
+
     }
 
 }

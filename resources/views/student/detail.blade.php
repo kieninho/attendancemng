@@ -31,7 +31,7 @@
             </form>
         </div>
         <div class="button-box">
-            <button type="button" class="btn btn-primary">Xuất báo cáo</button>
+            <button type="button" class="btn btn-primary"><a class="text-light" href="{{route('exportDetail.student',['id'=>$student->id])}}">Xuất Excel</a></button>
         </div>
     </div>
     <table class="table table-hover table-striped mb-1">

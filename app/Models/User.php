@@ -16,9 +16,7 @@ class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
-    //use HasProfilePhoto;
     use Notifiable;
-    //use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -122,5 +120,13 @@ class User extends Authenticatable
 
     public static function getTeachers(){
         return User::where('is_teacher',1)->where('status',1);
+    }
+
+    public static function getTeachersToExport(){
+        return User::where('is_teacher', 1)->where('status', 1)->get()->sortByDesc('created_at');
+    }
+
+    public static function getUsersToExport(){
+        return User::where('is_teacher', 0)->where('status', 1)->get()->sortByDesc('created_at');
     }
 }

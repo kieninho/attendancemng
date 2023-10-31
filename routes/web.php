@@ -53,6 +53,7 @@ Route::group(['prefix' => 'studentsinclass', 'middleware' => 'auth'], function (
 
 Route::group(['prefix' => 'lesson', 'middleware' => 'auth'], function () {
     Route::get('/class={classId}', [LessonController::class, 'classLesson'])->name('classLesson');
+    Route::get('/export-class-lesson/{classId}',[LessonController::class,'exportClassLesson'])->name('export.classLesson');
     Route::post('/store/class={classId}', [LessonController::class, 'store'])->name('store.lesson');
     Route::get('/delete/{id}', [LessonController::class, 'delete'])->name('delete.lesson');
     Route::get('/get', [LessonController::class, 'get'])->name('get.lesson');
@@ -90,6 +91,7 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {
     Route::get('/detail/{id}', [StudentController::class, 'detail'])->name('detail.student');
     
     Route::get('/export',[StudentController::class,'export'])->name('export.student');
+    Route::get('/exportDetail/{id}',[StudentController::class,'exportDetail'])->name('exportDetail.student');
 });
 
 
@@ -101,6 +103,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function () {
     Route::get('/get', [TeacherController::class, 'get'])->name('get.teacher');
     Route::get('/get/{id}', [TeacherController::class, 'get'])->name('get.teacher.id');
     Route::post('/update', [TeacherController::class, 'update'])->name('update.teacher');
+    Route::get('/export',[TeacherController::class,'export'])->name('export.teacher');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
@@ -110,6 +113,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/get', [UserController::class, 'get'])->name('get.user');
     Route::get('/get/{id}', [UserController::class, 'get']);
     Route::post('/update', [UserController::class, 'update'])->name('update.user');
+    Route::get('/export',[UserController::class,'export'])->name('export.user');
+
 });
 
 

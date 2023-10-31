@@ -7,9 +7,11 @@ use App\Http\Requests\TeacherUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
+use App\Exports\TeacherExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 
 
@@ -96,5 +98,12 @@ class TeacherController extends Controller
         $data = User::findOrFail($id);
 
         return response()->json($data);
+    }
+
+    public function export(){
+
+        $teachers = User::getTeachersToExport();
+
+        return Excel::download(new TeacherExport($teachers),"DS_Giao_Vien.xlsx");
     }
 }

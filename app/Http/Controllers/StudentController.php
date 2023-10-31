@@ -9,7 +9,7 @@ use App\Services\helper;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StudentExport;
-use Maatwebsite\Excel\Events\BeforeExport;
+use App\Exports\StudentDetailExport;
 
 
 class StudentController extends Controller
@@ -111,5 +111,11 @@ class StudentController extends Controller
         $students = Student::getStudents()->get();
 
         return Excel::download(new StudentExport($students), 'students.xlsx');
+    }
+
+    public function exportDetail($id){
+        $student = Student::where('id',$id)->where('status',1)->first();
+        $classes = $student->getJoinClasses();
+        return Excel::download(new StudentDetailExport($student,$classes), "StudentDetail$id.xlsx");
     }
 }

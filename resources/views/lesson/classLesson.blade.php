@@ -31,7 +31,7 @@
             </div>
             <div class="button-box">
                 <button type="submit" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</input>
-                    <button type="button" id="export" class="btn btn-primary  ms-2">Xuất Excel</button>
+                    <button type="button" id="export" class="btn btn-primary  ms-2"><a class="text-light" href="{{route('export.classLesson',['classId'=>$class->id])}}">Xuất Excel</a></button>
                     <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm bài học</button>
             </div>
         </div>

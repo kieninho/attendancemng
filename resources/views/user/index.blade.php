@@ -17,6 +17,7 @@
             </form>
         </div>
         <div class="button-box">
+            <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.user')}}">Xuất Excel</a></button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm User</button>
         </div>
     </div>
@@ -140,22 +141,21 @@
 
 <script src="{{asset('js/user/index.js')}}"></script>
 <script>
-    
-$(document).ready(function() {
-    $('.edit-button').click(function() {
-        var userId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-        $('#userId').val(userId); // Gán giá trị ID vào hidden input
-        $.ajax({
-            url: '{{ route("get.user") }}/' + userId,
-            type: 'get',
-            success: function(response) {
-                $('#edit-user-name').val(response.name);
-                $('#edit-user-email').val(response.email);
-                $('#userId').val(response.id);
-            }
+    $(document).ready(function() {
+        $('.edit-button').click(function() {
+            var userId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            $('#userId').val(userId); // Gán giá trị ID vào hidden input
+            $.ajax({
+                url: '{{ route("get.user") }}/' + userId,
+                type: 'get',
+                success: function(response) {
+                    $('#edit-user-name').val(response.name);
+                    $('#edit-user-email').val(response.email);
+                    $('#userId').val(response.id);
+                }
+            });
         });
     });
-});
 </script>
 @endsection
 

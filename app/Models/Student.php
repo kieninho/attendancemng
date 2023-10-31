@@ -210,6 +210,10 @@ class Student extends Model
         return $this->classes()->where('name','like',"%$keyword%")->paginate($records_per_page);
     }
 
+    public function getJoinClasses(){
+        return $this->classes()->get();
+    }
+
     public function getJoinDate($classId){
         return StudentClass::where('student_id',$this->id)->where('class_id', $classId)->first()->created_at;
     }

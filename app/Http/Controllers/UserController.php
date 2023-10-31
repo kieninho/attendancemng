@@ -6,7 +6,8 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Illuminate\Support\Carbon;
+use App\Exports\UserExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -64,5 +65,12 @@ class UserController extends Controller
         $message = "Chỉnh sửa thành công!";
 
         return redirect()->back()->withErrors($message);
+    }
+
+    public function export(){
+
+        $users = User::getUsersToExport();
+
+        return Excel::download(new UserExport($users),"DS_Quan_Tri_Vien.xlsx");
     }
 }
