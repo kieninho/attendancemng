@@ -44,7 +44,7 @@ class ClassController extends Controller
         $result = Classes::create($data);
 
         if($result){
-            $message = "Thạo lớp thành công !";
+            $message = "Tạo lớp thành công !";
             return redirect()->back()->withErrors($message);
         }
         

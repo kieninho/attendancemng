@@ -46,7 +46,7 @@ Route::group(['prefix' => 'studentsinclass', 'middleware' => 'auth'], function (
     Route::get('/store/{classId}/{studentId}', [StudentClassController::class, 'store'])->name('store.studentsinclass');
     Route::post('/addmulti/{classId}', [StudentClassController::class, 'addMulti'])->name('addmulti.studentInClass');
     Route::get('/export/classid={classId}',[StudentClassController::class,'export'])->name('export.studentInClass');
-    Route::post('/deletemulti/{classId}', [StudentClassController::class, 'deleteMulti'])->name('deleteMulti.studentInClass');
+    Route::post('/delete-multi/{classId}', [StudentClassController::class, 'deleteMulti'])->name('deleteMulti.studentInClass');
 });
 
 
@@ -89,9 +89,12 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {
     Route::get('/get/{id}', [StudentController::class, 'get'])->name('get.student.id');
     Route::post('/update', [StudentController::class, 'update'])->name('update.student');
     Route::get('/detail/{id}', [StudentController::class, 'detail'])->name('detail.student');
-    
+    Route::post('/delete-multi', [StudentController::class, 'deleteMulti'])->name('deleteMulti.student');
+
+
     Route::get('/export',[StudentController::class,'export'])->name('export.student');
     Route::get('/exportDetail/{id}',[StudentController::class,'exportDetail'])->name('exportDetail.student');
+
 });
 
 

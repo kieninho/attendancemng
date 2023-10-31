@@ -231,4 +231,12 @@ class Student extends Model
         }
         return "";
     }
+
+    public static function deleteItem($id){
+        $record = Student::where('id',$id)->first();
+        if(!empty($record)){
+            $record->status = 0;
+            $record->save();
+        }
+    }
 }

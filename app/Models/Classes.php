@@ -216,8 +216,7 @@ class Classes extends Model
     }
 
     public function getTeachersStringByClass(){
-        $class = Classes::where('id',$this->id)->first();
-        $lessons = $class->lessons;
+        $lessons = $this->lessons;
 
         if(empty($lessons)){
             return "";

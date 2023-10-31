@@ -21,7 +21,7 @@
             <div class="button-box">
                 <button type="submit" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
                 <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.teacher')}}">Xuất Excel</a></button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm GV</button>
+                <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm GV</button>
             </div>
     </div>
     <div class="table-responsive">
@@ -160,6 +160,8 @@
     </div>
 </div>
 <script src="{{asset('js/teacher/index.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('.edit-button').click(function() {
@@ -189,6 +191,59 @@
                 $('#delete-mul').prop('disabled', true);
             }
         });
+
+        $('#addForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 150
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 150,
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên không được bỏ trống",
+                    minlength: "Tên phải dài hơn 3 ký tự",
+                    maxlength: "Tên quá dài"
+                },
+                email: {
+                    required: "Email không được bỏ trống",
+                    email: "Email không hợp lệ",
+                    maxlength: "Email quá dài",
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
+        $('#editForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 150
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên không được bỏ trống",
+                    minlength: "Tên phải dài hơn 3 ký tự",
+                    maxlength: "Tên quá dài"
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
     });
 
     $('#addModal').on('hidden.bs.modal', function() {

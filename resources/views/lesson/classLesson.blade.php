@@ -208,6 +208,8 @@
     </div>
 </div>
 <script src="{{asset('js/lesson/classlesson.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 
 <script>
     // getdata from server
@@ -253,6 +255,77 @@
                 $('#delete-mul').prop('disabled', true);
             }
         });
+
+        $('#addForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                },
+                start: {
+                    required: true,
+                },
+                end: {
+                    required: true,
+                },
+                date: {
+                    required: true,
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên không được bỏ trống",
+                },
+                start: {
+                    required: "Thời gian bắt đầu không được bỏ trống",
+                },
+                end: {
+                    required: "Thời gian kết thúc không được bỏ trống",
+                },
+                date: {
+                    required: "Ngày học không được bỏ trống",
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
+        $('#editForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                },
+                start: {
+                    required: true,
+                },
+                end: {
+                    required: true,
+                },
+                date: {
+                    required: true,
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên không được bỏ trống",
+                },
+                start: {
+                    required: "Thời gian bắt đầu không được bỏ trống",
+                },
+                end: {
+                    required: "Thời gian kết thúc không được bỏ trống",
+                },
+                date: {
+                    required: "Ngày học không được bỏ trống",
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
     });
 
     $('#addModal').on('hidden.bs.modal', function() {

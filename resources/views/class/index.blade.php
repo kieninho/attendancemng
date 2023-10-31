@@ -52,32 +52,34 @@
                     <td class="table-Info text-center">{{$class->getAverageAttendance()}}%</td>
                     <td class="table-Info text-center">{{$class->startDay()}}</td>
                     <td class="table-Info text-center">{{$class->endDay()}}</td>
-                    <td class="table-Info text-center">{{$class->getStatus()}} </div></td>
-                    <td class="table-Info text-center">
-                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
-                        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>
-                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a> <span class="divider"></span>
-                        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
-                    </td>
-                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{$classes->links()}}
+                    <td class="table-Info text-center">{{$class->getStatus()}}
     </div>
+    </td>
+    <td class="table-Info text-center">
+        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
+        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>
+        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a> <span class="divider"></span>
+        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
+    </td>
+    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+    </tr>
+    @endforeach
+    </tbody>
+    </table>
+    {{$classes->links()}}
+</div>
 
-    <div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
-        @if ($errors->any())
-        <div class="alert alert-danger px-2 py-1">
-            <ul class="ps-1">
-                @foreach ($errors->all() as $error)
-                <li style="list-style-type:none;">{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+<div id="error-box" class="position-fixed bottom-0 end-0 p-3 fade" role="alert" style="z-index: 9999;">
+    @if ($errors->any())
+    <div class="alert alert-danger px-2 py-1">
+        <ul class="ps-1">
+            @foreach ($errors->all() as $error)
+            <li style="list-style-type:none;">{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
+    @endif
+</div>
 </div>
 
 
@@ -146,6 +148,8 @@
     </div>
 </div>
 <script src="{{asset('js/class/index.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('.edit-button').click(function() {
@@ -172,30 +176,43 @@
             }
         });
 
-        $('#editBtn').click(function(event) {
-            event.preventDefault(); // Ngăn chặn việc gửi form
+        $('#addForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên lớp không được bỏ trống",
+                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
+                },
 
-            // Kiểm tra điều kiện trước khi gửi form
-            if (1) {
-                // Hiển thị thông báo lỗi hoặc thực hiện các hành động khác
-                alert('Điều kiện không thỏa mãn');
-            } else {
-                // Điều kiện thỏa mãn, tiến hành gửi form
-                $('#editForm').submit();
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
             }
         });
 
-        $('#addBtn').click(function(event) {
-            event.preventDefault(); // Ngăn chặn việc gửi form
+        $('#editForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên lớp không được bỏ trống",
+                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
+                },
 
-            
-
-            // Kiểm tra điều kiện trước khi gửi form
-            if (1) {
-               $('#add-name-err').text("Tên không được bỏ trống")
-            } else {
-                // Điều kiện thỏa mãn, tiến hành gửi form
-                $('#addForm').submit();
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
             }
         });
     });
@@ -207,8 +224,6 @@
     $('#editModal').on('hidden.bs.modal', function() {
         $('#editForm')[0].reset();
     });
-
-    
 </script>
 
 

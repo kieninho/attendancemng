@@ -41,7 +41,6 @@ class HomeController extends Controller
     public function test(){
         $class = Classes::where('id',46)->first();
         $lessons = $class->lessons;
-        dd($lessons);
         $teachers = $lessons->flatMap(function ($lesson) {
             return $lesson->teachers;
         })->unique('id');

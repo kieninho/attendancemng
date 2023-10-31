@@ -48,6 +48,10 @@ class StudentClass extends Model
         StudentClass::where('class_id',$classId)->delete();
     }
 
+    public static function deleteByStudentId($studentId){
+        StudentClass::where('student_id',$studentId)->delete();
+    }
+
     public static function getStudentsInClass($classId){
         $class = Classes::findOrFail($classId);
         return $class->students;

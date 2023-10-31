@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StudentRequest;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\StudentLesson;
+use App\Models\StudentClass;
 use App\Services\helper;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
@@ -50,11 +52,9 @@ class StudentController extends Controller
 
     public function delete($id)
     {
-        $student = Student::findOrFail($id);
-        if ($student) {
-            $student->status = 0;
-        }
-        $student->save();
+        StudentLesson::deleteByStudentId($id);
+        StudentClass::deleteByStudentId($id);
+        Student::deleteItem($id);
         $message = "Xóa thành công!";
         return redirect()->back()->withErrors($message);
     }
@@ -117,5 +117,25 @@ class StudentController extends Controller
         $student = Student::where('id',$id)->where('status',1)->first();
         $classes = $student->getJoinClasses();
         return Excel::download(new StudentDetailExport($student,$classes), "StudentDetail$id.xlsx");
+    }
+
+    public function deleteMulti(Request $request){
+        $studentIds = $request->input('item_ids');
+        $countStd = count($studentIds);
+
+        if($countStd <= 0 ){
+            $message = "Thao tác không thành công !!!";
+
+            return redirect()->back()->withErrors($message);
+        }
+
+        foreach($studentIds as $studentId){
+            StudentLesson::deleteByStudentId($studentId);
+            StudentClass::deleteByStudentId($studentId);
+            Student::deleteItem($studentId);
+        }
+
+        $message = "Xóa thành công $countStd sinh viên !!!";
+        return redirect()->back()->withErrors($message);
     }
 }

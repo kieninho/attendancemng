@@ -52,6 +52,10 @@ class StudentLesson extends Model
         StudentLesson::where('lesson_id',$lessonId)->delete();
     }
 
+    public static function deleteByStudentId($studentId){
+        StudentLesson::where('student_id',$studentId)->delete();
+    }
+
     public static function deleteByClass($classId){
         $lessons = Classes::findOrFail($classId)->lessons()->get();
         foreach($lessons as $lesson){

@@ -10886,3 +10886,7 @@ a {
   cursor: default;
   opacity: 0.6;
 }
+
+label.error {
+  color: red;
+}

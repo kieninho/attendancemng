@@ -18,7 +18,7 @@
         </div>
         <div class="button-box">
             <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.user')}}">Xuất Excel</a></button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Thêm User</button>
+            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm User</button>
         </div>
     </div>
     <div class="table-responsive">
@@ -71,7 +71,7 @@
                 <h5 class="modal-title">Thêm User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('store.user')}}" method="POST">
+            <form id="addForm" action="{{route('store.user')}}" method="POST">
                 @csrf
                 <div class="modal-body">
 
@@ -114,7 +114,7 @@
                 <h5 class="modal-title">Sửa Thông Tin</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('update.user')}}" method="POST">
+            <form id="editForm" action="{{route('update.user')}}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" id="userId" name="userId" value="">
@@ -140,6 +140,8 @@
 </div>
 
 <script src="{{asset('js/user/index.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('.edit-button').click(function() {
@@ -154,6 +156,75 @@
                     $('#userId').val(response.id);
                 }
             });
+        });
+
+        $('#editForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 150
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên User không được bỏ trống",
+                    minlength: "Tên phải dài hơn 3 ký tự",
+                    maxlength: "Tên quá dài"
+                },
+
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
+        $('#addForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 150
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 150,
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+                password2: {
+                    required: true,
+                    equalTo: "#password"
+                }
+            },
+            messages: {
+                name: {
+                    required: "Tên User không được bỏ trống",
+                    minlength: "Tên phải dài hơn 3 ký tự",
+                    maxlength: "Tên quá dài"
+                },
+                email: {
+                    required: "Email không được bỏ trống",
+                    email: "Email không hợp lệ",
+                    maxlength: "Email quá dài",
+                },
+                password: {
+                    required: "Mật khẩu không được bỏ trống",
+                    minlength: "Độ dài mật khẩu lớn hơn 6 ký tự"
+                },
+                password2: {
+                    required: "Nhập lại mật khẩu",
+                    equalTo: "Không trùng khớp với mật khẩu"
+                }
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
         });
     });
 </script>

@@ -16,7 +16,9 @@
             </form>
         </div>
         <div class="button-box">
-            <button type="button" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</button>
+        <form action="{{route('deleteMulti.student')}}" method="post">
+                    @csrf
+            <button type="submit" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</button>
             <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.student')}}">Xuất Excel</a></button>
             <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm SV</button>
         </div>
@@ -52,9 +54,10 @@
                         <span class="divider"></span>
                         <a class="link-primary" href="{{route('detail.student',['id'=>$student->id])}}">Chi tiết</a>
                     </td>
-                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
                 @endforeach
+                </form>
             </tbody>
         </table>
         {{$students->links()}}
@@ -82,7 +85,7 @@
                 <h5 class="modal-title">Thêm Sinh Viên</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('store.student')}}" method="POST">
+            <form id="addForm" action="{{route('store.student')}}" method="POST">
                 @csrf
                 <div class="modal-body">
 
@@ -117,7 +120,7 @@
                 <h5 class="modal-title">Sửa Thông Tin Sinh Viên</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('update.student')}}" method="POST">
+            <form id="editForm" action="{{route('update.student')}}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" id="studentId" name="studentId">
@@ -151,6 +154,8 @@
     </div>
 </div>
 <script src="{{asset('js/student/index.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 
 <script>
     $(document).ready(function() {
@@ -182,6 +187,67 @@
                 $('#delete-mul').prop('disabled', true);
             }
         });
+
+        $('#addForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 100
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 150
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên lớp không được bỏ trống",
+                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
+                },
+                email: {
+                    required: "Email không được bỏ trống",
+                    email: "Email không hợp lệ",
+                    maxlength: "Độ dài vượt quá 150 ký tự"
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
+        $('#editForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 100
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 150
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên lớp không được bỏ trống",
+                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
+                },
+                email: {
+                    required: "Email không được bỏ trống",
+                    email: "Email không hợp lệ",
+                    maxlength: "Độ dài vượt quá 150 ký tự"
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
     });
 
     $('#addModal').on('hidden.bs.modal', function() {
