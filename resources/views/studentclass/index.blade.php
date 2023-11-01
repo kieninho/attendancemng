@@ -27,20 +27,21 @@
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('studentInClass',['classId'=>$class->id])}}" method="get">
                     <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
-                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    <button class="btn btn-outline-secondary" type="submit">Tìm</button>
                 </form>
             </div>
             <div class="button-box">
             <form action="{{route('deleteMulti.studentInClass',['classId'=>$class->id])}}" method="post">
                     @csrf
-                <button type="submit" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+                <button type="submit" id="delete-mul" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" disabled>Xóa nhiều</button>
                 <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.studentInClass',['classId'=>$class->id])}}">Xuất Excel</a></button>
-                <button type="button" id="add-std-btn" class="btn btn-primary"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
+                <button type="button" id="add-std-btn" class="btn btn-primary ms-2"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
             </div>
         </div>
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
+                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                     <th scope="col">Stt</th>
                     <th scope="col">Mã SV</th>
                     <th scope="col">Tên</th>
@@ -48,7 +49,6 @@
                     <th scope="col">Vào lớp</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col"></th>
-                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
             </thead>
 
@@ -56,6 +56,7 @@
 
                 @foreach($students as $student)
                 <tr>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
                     <td class="table-Info">{{$student->code}}</td>
                     <td class="table-Info">{{$student->name}}</td>
@@ -63,11 +64,10 @@
                     <td class="table-Info">{{$student->getJoinDate($class->id)}}</td>
                     <td class="table-Info text-center">{{$student->classAttendRate($class->id)}}%</td>
                     <td class="table-Info">
-                        <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}">Xóa</a>
+                        <a class="link-danger" href="{{route('delete.studentInClass',['classId'=>$class->id,'studentId'=>$student->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                         <span class="divider"></span>
                         <a class="link-primary" href="{{route('detail.student',['id'=>$student->id])}}">Chi tiết</a>
                     </td>
-                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
                 @endforeach
             </tbody>

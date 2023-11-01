@@ -12,8 +12,8 @@
         <h5>Quản lý người dùng</h5>
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('user')}}" method="get">
-                <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm người dùng" aria-label="Search" value="{{$keyword}}">
+                <button class="btn btn-outline-secondary" type="submit">Tìm</button>
             </form>
         </div>
         <div class="button-box">
@@ -42,7 +42,7 @@
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$user->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
-                        <a class="link-danger" href="{{route('delete.user',['id'=>$user->id])}}">Xóa</a>
+                        <a class="link-danger" href="{{route('delete.user',['id'=>$user->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                     </td>
                 </tr>
                 @endforeach

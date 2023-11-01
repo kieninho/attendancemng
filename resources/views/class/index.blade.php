@@ -11,11 +11,11 @@
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('class')}}" method="get">
                 <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm lớp" aria-label="Search" value="{{$keyword}}">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <button class="btn btn-outline-secondary" type="submit">Tìm</button>
             </form>
         </div>
         <div class="button-box">
-            <button type="button" id="delete-mul" class="btn btn-primary" disabled>Xóa nhiều</button>
+            <button type="button" id="delete-mul" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" disabled>Xóa nhiều</button>
             <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.class')}}">Xuất Excel</a></button>
             <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Tạo Lớp</button>
         </div>
@@ -24,6 +24,7 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
+                <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                     <th scope="col" class="text-center">Stt</th>
                     <th scope="col" class="text-center">Mã lớp</th>
                     <th scope="col" class="text-center">Tên</th>
@@ -36,12 +37,12 @@
                     <th scope="col" class="text-center">Kết thúc</th>
                     <th scope="col" class="text-center">Trạng thái</th>
                     <th scope="col"></th>
-                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($classes as $class)
                 <tr>
+                <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
                     <td class="table-Info text-center">{{$class->code}}</td>
                     <td class="table-Info">{{$class->name}}</td>
@@ -57,11 +58,10 @@
     </td>
     <td class="table-Info text-center">
         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
-        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}">Xóa</a> <span class="divider"></span>
+        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a> <span class="divider"></span>
         <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a> <span class="divider"></span>
         <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
     </td>
-    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
     </tr>
     @endforeach
     </tbody>
@@ -93,16 +93,15 @@
             <form action="{{route('store.class')}}" method="POST" id="addForm">
                 @csrf
                 <div class="modal-body">
-
                     <div class="mb-1">
-                        <label for="recipient-name" class="col-form-label">Tên lớp:</label>
+                        <label for="recipient-name" class="col-form-label">Tên lớp</label>
                         <input type="text" name="name" class="form-control" id="add-class-name">
                         <div class="alert alert-danger mt-2">
                             <p id="add-name-err"></p>
                         </div>
                     </div>
                     <div class="mb-1">
-                        <label for="description-class-name" class="col-form-label">Chi tiết:</label>
+                        <label for="description-class-name" class="col-form-label">Chi tiết</label>
                         <textarea class="form-control" name="description" id="description-class-name"></textarea>
                     </div>
 
@@ -128,14 +127,11 @@
                 <div class="modal-body">
                     <input type="hidden" id="classId" name="classId">
                     <div class="mb-1">
-                        <label for="recipient-name" class="col-form-label">Tên lớp:</label>
+                        <label for="recipient-name" class="col-form-label">Tên lớp</label>
                         <input type="text" name="name" class="form-control" id="edit-class-name">
-                        @error('name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                     </div>
                     <div class="mb-1">
-                        <label for="description-class-name" name="name" class="col-form-label">Chi tiết:</label>
+                        <label for="description-class-name" name="name" class="col-form-label">Chi tiết</label>
                         <textarea class="form-control" name="description" id="edit-class-description"></textarea>
                     </div>
                 </div>

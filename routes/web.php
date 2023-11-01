@@ -97,12 +97,11 @@ Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {
 
 });
 
-
 Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function () {
     Route::get('/', [TeacherController::class, 'index'])->name('teacher');
     Route::post('/store', [TeacherController::class, 'store'])->name('store.teacher');
     Route::get('/delete/{id}', [TeacherController::class, 'delete'])->name('delete.teacher');
-    Route::get('/deletelist', [TeacherController::class, 'deleteList'])->name('delete.teachers');
+    Route::get('/deletemulti', [TeacherController::class, 'deleteMulti'])->name('delete.teachers');
     Route::get('/get', [TeacherController::class, 'get'])->name('get.teacher');
     Route::get('/get/{id}', [TeacherController::class, 'get'])->name('get.teacher.id');
     Route::post('/update', [TeacherController::class, 'update'])->name('update.teacher');

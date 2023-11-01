@@ -27,7 +27,7 @@
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('add.studentsinclass',['id'=>$class->id])}}" method="get">
                     <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
-                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    <button class="btn btn-outline-secondary" type="submit">Tìm</button>
                 </form>
             </div>
             <div class="button-box">
@@ -39,13 +39,13 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
+                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                     <th scope="col">Stt</th>
                     <th scope="col">Mã SV</th>
                     <th scope="col">Tên</th>
                     <th scope="col">Email</th>
                     <th scope="col">Ngày sinh</th>
                     <th scope="col"></th>
-                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
             </thead>
 
@@ -53,6 +53,7 @@
 
                 @foreach($availStudents as $student)
                 <tr>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
                     <td class="table-Info">{{$student->code}}</td>
                     <td class="table-Info">{{$student->name}}</td>
@@ -61,7 +62,6 @@
                     <td class="table-Info">
                         <a class="link-primary" href="{{route('store.studentsinclass',['classId'=>$class->id,'studentId'=>$student->id])}}">Thêm vào lớp</a>
                     </td>
-                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
                 @endforeach
             </tbody>

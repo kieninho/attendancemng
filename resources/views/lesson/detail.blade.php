@@ -26,7 +26,7 @@
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('detail.lesson',['id'=>$lesson->id])}}" method="get">
                     <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
-                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    <button class="btn btn-outline-secondary" type="submit">Tìm</button>
                 </form>
             </div>
             <div class="button-box">

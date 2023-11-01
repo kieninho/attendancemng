@@ -19,18 +19,17 @@
             @endforeach
         </div>
     </div>
-
     <div class="col-md-10">
         <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
             <h5>Danh sách bài học lớp: {{$class->name}}</h5>
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('classLesson',['classId'=>$class->id])}}" method="get">
-                    <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
-                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm bài học" aria-label="Search" value="{{$keyword}}">
+                    <button class="btn btn-outline-secondary" type="submit">Tìm</button>
                 </form>
             </div>
             <div class="button-box">
-                <button type="submit" class="btn btn-primary" id="delete-mul" disabled>Xóa nhiều</input>
+                <button type="submit" class="btn btn-primary" id="delete-mul" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" disabled>Xóa nhiều</input>
                     <button type="button" id="export" class="btn btn-primary  ms-2"><a class="text-light" href="{{route('export.classLesson',['classId'=>$class->id])}}">Xuất Excel</a></button>
                     <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm bài học</button>
             </div>
@@ -38,6 +37,7 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
+                    <th scope="col" class="text-center" scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                     <th scope="col" class="text-center">Stt</th>
                     <th scope="col" class="text-center">Tên</th>
                     <th scope="col" class="text-center">Mô tả</th>
@@ -46,12 +46,10 @@
                     <th scope="col" class="text-center">Sĩ số</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col"></th>
-                    <th scope="col" class="text-center" scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                 </tr>
             </thead>
 
             <tbody>
-
                 @foreach($lessons as $lesson)
                 <tr @if($lesson->start_at > now()) class="un-available"
                     @elseif($lesson->checkedAttendance())
@@ -59,6 +57,7 @@
                     @elseif(!$lesson->checkedAttendance())
                     class="row-unchecked"
                 @endif >
+                <td class="table-Info text-center"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
                     <td class="table-Info">{{$lesson->name}}</td>
                     <td class="table-Info">{{$lesson->description}}</td>
@@ -77,11 +76,10 @@
                     <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$lesson->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
-                        <a class="link-danger" href="{{route('delete.lesson',['id'=>$lesson->id])}}">Xóa</a>
+                        <a class="link-danger" href="{{route('delete.lesson',['id'=>$lesson->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                         <span class="divider"></span>
                         <a class="link-primary @if($lesson->start_at > now()) disabled-link @endif" href="{{route('detail.lesson',['id'=>$lesson->id])}}">Điểm danh</a>
                     </td>
-                    <td class="table-Info text-center"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                 </tr>
                 @endforeach
             </tbody>
@@ -120,7 +118,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="add-lesson-description" class="col-form-label">Chi tiết:</label>
+                        <label for="add-lesson-description" class="col-form-label">Chi tiết</label>
                         <textarea class="form-control" name="description" id="add-lesson-description"></textarea>
                     </div>
 
@@ -145,7 +143,6 @@
                         </div>
                         @endforeach
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -168,13 +165,12 @@
                 <div class="modal-body">
                     <div class="mb-1">
                         <label for="edit-lesson-name" class="col-form-label">Tên:</label>
-                        <input type="text" name="name" class="form-control" id="edit-lesson-name">
+                        <input type="text" name="name" class="form-control" placeholder="Tên lớp" id="edit-lesson-name">
                         <input type="hidden" id="lessonId" name="lessonId" value="">
                     </div>
-
                     <div class="mb-3">
-                        <label for="edit-lesson-description" class="col-form-label">Chi tiết:</label>
-                        <textarea class="form-control" name="description" id="edit-lesson-description"></textarea>
+                        <label for="edit-lesson-description" class="col-form-label">Chi tiết</label>
+                        <textarea class="form-control" name="description" placeholder="Mô tả" id="edit-lesson-description"></textarea>
                     </div>
 
                     <div class="mb-3">
