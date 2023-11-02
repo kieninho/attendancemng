@@ -40,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($classes as $class)
+                @forelse($classes as $class)
                 <tr>
                 <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
@@ -63,7 +63,11 @@
         <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
     </td>
     </tr>
-    @endforeach
+    @empty
+    <tr>
+        <p>Không có dữ liệu</p>
+    </tr>
+    @endforelse
     </tbody>
     </table>
     {{$classes->links()}}
@@ -94,15 +98,15 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-1">
-                        <label for="recipient-name" class="col-form-label">Tên lớp</label>
-                        <input type="text" name="name" class="form-control" id="add-class-name">
+                        <label for="recipient-name" class="col-form-label required-star">Tên lớp</label>
+                        <input type="text" name="name" class="form-control" id="add-class-name" placeholder="Tên lớp">
                         <div class="alert alert-danger mt-2">
                             <p id="add-name-err"></p>
                         </div>
                     </div>
                     <div class="mb-1">
                         <label for="description-class-name" class="col-form-label">Chi tiết</label>
-                        <textarea class="form-control" name="description" id="description-class-name"></textarea>
+                        <textarea class="form-control" name="description" id="description-class-name" placeholder="Chi tiết"></textarea>
                     </div>
 
                 </div>
@@ -119,7 +123,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Chỉnh sửa:</h5>
+                <h5 class="modal-title">Chỉnh sửa lớp</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{route('update.class')}}" method="POST" id="editForm">
@@ -127,12 +131,12 @@
                 <div class="modal-body">
                     <input type="hidden" id="classId" name="classId">
                     <div class="mb-1">
-                        <label for="recipient-name" class="col-form-label">Tên lớp</label>
-                        <input type="text" name="name" class="form-control" id="edit-class-name">
+                        <label for="recipient-name" class="col-form-label required-star">Tên lớp</label>
+                        <input type="text" name="name" class="form-control" id="edit-class-name" placeholder="Tên lớp">
                     </div>
                     <div class="mb-1">
                         <label for="description-class-name" name="name" class="col-form-label">Chi tiết</label>
-                        <textarea class="form-control" name="description" id="edit-class-description"></textarea>
+                        <textarea class="form-control" name="description" id="edit-class-description" placeholder="Chi tiết"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

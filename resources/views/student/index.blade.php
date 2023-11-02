@@ -90,12 +90,12 @@
                 <div class="modal-body">
 
                     <div class="mb-1">
-                        <label for="recipient-name" class="col-form-label">Tên sinh viên:</label>
-                        <input type="text" name="name" class="form-control" id="add-student-name">
+                        <label for="recipient-name" class="col-form-label required-star">Tên sinh viên</label>
+                        <input type="text" name="name" class="form-control" placeholder="Tên sinh viên" id="add-student-name">
                     </div>
                     <div class="mb-1">
-                        <label for="add-student-email" class="col-form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" id="add-student-email">
+                        <label for="add-student-email" class="col-form-label required-star">Email</label>
+                        <input type="email" class="form-control" name="email" placeholder="Email" id="add-student-email">
                     </div>
 
                     <div class="mb-1">
@@ -131,12 +131,12 @@
                     </div>
 
                     <div class="mb-1">
-                        <label for="edit-student-name" class="col-form-label">Tên sinh viên:</label>
-                        <input type="text" name="name" class="form-control" id="edit-student-name">
+                        <label for="edit-student-name" class="col-form-label required-star">Tên sinh viên</label>
+                        <input type="text" name="name" placeholder="Tên sinh viên" class="form-control" id="edit-student-name">
                     </div>
                     <div class="mb-1">
-                        <label for="edit-student-email" class="col-form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" id="edit-student-email">
+                        <label for="edit-student-email" class="col-form-label required-star">Email</label>
+                        <input type="email" class="form-control" placeholder="Email" name="email" id="edit-student-email">
                     </div>
 
                     <div class="mb-1">

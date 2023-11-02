@@ -90,38 +90,6 @@
     @endif
 </div>
 
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cập nhật sinh viên lớp {{$class->name}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="addForm" action="{{route('update.studentInClass',['classId'=>$class->id])}}" method="POST">
-                @csrf
-                <div class="modal-body">
-
-                    <div class="student-container scrollbar" style="max-height:400px; overflow: auto;">
-                        @foreach($allStudent as $item)
-                        <div class="form-check">
-                            <input class="form-check-input add-student-class" name="student_ids[]" type="checkbox" value="{{$item->id}}" id="student-{{$item->id}}">
-                            <label class="form-check-label" for="student-{{$item->id}}">
-                                {{$item->code." - ".$item->name}}
-                            </label>
-                        </div>
-                        @endforeach
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 
 <script>
     var errorAlert = document.getElementById('error-box');

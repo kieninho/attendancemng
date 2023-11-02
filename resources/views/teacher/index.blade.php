@@ -87,22 +87,22 @@
                 <div class="modal-body">
 
                     <div class="mb-1">
-                        <label for="recipient-name" class="col-form-label">Tên giáo viên:</label>
-                        <input type="text" name="name" class="form-control" id="add-teacher-name">
+                        <label for="recipient-name" class="col-form-label required-star">Tên giáo viên</label>
+                        <input type="text" name="name" placeholder="Tên giáo viên" class="form-control" id="add-teacher-name">
                     </div>
 
                     <div class="mb-1">
-                        <label for="add-teacher-email" class="col-form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" id="add-teacher-email">
+                        <label for="add-teacher-email" class="col-form-label required-star">Email:</label>
+                        <input type="email" class="form-control" placeholder="Email" name="email" id="add-teacher-email">
                     </div>
 
                     <div class="mb-1">
-                        <label for="add-phone" class="col-form-label">Điện Thoại:</label>
-                        <input type="tel" class="form-control" name="phone" id="add-phone" style="width: 200px;">
+                        <label for="add-phone" class="col-form-label">Điện Thoại</label>
+                        <input type="tel" class="form-control" placeholder="Điện thoại" name="phone" id="add-phone" style="width: 200px;">
                     </div>
 
                     <div class="mb-1">
-                        <label for="add-birthday" class="col-form-label">Ngày sinh:</label>
+                        <label for="add-birthday" class="col-form-label">Ngày sinh</label>
                         <input type="date" class="form-control" name="birthday" id="add-birthday" style="width: 150px;">
                     </div>
 
@@ -130,19 +130,19 @@
                     <input type="hidden" id="teacherId" name="teacherId">
 
                     <div class="mb-1">
-                        <label for="edit-teacher-name" class="col-form-label">Tên giáo viên:</label>
-                        <input type="text" name="name" class="form-control" id="edit-teacher-name">
+                        <label for="edit-teacher-name" class="col-form-label required-star">Tên giáo viên</label>
+                        <input type="text" name="name" placeholder="Tên giáo viên" class="form-control" id="edit-teacher-name">
                     </div>
 
 
                     <div class="mb-1">
-                        <label for="edit-teacher-email" class="col-form-label">Email:</label>
+                        <label for="edit-teacher-email" class="col-form-label">Email</label>
                         <input type="email" class="form-control" name="email" id="edit-teacher-email" disabled>
                     </div>
 
                     <div class="mb-1">
-                        <label for="edit-teacher-phone" class="col-form-label">Điện Thoại:</label>
-                        <input type="tel" class="form-control" name="phone" id="edit-teacher-phone" style="width: 200px;">
+                        <label for="edit-teacher-phone" class="col-form-label">Điện Thoại</label>
+                        <input type="tel" class="form-control" placeholder="Điện thoại" name="phone" id="edit-teacher-phone" style="width: 200px;">
                     </div>
 
                     <div class="mb-1">

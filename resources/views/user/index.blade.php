@@ -76,24 +76,24 @@
                 <div class="modal-body">
 
                     <div class="mb-1">
-                        <label for="recipient-name" class="col-form-label">Tên:</label>
-                        <input type="text" name="name" class="form-control" id="add-user-name">
+                        <label for="recipient-name" class="col-form-label required-star">Tên</label>
+                        <input type="text" name="name" placeholder="Tên user" class="form-control" id="add-user-name">
                     </div>
 
                     <div class="mb-1">
-                        <label for="add-user-email" class="col-form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" id="add-user-email">
+                        <label for="add-user-email" class="col-form-label required-star">Email:</label>
+                        <input type="email" class="form-control" placeholder="Emai" name="email" id="add-user-email">
                     </div>
 
 
                     <div class="mb-1">
-                        <label for="password" class="col-form-label">Mật khẩu:</label>
-                        <input type="password" class="form-control" name="password" id="password">
+                        <label for="password" class="col-form-label required-star">Mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Mật khẩu" name="password" id="password">
                     </div>
 
                     <div class="mb-1">
-                        <label for="password2" class="col-form-label">Nhập lại mật khẩu:</label>
-                        <input type="password" class="form-control" name="password2" id="password2">
+                        <label for="password2" class="col-form-label required-star">Nhập lại mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" name="password2" id="password2">
                     </div>
 
 
@@ -120,13 +120,13 @@
                     <input type="hidden" id="userId" name="userId" value="">
 
                     <div class="mb-1">
-                        <label for="edit-user-name" class="col-form-label">Tên:</label>
-                        <input type="text" name="name" class="form-control" id="edit-user-name">
+                        <label for="edit-user-name" class="col-form-label required-star">Tên</label>
+                        <input type="text" name="name" placeholder="Tên user" class="form-control" id="edit-user-name">
                     </div>
 
                     <div class="mb-1">
-                        <label for="edit-user-email" class="col-form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" id="edit-user-email" disabled>
+                        <label for="edit-user-email" class="col-form-label required-star">Email </label>
+                        <input type="email" class="form-control" name="email" placeholder="Emai" id="edit-user-email" disabled>
                     </div>
 
                 </div>

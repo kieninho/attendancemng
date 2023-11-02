@@ -10825,3 +10825,9 @@ a {
     background-color: black;
     margin: 0 0.5em;
   }
+
+  .required-star::before {
+    content: "*";
+    color: red;
+    margin-right: 5px;
+  }

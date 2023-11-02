@@ -112,14 +112,14 @@
                 <div class="modal-body">
 
                     <div class="mb-1">
-                        <label for="add-lesson-name" class="col-form-label">Tên:</label>
-                        <input type="text" name="name" class="form-control" id="add-lesson-name">
+                        <label for="add-lesson-name" class="col-form-label required-star">Tên</label>
+                        <input type="text" name="name" class="form-control" id="add-lesson-name" placeholder="Tên buổi học">
                         <input type="hidden" name="class_id" value="{{$class->id}}">
                     </div>
 
                     <div class="mb-3">
                         <label for="add-lesson-description" class="col-form-label">Chi tiết</label>
-                        <textarea class="form-control" name="description" id="add-lesson-description"></textarea>
+                        <textarea class="form-control" name="description" id="add-lesson-description" placeholder="Chi tiết"></textarea>
                     </div>
 
                     <div class="mb-3">
@@ -157,14 +157,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tạo lớp</h5>
+                <h5 class="modal-title">Chỉnh sửa bài học</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="editForm" action="{{route('update.lesson')}}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-1">
-                        <label for="edit-lesson-name" class="col-form-label">Tên:</label>
+                        <label for="edit-lesson-name" class="col-form-label required-star">Tên:</label>
                         <input type="text" name="name" class="form-control" placeholder="Tên lớp" id="edit-lesson-name">
                         <input type="hidden" id="lessonId" name="lessonId" value="">
                     </div>

@@ -10890,3 +10890,8 @@ a {
 label.error {
   color: red;
 }
+
+.required-star::after {
+  content: "*";
+  color: red;
+}
