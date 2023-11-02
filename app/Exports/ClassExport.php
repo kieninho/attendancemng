@@ -31,9 +31,12 @@ class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMa
             'Tên',
             'Mô tả',
             'Sinh viên',
+            'Giáo viên',
             'Bài học',
             'Chuyên cần',
-            'Ngày tạo',
+            'Khai giảng',
+            'Kết thúc',
+            'Trạng thái'
         ];
     }
 
@@ -47,9 +50,12 @@ class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMa
             $class->name,
             $class->description,
             $class->countStudent(),
+            $class->getTeachersStringByClass(),
             $class->countLesson(),
             ($class->getAverageAttendance())."%",
-            $class->created_at,
+            $class->startDay(),
+            $class->endDay(),
+            $class->getStatus()
         ];
     }
 

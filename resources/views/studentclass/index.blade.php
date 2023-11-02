@@ -8,11 +8,11 @@
 <div class="container-fluid row">
 
     <div class="col-md-2">
-    <div class="d-flex justify-content-evenly mt-2">
+        <div class="d-flex justify-content-evenly mt-2">
             <a class="text-primary" href="{{route('class')}}">DS lớp</a>
             <span class="divider"></span>
             <a class="text-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a>
-    </div>
+        </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <span class="list-group-item list-group-item-action">Quản lý sinh viên trong lớp</span>
             @foreach($classes as $classItem)
@@ -31,11 +31,11 @@
                 </form>
             </div>
             <div class="button-box">
-            <form action="{{route('deleteMulti.studentInClass',['classId'=>$class->id])}}" method="post">
+                <form action="{{route('deleteMulti.studentInClass',['classId'=>$class->id])}}" method="post">
                     @csrf
-                <button type="submit" id="delete-mul" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" disabled>Xóa nhiều</button>
-                <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.studentInClass',['classId'=>$class->id])}}">Xuất Excel</a></button>
-                <button type="button" id="add-std-btn" class="btn btn-primary ms-2"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
+                    <button type="submit" id="delete-mul" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" disabled>Xóa nhiều</button>
+                    <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.studentInClass',['classId'=>$class->id])}}">Xuất Excel</a></button>
+                    <button type="button" id="add-std-btn" class="btn btn-primary ms-2"><a class="text-light" href="{{route('add.studentsinclass',['id'=>$class->id])}}">Thêm SV</a></button>
             </div>
         </div>
         <table class="table table-hover table-striped mb-1">
@@ -54,7 +54,7 @@
 
             <tbody>
 
-                @foreach($students as $student)
+                @forelse($students as $student)
                 <tr>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
@@ -69,10 +69,14 @@
                         <a class="link-primary" href="{{route('detail.student',['id'=>$student->id])}}">Chi tiết</a>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="8" class="text-center">Không có dữ liệu</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
-</form>
+        </form>
         {{$students->links()}}
     </div>
 
@@ -115,7 +119,7 @@
     function setCheckedSelectAll() {
         let checkboxes = document.getElementsByName("item_ids[]");
         let selectAllCheckbox = document.getElementById("select-all");
-        
+
 
         for (var i = 0; i < checkboxes.length; i++) {
 
@@ -137,15 +141,15 @@
             }
         });
 
-            $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
 
-                if ($('input[name="item_ids[]"]:checked').length > 0) {
+            if ($('input[name="item_ids[]"]:checked').length > 0) {
 
-                    $('#delete-mul').prop('disabled', false);
-                } else {
-                    $('#delete-mul').prop('disabled', true);
-                }
-            });
+                $('#delete-mul').prop('disabled', false);
+            } else {
+                $('#delete-mul').prop('disabled', true);
+            }
+        });
 
 
     });

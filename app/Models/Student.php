@@ -111,16 +111,16 @@ class Student extends Model
         return Student::where('status',1)->orderBy('code','asc')->get();
     }
 
-    public static function getAvailStudents($classId, $keyword, $records_per_page){
-       return DB::table('students')
-        ->whereNotIn('id', function ($query) use ($classId) {
+    public static function getAvailStudents($classId, $keyword, $records_per_page)
+    {
+        return Student::whereNotIn('id', function ($query) use ($classId) {
             $query->select('student_id')
-                ->from('student_class')
-                ->where('class_id', $classId);
+            ->from('student_class')
+            ->where('class_id', $classId);
         })
-        ->where('status',1)
-        ->where('name','like',"%$keyword%")
-        ->orderBy('code','asc')
+        ->where('status', 1)
+        ->where('name', 'like', "%$keyword%")
+        ->orderBy('code', 'asc')
         ->paginate($records_per_page);
     }
 

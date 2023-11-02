@@ -199,15 +199,13 @@ class Classes extends Model
     public function getStatus(){
         $lesson = $this->lessons->sortBy('start_at')->first();
         if($lesson == null){
-            return "Chưa bắt đầu";
+            return "Hoạt động";
         }
-        
+
         $start =  $lesson->start_at;
         $end = $this->lessons->sortBy('start_at')->last()->start_at;
 
-        if($start > now()){
-            return "Chưa bắt đầu";
-        }else if( $start <= now() && $end > now()){
+        if($end > now()){
             return "Hoạt động";
         }
         else{
@@ -226,7 +224,7 @@ class Classes extends Model
             return $lesson->teachers;
         })->unique('id');
         $result = "";
-        
+
         if(empty($teachers)){
             return "";
         }

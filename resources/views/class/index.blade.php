@@ -64,9 +64,9 @@
     </td>
     </tr>
     @empty
-    <tr>
-        <p>Không có dữ liệu</p>
-    </tr>
+                <tr>
+                    <td colspan="12" class="text-center">Không có dữ liệu</td>
+                </tr>
     @endforelse
     </tbody>
     </table>

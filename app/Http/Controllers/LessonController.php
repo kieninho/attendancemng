@@ -206,7 +206,7 @@ class LessonController extends Controller
         $students = Student::getStudentInLesson($id);
         $lesson = Lesson::where('id',$id)->first();
 
-        return Excel::download(new LessonDetailExport($students, $lesson), "LessonDetail$id.xlsx");
+        return Excel::download(new LessonDetailExport($students, $lesson), "Diem_Danh_". $lesson->name . "-" .$lesson->classes->name . ".xlsx");
     }
 
     public function exportClassLesson($classId){
