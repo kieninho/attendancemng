@@ -34,20 +34,18 @@
                     <th scope="col" class="text-center">Tên</th>
                     <th scope="col" class="text-center">Email</th>
                     <th scope="col" class="text-center">Ngày sinh</th>
-                    <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($students as $student)
+                @forelse($students as $student)
                 <tr>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
                     <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
                     <td class="table-Info text-center">{{$student->birthday}}</td>
-                    <td class="table-Info text-center">{{$student->attendRate()}}%</td>
                     <td class="table-Info">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$student->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
@@ -56,7 +54,11 @@
                         <a class="link-primary" href="{{route('detail.student',['id'=>$student->id])}}">Chi tiết</a>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center">Không có dữ liệu</td>
+                </tr>
+                @endforelse
                 </form>
             </tbody>
         </table>
@@ -153,111 +155,15 @@
         </div>
     </div>
 </div>
+
+<div id="get-student" data-route="{{ route('get.student') }}"></div>
+
+
+@endsection
+
+@section('scripts-bot')
 <script src="{{asset('js/student/index.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-
-
-<script>
-    $(document).ready(function() {
-        $('.edit-button').click(function() {
-            var studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            $('#studentId').val(studentId); // Gán giá trị ID vào hidden input
-
-            $.ajax({
-                url: '{{ route("get.student") }}/' + studentId,
-                type: 'get',
-                success: function(response) {
-                    $('#edit-student-code').val(response.code);
-                    $('#edit-student-name').val(response.name);
-                    $('#edit-student-email').val(response.email);
-
-                    let parts = response.birthday.split("/");
-                    let formattedDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
-                    $('#edit-birthday').val(formattedDate);
-                }
-            });
-        });
-
-        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
-
-            if ($('input[name="item_ids[]"]:checked').length > 0) {
-
-                $('#delete-mul').prop('disabled', false);
-            } else {
-                $('#delete-mul').prop('disabled', true);
-            }
-        });
-
-        $('#addForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 100
-                },
-                email: {
-                    required: true,
-                    email: true,
-                    maxlength: 150
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên lớp không được bỏ trống",
-                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
-                },
-                email: {
-                    required: "Email không được bỏ trống",
-                    email: "Email không hợp lệ",
-                    maxlength: "Độ dài vượt quá 150 ký tự"
-                },
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-
-        $('#editForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 100
-                },
-                email: {
-                    required: true,
-                    email: true,
-                    maxlength: 150
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên lớp không được bỏ trống",
-                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
-                },
-                email: {
-                    required: "Email không được bỏ trống",
-                    email: "Email không hợp lệ",
-                    maxlength: "Độ dài vượt quá 150 ký tự"
-                },
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-
-    });
-
-    $('#addModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
-
-    $('#editModal').on('hidden.bs.modal', function() {
-        $('#editForm')[0].reset();
-    });
-</script>
 @endsection
 
 @section('footer')

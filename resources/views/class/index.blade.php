@@ -24,7 +24,7 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                     <th scope="col" class="text-center">Stt</th>
                     <th scope="col" class="text-center">Mã lớp</th>
                     <th scope="col" class="text-center">Tên</th>
@@ -42,7 +42,7 @@
             <tbody>
                 @forelse($classes as $class)
                 <tr>
-                <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
                     <td class="table-Info text-center">{{$class->code}}</td>
                     <td class="table-Info">{{$class->name}}</td>
@@ -54,7 +54,7 @@
                     <td class="table-Info text-center">{{$class->startDay()}}</td>
                     <td class="table-Info text-center">{{$class->endDay()}}</td>
                     <td class="table-Info text-center">{{$class->getStatus()}}
-    </div>
+    
     </td>
     <td class="table-Info text-center">
         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
@@ -65,9 +65,10 @@
     </tr>
     @empty
                 <tr>
-                    <td colspan="12" class="text-center">Không có dữ liệu</td>
+                    <td colspan="13" class="text-center">Không có dữ liệu</td>
                 </tr>
     @endforelse
+    </div>
     </tbody>
     </table>
     {{$classes->links()}}
@@ -147,86 +148,14 @@
         </div>
     </div>
 </div>
-<script src="{{asset('js/class/index.js')}}"></script>
+
+<div id="get-class" data-route="{{ route('get.class') }}"></div>
+
+@endsection
+
+@section('scripts-bot')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $('.edit-button').click(function() {
-            var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            $('#classId').val(classId); // Gán giá trị ID vào hidden input
-
-            $.ajax({
-                url: '{{ route("get.class") }}/' + classId,
-                type: 'get',
-                success: function(response) {
-                    $('#edit-class-name').val(response.name);
-                    $('#edit-class-description').val(response.description);
-                }
-            });
-        });
-
-        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
-
-            if ($('input[name="item_ids[]"]:checked').length > 0) {
-
-                $('#delete-mul').prop('disabled', false);
-            } else {
-                $('#delete-mul').prop('disabled', true);
-            }
-        });
-
-        $('#addForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 2
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên lớp không được bỏ trống",
-                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
-                },
-
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-
-        $('#editForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 2
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên lớp không được bỏ trống",
-                    minlength: "Tên lớp phải nhiều hơn 2 ký tự"
-                },
-
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-    });
-
-    $('#addModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
-
-    $('#editModal').on('hidden.bs.modal', function() {
-        $('#editForm')[0].reset();
-    });
-</script>
-
-
+<script src="{{asset('js/class/index.js')}}"></script>
 @endsection
 
 

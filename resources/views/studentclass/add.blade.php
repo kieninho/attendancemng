@@ -51,7 +51,7 @@
 
             <tbody>
 
-                @foreach($availStudents as $student)
+                @forelse($availStudents as $student)
                 <tr>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
@@ -63,7 +63,11 @@
                         <a class="link-primary" href="{{route('store.studentsinclass',['classId'=>$class->id,'studentId'=>$student->id])}}">Thêm vào lớp</a>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center">Không có dữ liệu</td>
+                </tr>
+                @endforelse
             </tbody>
             </form>
         </table>
@@ -83,20 +87,10 @@
     </div>
     @endif
 </div>
+@endsection
+
+@section('scripts-bot')
 <script src="{{asset('js/studentclass/add.js')}}"></script>
-<script>
-    $(document).ready(function() {
-        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
-
-            if ($('input[name="item_ids[]"]:checked').length > 0) {
-
-                $('#add-std-btn').prop('disabled', false);
-            } else {
-                $('#add-std-btn').prop('disabled', true);
-            }
-        });
-    });
-</script>
 @endsection
 
 @section('footer')

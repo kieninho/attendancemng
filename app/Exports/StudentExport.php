@@ -31,7 +31,6 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize,With
             'Tên',
             'email',
             'Ngày sinh',
-            'Chuyên cần',
         ];
     }
 
@@ -45,7 +44,6 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize,With
             $student->name,
             $student->email,
             $student->birthday,
-            $student->attendRate()."%",
         ];
     }
 

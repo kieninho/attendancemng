@@ -30,3 +30,15 @@ var errorAlert = document.getElementById('error-box');
             selectAllCheckbox.checked = true;
         }
     }
+
+    $(document).ready(function() {
+        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+            if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+                $('#add-std-btn').prop('disabled', false);
+            } else {
+                $('#add-std-btn').prop('disabled', true);
+            }
+        });
+    });

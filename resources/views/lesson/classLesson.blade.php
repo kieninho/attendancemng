@@ -43,14 +43,13 @@
                     <th scope="col" class="text-center">Mô tả</th>
                     <th scope="col" class="text-center">Thời gian</th>
                     <th scope="col" class="text-center">GV</th>
-                    <th scope="col" class="text-center">Sĩ số</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach($lessons as $lesson)
+                @forelse($lessons as $lesson)
                 <tr @if($lesson->start_at > now()) class="un-available"
                     @elseif($lesson->checkedAttendance())
                     class="row-checked"
@@ -71,17 +70,21 @@
                         {{$teacher->name.", "}}
                         @endforeach
                     </td>
-                    <td class="table-Info text-center">{{$lesson->countNumberAttend()}}/{{$lesson->countStudent()}}</td>
                     <td class="table-Info text-center">{{$lesson->getAttendRate()}}%</td>
                     <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$lesson->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.lesson',['id'=>$lesson->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                         <span class="divider"></span>
-                        <a class="link-primary @if($lesson->start_at > now()) disabled-link @endif" href="{{route('detail.lesson',['id'=>$lesson->id])}}">Điểm danh</a>
+                        <a class="link-primary" @if($lesson->start_at > now()) onclick="showAlert(event)" @endif href="{{route('detail.lesson',['id'=>$lesson->id])}}">Điểm danh</a>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="8" class="text-center">Không có dữ liệu</td>
+                </tr>
+
+                @endforelse
             </tbody>
         </table>
         {{$lessons->links()}}
@@ -203,135 +206,16 @@
         </div>
     </div>
 </div>
+<div id="get-lesson" data-route="{{ route('get.lesson') }}"></div>
+<div id="get-teacher-lesson" data-route="{{ route('get.teacherLesson') }}"></div>
+
+
+
+@endsection
+
+@section('scripts-bot')
 <script src="{{asset('js/lesson/classlesson.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-
-
-<script>
-    // getdata from server
-    $(document).ready(function() {
-        $('.edit-button').click(function() {
-            var lessonId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            $('#lessonId').val(lessonId); // Gán giá trị ID vào hidden input
-            $.ajax({
-                url: '{{ route("get.lesson") }}/' + lessonId,
-                type: 'get',
-                success: function(response) {
-                    $('#edit-lesson-name').val(response.name);
-                    $('#edit-lesson-description').val(response.description);
-
-                    $('#edit-start-time').val(getTimeFromString(response.start_at));
-                    $('#edit-end-time').val(getTimeFromString(response.end_at));
-                    $('#edit-date').val(getDateFromString(response.start_at));
-                }
-            });
-
-            // teacher lesson
-            $.ajax({
-                url: '{{ route("get.teacherLesson") }}/' + lessonId,
-                type: 'get',
-                dataType: 'json',
-                success: function(response) {
-                    $.each(response, function(index, item) {
-                        // Duyệt qua từng bản ghi
-                        idBox = "#ck-teacher-" + item.teacher_id;
-                        $(idBox).prop("checked", true);
-                    });
-                }
-            });
-
-        });
-
-        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
-
-            if ($('input[name="item_ids[]"]:checked').length > 0) {
-
-                $('#delete-mul').prop('disabled', false);
-            } else {
-                $('#delete-mul').prop('disabled', true);
-            }
-        });
-
-        $('#addForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                },
-                start: {
-                    required: true,
-                },
-                end: {
-                    required: true,
-                },
-                date: {
-                    required: true,
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên không được bỏ trống",
-                },
-                start: {
-                    required: "Thời gian bắt đầu không được bỏ trống",
-                },
-                end: {
-                    required: "Thời gian kết thúc không được bỏ trống",
-                },
-                date: {
-                    required: "Ngày học không được bỏ trống",
-                },
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-
-        $('#editForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                },
-                start: {
-                    required: true,
-                },
-                end: {
-                    required: true,
-                },
-                date: {
-                    required: true,
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên không được bỏ trống",
-                },
-                start: {
-                    required: "Thời gian bắt đầu không được bỏ trống",
-                },
-                end: {
-                    required: "Thời gian kết thúc không được bỏ trống",
-                },
-                date: {
-                    required: "Ngày học không được bỏ trống",
-                },
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-
-    });
-
-    $('#addModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
-
-    $('#editModal').on('hidden.bs.modal', function() {
-        $('#editForm')[0].reset();
-    });
-</script>
 @endsection
 
 @section('footer')

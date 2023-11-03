@@ -117,6 +117,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::post('/update', [UserController::class, 'update'])->name('update.user');
     Route::get('/export',[UserController::class,'export'])->name('export.user');
 
+    Route::post('/reset-password',[UserController::class,'resetPassword'])->name('resetPassword.user');
 });
 
 

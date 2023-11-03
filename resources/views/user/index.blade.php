@@ -25,27 +25,33 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                    <th scope="col">Stt</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Ngày tạo</th>
+                    <th scope="col" class="text-center">Stt</th>
+                    <th scope="col" class="text-center">Tên</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Ngày tạo</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($users as $user)
+                @forelse($users as $user)
                 <tr>
-                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
                     <td class="table-Info">{{$user->name}}</td>
                     <td class="table-Info">{{$user->email}}</td>
-                    <td class="table-Info">{{$user->created_at}}</td>
-                    <td class="table-Info">
+                    <td class="table-Info text-center">{{$user->created_at}}</td>
+                    <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$user->id}}" data-bs-target="#editModal">Sửa</span>
                         <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.user',['id'=>$user->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                        <span class="divider"></span>
+                        <span class="reset-pass-button text-primary cursor-pointer" data-bs-toggle="modal" data-id="{{$user->id}}" data-bs-target="#resetPasswordModal">Đổi mật khẩu</span>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="5" class="text-center">Không có dữ liệu</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
         {{$users->links()}}
@@ -82,7 +88,7 @@
 
                     <div class="mb-1">
                         <label for="add-user-email" class="col-form-label required-star">Email:</label>
-                        <input type="email" class="form-control" placeholder="Emai" name="email" id="add-user-email">
+                        <input type="email" class="form-control" placeholder="Email" name="email" id="add-user-email">
                     </div>
 
 
@@ -126,7 +132,7 @@
 
                     <div class="mb-1">
                         <label for="edit-user-email" class="col-form-label required-star">Email </label>
-                        <input type="email" class="form-control" name="email" placeholder="Emai" id="edit-user-email" disabled>
+                        <input type="email" class="form-control" name="email" placeholder="Email" id="edit-user-email" disabled>
                     </div>
 
                 </div>
@@ -139,96 +145,52 @@
     </div>
 </div>
 
-<script src="{{asset('js/user/index.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Đổi mật khẩu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="resetPasswordForm" action="{{route('resetPassword.user')}}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" id="userIdReset" name="id" value="">
 
-<script>
-    $(document).ready(function() {
-        $('.edit-button').click(function() {
-            var userId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            $('#userId').val(userId); // Gán giá trị ID vào hidden input
-            $.ajax({
-                url: '{{ route("get.user") }}/' + userId,
-                type: 'get',
-                success: function(response) {
-                    $('#edit-user-name').val(response.name);
-                    $('#edit-user-email').val(response.email);
-                    $('#userId').val(response.id);
-                }
-            });
-        });
+                    <div class="mb-1">
+                       <h5>User: <span id="email-text"></span></h5>
+                    </div>
 
-        $('#editForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 150
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên User không được bỏ trống",
-                    minlength: "Tên phải dài hơn 3 ký tự",
-                    maxlength: "Tên quá dài"
-                },
+                    <div class="mb-1">
+                        <label for="new-pass" class="col-form-label required-star">Mật khẩu mới</label>
+                        <input type="password" class="form-control" name="newpass" placeholder="Mật khẩu mới" id="new-pass">
+                    </div>
 
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
+                    <div class="mb-1">
+                        <label for="new-pass-2" class="col-form-label required-star">Nhập lại mật khẩu</label>
+                        <input type="password" class="form-control" name="newpass2" placeholder="Xác nhận mật khẩu" id="new-pass-2">
+                    </div>
 
-        $('#addForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 150
-                },
-                email: {
-                    required: true,
-                    email: true,
-                    maxlength: 150,
-                },
-                password: {
-                    required: true,
-                    minlength: 6
-                },
-                password2: {
-                    required: true,
-                    equalTo: "#password"
-                }
-            },
-            messages: {
-                name: {
-                    required: "Tên User không được bỏ trống",
-                    minlength: "Tên phải dài hơn 3 ký tự",
-                    maxlength: "Tên quá dài"
-                },
-                email: {
-                    required: "Email không được bỏ trống",
-                    email: "Email không hợp lệ",
-                    maxlength: "Email quá dài",
-                },
-                password: {
-                    required: "Mật khẩu không được bỏ trống",
-                    minlength: "Độ dài mật khẩu lớn hơn 6 ký tự"
-                },
-                password2: {
-                    required: "Nhập lại mật khẩu",
-                    equalTo: "Không trùng khớp với mật khẩu"
-                }
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-    });
-</script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="get-user" data-route="{{ route('get.user') }}"></div>
+
+
 @endsection
+
+@section('scripts-bot')
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="{{asset('js/user/index.js')}}"></script>
+@endsection
+
 
 @section('footer')
 @include('elements.footer')

@@ -23,6 +23,6 @@
 
         @yield('footer')
     </div>
+    @yield('scripts-bot')
 </body>
-
 </html>

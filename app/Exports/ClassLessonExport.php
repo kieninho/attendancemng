@@ -33,7 +33,6 @@ class ClassLessonExport implements FromCollection, WithHeadings, ShouldAutoSize,
             'Mô tả',
             'Thời gian',
             'GV',
-            'Sĩ số',
             'Chuyên cần',
         ];
     }
@@ -53,7 +52,6 @@ class ClassLessonExport implements FromCollection, WithHeadings, ShouldAutoSize,
             $lesson->description,
             $lesson->getStartAndEnd()??"0",
             $teacherString,
-            $lesson->countNumberAttend(). "/" .$lesson->countStudent(),
             $lesson->getAttendRate()."%",
         ];
     }

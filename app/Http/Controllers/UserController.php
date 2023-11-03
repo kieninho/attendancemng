@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -20,6 +21,26 @@ class UserController extends Controller
     
         $users->appends(['keyword' => $keyword]);
         return view('user.index',compact('users','keyword'));
+    }
+
+    public function resetPassword(ResetPasswordRequest $request){
+        $data = $request->all();
+
+        if($data['newpass'] != $data['newpass2']){
+            $message = 'Mật khẩu không khớp';
+            return redirect()->back()->withErrors($message);
+        }
+        $record = User::findOrFail($data['id']);
+        if(empty($record)){
+            $message = "Đổi mật khẩu không thành công";
+        }
+        
+        $record->password = Hash::make($data['newpass']);
+        $record->save();
+
+        $message = "Đổi mật khẩu thành công";
+
+        return redirect()->back()->withErrors($message);
     }
 
     public function store(UserRequest $request)

@@ -32,9 +32,7 @@ class StudentDetailExport implements FromCollection, WithHeadings, ShouldAutoSiz
             'Mã lớp',
             'Tên',
             'Số buổi',
-            'Tham gia',
-            'Vắng',
-            'Tỷ lệ',
+            'Chuyên cần',
         ];
     }
 
@@ -54,8 +52,6 @@ class StudentDetailExport implements FromCollection, WithHeadings, ShouldAutoSiz
             $class->code,
             $class->name,
             $all =  $class->countLessonWithStudentId($this->student->id)??"0",
-            $attend = $class->countAttendWithStudentId($this->student->id)??"0",
-            $all - $attend,
             $rate."%",
         ];
     }

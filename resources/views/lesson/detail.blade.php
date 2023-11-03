@@ -40,7 +40,6 @@
                     <th scope="col" class="text-center">Tên</th>
                     <th scope="col" class="text-center">Mã SV</th>
                     <th scope="col" class="text-center">Email</th>
-                    <th scope="col" class="text-center">Tham gia</th>
                     <th scope="col" class="text-center">Có phép</th>
                     <th scope="col" class="text-center">Không phép</th>
                 </tr>
@@ -48,22 +47,24 @@
 
             <tbody>
 
-                @foreach($students as $student)
+                @forelse($students as $student)
                 <tr>
                     <th scope="row" class="text-center" class="table-Info">{{ $loop->iteration }}</th>
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->email}}</td>
-                    <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" value="1" type="checkbox" @if($student->checkAttendLesson($lesson->id)==1) checked @endif
-                        id="select-{{$student->id}}" data-id="{{$student->id}}"></td>
-
+                    
                     <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" value="2" type="checkbox" @if($student->checkAttendLesson($lesson->id)==2) checked @endif
                         id="ask-{{$student->id}}" data-id="{{$student->id}}"></td>
 
                     <td class="table-Info text-center"><input class="form-check-input check-attend-{{$student->id}}" value="0" type="checkbox" @if($student->checkAttendLesson($lesson->id)==0) checked @endif
                         id="leave-{{$student->id}}" data-id="{{$student->id}}"></td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center">Không có dữ liệu</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
         {{$students->links()}}
@@ -83,46 +84,14 @@
     @endif
 </div>
 
+<div id="lesson-id" data-id="{{ $lesson->id }}"></div>
+<div id="attend-lesson" data-route="{{ route('attend.lesson') }}"></div>
 
+@endsection
 
-<script>
-    var errorAlert = document.getElementById('error-box');
-
-    // Thêm lớp 'show' để hiển thị div
-    errorAlert.classList.add('show');
-
-    // Tự động mờ và biến mất sau 3 giây
-    setTimeout(function() {
-        errorAlert.classList.remove('show');
-    }, 3000);
-
-
-    // getdata from server
-    $(document).ready(function() {
-
-        $('.form-check-input').click(function() {
-            let studentId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            let isChecked = $(this).is(':checked');
-            let lessonId = <?= json_encode($lesson->id); ?>;
-            let value = $(this).val();
-            $(this).prop('checked', true);
-            if (isChecked) {
-                $('.check-attend-'+studentId).not(this).prop('checked', false);
-                $.ajax({
-                    url: '{{ route("attend.lesson")}}/' + lessonId + "/" + studentId + "/" + value,
-                    type: 'get',
-                    success: function(response) {
-                        // AJAX request đã được gửi thành công
-                        $('.error-message').text("Cập nhật thành công");
-                        console.log('{{ route("attend.lesson")}}/' + lessonId + "/" + studentId + "/" + value);
-                    },
-                });
-            }
-
-        });
-
-    });
-</script>
+@section('scripts-bot')
+<script src="{{asset('js/lesson/detail.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 @endsection
 
 @section('footer')

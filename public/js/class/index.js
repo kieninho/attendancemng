@@ -30,4 +30,79 @@ function setCheckedSelectAll() {
     }
 }
 
+$(document).ready(function() {
+    $('.edit-button').click(function() {
+        var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+        $('#classId').val(classId); // Gán giá trị ID vào hidden input
+        route = $('#get-class').data('route');
+
+        $.ajax({
+            url: route + '/' + classId,
+            type: 'get',
+            success: function(response) {
+                $('#edit-class-name').val(response.name);
+                $('#edit-class-description').val(response.description);
+            }
+        });
+    });
+
+    $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+        if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+            $('#delete-mul').prop('disabled', false);
+        } else {
+            $('#delete-mul').prop('disabled', true);
+        }
+    });
+
+    $('#addForm').validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2
+            },
+        },
+        messages: {
+            name: {
+                required: "Tên lớp không được bỏ trống",
+                minlength: "Tên lớp phải nhiều hơn 2 ký tự"
+            },
+
+        },
+        submitHandler: function(form) {
+            // Nếu form hợp lệ, gửi form tới controller
+            form.submit();
+        }
+    });
+
+    $('#editForm').validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2
+            },
+        },
+        messages: {
+            name: {
+                required: "Tên lớp không được bỏ trống",
+                minlength: "Tên lớp phải nhiều hơn 2 ký tự"
+            },
+
+        },
+        submitHandler: function(form) {
+            // Nếu form hợp lệ, gửi form tới controller
+            form.submit();
+        }
+    });
+});
+
+$('#addModal').on('hidden.bs.modal', function() {
+    $('#addForm')[0].reset();
+});
+
+$('#editModal').on('hidden.bs.modal', function() {
+    $('#editForm')[0].reset();
+});
+
 

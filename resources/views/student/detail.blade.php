@@ -41,26 +41,30 @@
                 <th scope="col" class="text-center">Mã Lớp</th>
                 <th scope="col" class="text-center">Tên</th>
                 <th scope="col" class="text-center">Số buổi</th>
-                <th scope="col" class="text-center">Tham gia</th>
-                <th scope="col" class="text-center">Vắng</th>
-                <th scope="col" class="text-center">Tỷ lệ</th>
-
+                <th scope="col" class="text-center">Chuyên cần</th>
             </tr>
         </thead>
 
         <tbody>
 
-            @foreach($classes as $class)
+            @forelse($classes as $class)
             <tr>
                 <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
                 <td class="table-Info text-center"><a href="{{route('classLesson',['classId'=>$class->id])}}">{{$class->code}}</a></td>
                 <td class="table-Info">{{$class->name}}</td>
-                <td class="table-Info text-center">{{$all = $class->countLessonWithStudentId($student->id)}}</td>
                 <td class="table-Info text-center">{{$attend = $class->countAttendWithStudentId($student->id)}}</td>
-                <td class="table-Info text-center">{{$all - $attend}}</td>
+                @php
+                $all = $class->countLessonWithStudentId($student->id);
+                $attend = $class->countAttendWithStudentId($student->id);
+                
+                @endphp
                 <td class="table-Info text-center">@if($attend == 0) {{0}}% @else {{round($attend/$all*100)}}%  @endif </td>
             </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center">Không có dữ liệu</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
     {{$classes->links()}}

@@ -39,7 +39,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($teachers as $teacher)
+                @forelse($teachers as $teacher)
                 <tr>
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
                     <td scope="row" class="table-Info">{{ $loop->iteration }}</td>
@@ -54,7 +54,11 @@
                         <a class="link-danger" href="{{route('delete.teacher',['id'=>$teacher->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="8" class="text-center">Không có dữ liệu</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
         </form>
@@ -159,101 +163,15 @@
         </div>
     </div>
 </div>
+<div id="get-teacher" data-route="{{ route('get.teacher') }}"></div>
+
+
+@endsection
+
+
+@section('scripts-bot')
 <script src="{{asset('js/teacher/index.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $('.edit-button').click(function() {
-            var teacherId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
-            $('#teacherId').val(teacherId); // Gán giá trị ID vào hidden input
-            $.ajax({
-                url: '{{ route("get.teacher") }}/' + teacherId,
-                type: 'get',
-                success: function(response) {
-                    $('#edit-teacher-name').val(response.name);
-                    $('#edit-teacher-email').val(response.email);
-                    $('#edit-teacher-phone').val(response.phone);
-
-                    let parts = response.birthday.split("/");
-                    let formattedDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
-                    $('#edit-birthday').val(formattedDate);
-                }
-            });
-        });
-
-        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
-
-            if ($('input[name="item_ids[]"]:checked').length > 0) {
-
-                $('#delete-mul').prop('disabled', false);
-            } else {
-                $('#delete-mul').prop('disabled', true);
-            }
-        });
-
-        $('#addForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 150
-                },
-                email: {
-                    required: true,
-                    email: true,
-                    maxlength: 150,
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên không được bỏ trống",
-                    minlength: "Tên phải dài hơn 3 ký tự",
-                    maxlength: "Tên quá dài"
-                },
-                email: {
-                    required: "Email không được bỏ trống",
-                    email: "Email không hợp lệ",
-                    maxlength: "Email quá dài",
-                },
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-
-        $('#editForm').validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 150
-                },
-            },
-            messages: {
-                name: {
-                    required: "Tên không được bỏ trống",
-                    minlength: "Tên phải dài hơn 3 ký tự",
-                    maxlength: "Tên quá dài"
-                },
-            },
-            submitHandler: function(form) {
-                // Nếu form hợp lệ, gửi form tới controller
-                form.submit();
-            }
-        });
-
-    });
-
-    $('#addModal').on('hidden.bs.modal', function() {
-        $('#addForm')[0].reset();
-    });
-
-    $('#editModal').on('hidden.bs.modal', function() {
-        $('#editForm')[0].reset();
-    });
-</script>
 @endsection
 
 @section('footer')

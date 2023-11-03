@@ -31,3 +31,96 @@ var errorAlert = document.getElementById('error-box');
             selectAllCheckbox.checked = true;
         }
     }
+
+    $(document).ready(function() {
+        $('.edit-button').click(function() {
+            var teacherId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
+            $('#teacherId').val(teacherId); // Gán giá trị ID vào hidden input
+            route = $('#get-teacher').data('route');
+
+            $.ajax({
+                url: route + '/' + teacherId,
+                type: 'get',
+                success: function(response) {
+                    $('#edit-teacher-name').val(response.name);
+                    $('#edit-teacher-email').val(response.email);
+                    $('#edit-teacher-phone').val(response.phone);
+
+                    let parts = response.birthday.split("/");
+                    let formattedDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    $('#edit-birthday').val(formattedDate);
+                }
+            });
+        });
+
+        $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+
+            if ($('input[name="item_ids[]"]:checked').length > 0) {
+
+                $('#delete-mul').prop('disabled', false);
+            } else {
+                $('#delete-mul').prop('disabled', true);
+            }
+        });
+
+        $('#addForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 150
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 150,
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên không được bỏ trống",
+                    minlength: "Tên phải dài hơn 3 ký tự",
+                    maxlength: "Tên quá dài"
+                },
+                email: {
+                    required: "Email không được bỏ trống",
+                    email: "Email không hợp lệ",
+                    maxlength: "Email quá dài",
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
+        $('#editForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 150
+                },
+            },
+            messages: {
+                name: {
+                    required: "Tên không được bỏ trống",
+                    minlength: "Tên phải dài hơn 3 ký tự",
+                    maxlength: "Tên quá dài"
+                },
+            },
+            submitHandler: function(form) {
+                // Nếu form hợp lệ, gửi form tới controller
+                form.submit();
+            }
+        });
+
+    });
+
+    $('#addModal').on('hidden.bs.modal', function() {
+        $('#addForm')[0].reset();
+    });
+
+    $('#editModal').on('hidden.bs.modal', function() {
+        $('#editForm')[0].reset();
+    });
