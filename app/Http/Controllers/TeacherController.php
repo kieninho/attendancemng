@@ -24,7 +24,7 @@ class TeacherController extends Controller
         $keyword = $request->input('keyword');
 
         $teachers = User::searchTeacher($keyword, $records_per_page);
-        
+
         $teachers->appends(['keyword' => $keyword]);
         return view('teacher.index', compact('teachers', 'keyword'));
     }
@@ -39,7 +39,7 @@ class TeacherController extends Controller
         $data['is_teacher'] = 1;
         $data['password'] = '123456';
         $data['password'] = Hash::make($data['password']);
-        if(!empty($data['birthday'])){
+        if (!empty($data['birthday'])) {
             $data['birthday'] = Carbon::createFromFormat('Y-m-d', $data['birthday'])->toDateTime();
         }
         $result = User::create($data);
@@ -80,7 +80,7 @@ class TeacherController extends Controller
                 'phone' => $data['phone'],
             ]);
 
-            if(!empty($data['birthday'])){
+            if (!empty($data['birthday'])) {
                 $data['birthday'] = Carbon::createFromFormat('Y-m-d', $data['birthday'])->toDateTime();
             }
             $record->birthday = $data['birthday'];
@@ -100,10 +100,30 @@ class TeacherController extends Controller
         return response()->json($data);
     }
 
-    public function export(){
+    public function export()
+    {
 
         $teachers = User::getTeachersToExport();
 
-        return Excel::download(new TeacherExport($teachers),"DS_Giao_Vien.xlsx");
+        return Excel::download(new TeacherExport($teachers), "DS_Giao_Vien.xlsx");
+    }
+
+    public function deleteMulti(Request $request)
+    {
+        $teacherIds = $request->input('item_ids');
+        $countStd = count($teacherIds);
+
+        if ($countStd <= 0) {
+            $message = "Thao tác không thành công !!!";
+
+            return redirect()->back()->withErrors($message);
+        }
+
+        foreach ($teacherIds as $teacherId) {
+            User::deleteById($teacherId);
+        }
+
+        $message = "Xóa thành công $countStd giáo viên !!!";
+        return redirect()->back()->withErrors($message);
     }
 }

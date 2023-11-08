@@ -54,20 +54,20 @@
                     <td class="table-Info text-center">{{$class->startDay()}}</td>
                     <td class="table-Info text-center">{{$class->endDay()}}</td>
                     <td class="table-Info text-center">{{$class->getStatus()}}
-    
-    </td>
-    <td class="table-Info text-center">
-        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
-        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a> <span class="divider"></span>
-        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a> <span class="divider"></span>
-        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
-    </td>
-    </tr>
-    @empty
+
+                    </td>
+                    <td class="table-Info text-center">
+                        <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
+                        <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a> <span class="divider"></span>
+                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a> <span class="divider"></span>
+                        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
+                    </td>
+                </tr>
+                @empty
                 <tr>
                     <td colspan="13" class="text-center">Không có dữ liệu</td>
                 </tr>
-    @endforelse
+                @endforelse
     </div>
     </tbody>
     </table>
@@ -79,7 +79,7 @@
     <div class="alert alert-danger px-2 py-1">
         <ul class="ps-1">
             @foreach ($errors->all() as $error)
-            <li style="list-style-type:none;">{{ $error }}</li>
+            <li class="text-mess" style="list-style-type:none;">{{ $error }}</li>
             @endforeach
         </ul>
     </div>

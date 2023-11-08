@@ -48,7 +48,26 @@ class Classes extends Model
         $result = Classes::where(function($query) use ($keyword) {
             $query->where('name','like',"%$keyword%")
                   ->orWhere('description','like',"%$keyword%");
-        })->where('status',1)->orderBy('created_at','desc')->paginate($records_per_page);
+        })
+        ->where('status',1)
+        ->orderBy('created_at','desc')
+        ->paginate($records_per_page);
+        
+        return $result;
+    }
+
+    public static function searchByUser($keyword, $records_per_page, $classOfTeacherIds){
+        $result = Classes::
+        where(function($query) use ($classOfTeacherIds) {
+            $query->whereIn('id', $classOfTeacherIds);
+        })
+        ->where(function($query) use ($keyword) {
+            $query->where('name','like',"%$keyword%")
+                  ->orWhere('description','like',"%$keyword%");
+        })
+        ->where('status',1)
+        ->orderBy('created_at','desc')
+        ->paginate($records_per_page);
         
         return $result;
     }
@@ -88,7 +107,7 @@ class Classes extends Model
         } else {
             $classes = Classes::where('status', 1)->orderBy('name','asc')->get();
         }
-        return $classes;
+        return $classes->unique('id');
     }
 
 
@@ -112,22 +131,39 @@ class Classes extends Model
         return null;
     }
 
-    // Trả về tỷ lệ tham gia điểm danh của lớp
+    //Trả về tỷ lệ tham gia điểm danh của lớp (tính theo buổi học)
+    // public function getAverageAttendance(){
+
+    //     $Lessons =  Classes::findOrFail($this->id)->lessons->where('start_at','<',now());
+    //     $countAttend = 0;
+    //     $countStudentInLesson = 0;
+    //     foreach($Lessons as $lesson){
+    //         $countAttend += $lesson->countAttend();
+    //         $countStudentInLesson += $lesson->countStudent();
+    //     }
+
+    //    if($countStudentInLesson==0){
+    //     return 0;
+    //    }
+        
+    //     return round(($countAttend/ $countStudentInLesson) *100);
+    // }
+
     public function getAverageAttendance(){
 
-        $Lessons =  Classes::findOrFail($this->id)->lessons->where('start_at','<',now());
-        $countAttend = 0;
-        $countStudentInLesson = 0;
-        foreach($Lessons as $lesson){
-            $countAttend += $lesson->countAttend();
-            $countStudentInLesson += $lesson->countStudent();
+        $Lessons =  Classes::findOrFail($this->id)->lessons->where('start_at','<',now())->where('checked_attendance',1);
+        $countLesson = $Lessons->count();
+        if($countLesson == 0){
+            return 0;
         }
 
-       if($countStudentInLesson==0){
-        return 0;
-       }
+        $countAttendPercent = 0;
+        foreach($Lessons as $lesson){
+            $countAttendPercent += $lesson->getAttendRate();
+        }
+
         
-        return round(($countAttend/ $countStudentInLesson) *100);
+        return round(($countAttendPercent/ $countLesson));
     }
 
     public static function getAllClass(){
@@ -210,6 +246,23 @@ class Classes extends Model
         }
         else{
             return "Kết thúc";
+        }
+    }
+
+    public function isActive(){
+        $lesson = $this->lessons->sortBy('start_at')->first();
+        if($lesson == null){
+            return true;
+        }
+
+        $start =  $lesson->start_at;
+        $end = $this->lessons->sortBy('start_at')->last()->start_at;
+
+        if($end > now()){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

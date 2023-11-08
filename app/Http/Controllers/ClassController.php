@@ -24,7 +24,16 @@ class ClassController extends Controller
 
         $keyword = $request->input('keyword');
 
-        $classes = Classes::search($keyword, $records_per_page);
+        $user = Auth::user();
+        // nếu đăng nhập là giáo viên, chỉ hiển thị ra những lớp giáo viên đang dạy
+        if($user->is_teacher){
+            $classOfTeacher = Classes::getClassesByUser($user);
+            $classOfTeacherIds = $classOfTeacher->pluck('id')->toArray();
+            $classes = Classes::searchByUser($keyword, $records_per_page, $classOfTeacherIds);
+        }
+        else{
+            $classes = Classes::search($keyword, $records_per_page);
+        }
 
         $classes->appends(['keyword' => $keyword]);
 

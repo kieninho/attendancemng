@@ -10895,3 +10895,14 @@ label.error {
   content: "*";
   color: red;
 }
+
+.text-mess{
+  color: #CCCC33;
+}
+
+.note-text{
+  margin: -5px 0px; 
+  font-size: 12px;
+  font-size: 12px;
+}
+

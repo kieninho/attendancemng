@@ -75,10 +75,6 @@ Route::group(['prefix' => 'teacherlesson', 'middleware' => 'auth'], function () 
     Route::get('/get/{id}', [LessonController::class, 'getTeacherLesson'])->name('get.teacherLesson.id');
 });
 
-Route::group(['prefix' => 'studentlesson', 'middleware' => 'auth'], function () {
-    Route::get('/', [StudentLessonController::class, 'index'])->name('studentLesson');
-    
-});
 
 
 Route::group(['prefix' => 'student', 'middleware' => 'auth'], function () {
@@ -101,7 +97,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => 'auth'], function () {
     Route::get('/', [TeacherController::class, 'index'])->name('teacher');
     Route::post('/store', [TeacherController::class, 'store'])->name('store.teacher');
     Route::get('/delete/{id}', [TeacherController::class, 'delete'])->name('delete.teacher');
-    Route::get('/deletemulti', [TeacherController::class, 'deleteMulti'])->name('delete.teachers');
+    Route::post('/deletemulti', [TeacherController::class, 'deleteMulti'])->name('delete.teachers');
     Route::get('/get', [TeacherController::class, 'get'])->name('get.teacher');
     Route::get('/get/{id}', [TeacherController::class, 'get'])->name('get.teacher.id');
     Route::post('/update', [TeacherController::class, 'update'])->name('update.teacher');

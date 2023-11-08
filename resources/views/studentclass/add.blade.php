@@ -81,7 +81,7 @@
     <div class="alert alert-danger px-2 py-1">
         <ul class="ps-1">
             @foreach ($errors->all() as $error)
-            <li style="list-style-type:none;">{{ $error }}</li>
+            <li class="text-mess" style="list-style-type:none;">{{ $error }}</li>
             @endforeach
         </ul>
     </div>

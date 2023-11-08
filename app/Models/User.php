@@ -129,4 +129,12 @@ class User extends Authenticatable
     public static function getUsersToExport(){
         return User::where('is_teacher', 0)->where('status', 1)->get()->sortByDesc('created_at');
     }
+
+    public static function deleteById($id){
+        $record = User::findOrFail($id);
+        if(!empty($record)){
+            $record->status = 0;
+            $record->save();
+        }
+    }
 }

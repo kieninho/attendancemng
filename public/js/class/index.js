@@ -30,8 +30,9 @@ function setCheckedSelectAll() {
     }
 }
 
-$(document).ready(function() {
-    $('.edit-button').click(function() {
+$(document).ready(function () {
+    
+    $('.edit-button').click(function () {
         var classId = $(this).data('id'); // Lấy giá trị ID từ thuộc tính data-id của nút được click
         $('#classId').val(classId); // Gán giá trị ID vào hidden input
         route = $('#get-class').data('route');
@@ -39,14 +40,14 @@ $(document).ready(function() {
         $.ajax({
             url: route + '/' + classId,
             type: 'get',
-            success: function(response) {
+            success: function (response) {
                 $('#edit-class-name').val(response.name);
                 $('#edit-class-description').val(response.description);
             }
         });
     });
 
-    $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
+    $('input[name="item_ids[]"]').add($('#select-all')).on('change', function () {
 
         if ($('input[name="item_ids[]"]:checked').length > 0) {
 
@@ -55,6 +56,7 @@ $(document).ready(function() {
             $('#delete-mul').prop('disabled', true);
         }
     });
+
 
     $('#addForm').validate({
         rules: {
@@ -70,7 +72,7 @@ $(document).ready(function() {
             },
 
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             // Nếu form hợp lệ, gửi form tới controller
             form.submit();
         }
@@ -90,18 +92,32 @@ $(document).ready(function() {
             },
 
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             // Nếu form hợp lệ, gửi form tới controller
             form.submit();
         }
     });
+
+    // Đoạn này xử lý dùng shift để chọn nhiều checkbox
+    let lastChecked = null;
+
+    $('table').on('click', 'input[type="checkbox"]', function (e) {
+        if (lastChecked && e.shiftKey) {
+            let checkboxes = $('input[type="checkbox"]');
+            let start = checkboxes.index(lastChecked);
+            let end = checkboxes.index(this);
+            checkboxes.slice(Math.min(start, end), Math.max(start, end) + 1).prop('checked', true);
+        }
+
+        lastChecked = this;
+    });
 });
 
-$('#addModal').on('hidden.bs.modal', function() {
+$('#addModal').on('hidden.bs.modal', function () {
     $('#addForm')[0].reset();
 });
 
-$('#editModal').on('hidden.bs.modal', function() {
+$('#editModal').on('hidden.bs.modal', function () {
     $('#editForm')[0].reset();
 });
 

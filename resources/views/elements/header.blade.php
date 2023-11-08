@@ -28,19 +28,20 @@ use Illuminate\Support\Facades\Auth;
               Sinh viên
             </a>
           </li>
-          <li>
+          @if(!auth()->user()->is_teacher)
+          <li id="teacher-nav">
             <a href="{{route('teacher')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/teacher.svg') }}">
               Giáo viên
             </a>
           </li>
-          <li>
+          <li id="admin-nav">
             <a href="{{route('user')}}" class="nav-link text-white">
               <img class="bi d-block mx-auto mb-1" width="24" height="24" src="{{ asset('images/admin1.svg') }}">
-              Người dùng
+              Quản trị viên
             </a>
           </li>
-
+          @endif
         </ul>
         <div>
 

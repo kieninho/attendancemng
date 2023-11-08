@@ -9,16 +9,16 @@
 
 <div class="container-fluid">
     <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
-        <h5>Quản lý người dùng</h5>
+        <h5>Quản lý Admin</h5>
         <div class="search-box" style="width:300px; height:30px">
             <form class="d-flex" action="{{route('user')}}" method="get">
-                <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm người dùng" aria-label="Search" value="{{$keyword}}">
+                <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
                 <button class="btn btn-outline-secondary" type="submit">Tìm</button>
             </form>
         </div>
         <div class="button-box">
             <button type="button" id="export" class="btn btn-primary ms-2"><a class="text-light" href="{{route('export.user')}}">Xuất Excel</a></button>
-            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm User</button>
+            <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm QTV</button>
         </div>
     </div>
     <div class="table-responsive">
@@ -62,7 +62,7 @@
         <div class="alert alert-danger px-2 py-1">
             <ul class="ps-1">
                 @foreach ($errors->all() as $error)
-                <li style="list-style-type:none;">{{ $error }}</li>
+                <li class="text-mess" style="list-style-type:none;">{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
@@ -74,7 +74,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thêm User</h5>
+                <h5 class="modal-title">Thêm QTV</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addForm" action="{{route('store.user')}}" method="POST">
@@ -87,7 +87,7 @@
                     </div>
 
                     <div class="mb-1">
-                        <label for="add-user-email" class="col-form-label required-star">Email:</label>
+                        <label for="add-user-email" class="col-form-label required-star">Email</label>
                         <input type="email" class="form-control" placeholder="Email" name="email" id="add-user-email">
                     </div>
 
@@ -131,7 +131,7 @@
                     </div>
 
                     <div class="mb-1">
-                        <label for="edit-user-email" class="col-form-label required-star">Email </label>
+                        <label for="edit-user-email" class="col-form-label required-star">Email</label>
                         <input type="email" class="form-control" name="email" placeholder="Email" id="edit-user-email" disabled>
                     </div>
 

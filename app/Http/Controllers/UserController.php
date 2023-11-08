@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -75,15 +76,27 @@ class UserController extends Controller
         return response()->json($data);
     }
 
-    public function update(UserRequest $request){
+    public function update(EditUserRequest $request){
         $data = $request->all();
-        $request->validated();
 
         $record = User::findOrFail($data['userId']);
         $record->name =  $data['name'];
         $record->save();
 
         $message = "Chỉnh sửa thành công!";
+
+        return redirect()->back()->withErrors($message);
+    }
+
+    public function delete($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user) {
+            $user->status = 0;
+            $user->save();
+
+            $message = "Xóa thành công!";
+        }
 
         return redirect()->back()->withErrors($message);
     }

@@ -144,5 +144,13 @@ class Lesson extends Model
         return true;
     }
     
+    public function getStringAttendance(){
+        if($this->checkedAttendance()){
+            return "Đã điểm danh";
+        }
+        else{
+            return "Chưa điểm danh";
+        }
+    }
 
 }

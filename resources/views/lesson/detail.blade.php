@@ -22,7 +22,11 @@
 
     <div class="col-md-10">
         <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
-            <h5>Điểm danh: {{$lesson->name}}</h5>
+            <div>
+                <p style="margin: -5px 0; font-weight: bold;">Điểm danh: {{$lesson->name}}</p>
+                <i class="note-text">*Sinh viên không được đánh dấu tính là đi học</i> <br>
+
+            </div>
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('detail.lesson',['id'=>$lesson->id])}}" method="get">
                     <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm" aria-label="Search" value="{{$keyword}}">
@@ -36,12 +40,12 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">Stt</th>
-                    <th scope="col" class="text-center">Tên</th>
-                    <th scope="col" class="text-center">Mã SV</th>
-                    <th scope="col" class="text-center">Email</th>
-                    <th scope="col" class="text-center">Có phép</th>
-                    <th scope="col" class="text-center">Không phép</th>
+                    <th scope="col" style="padding-top: 0;" class="text-center">Stt</th>
+                    <th scope="col" style="padding-top: 0;" class="text-center">Tên</th>
+                    <th scope="col" style="padding-top: 0;" class="text-center">Mã SV</th>
+                    <th scope="col" style="padding-top: 0;" class="text-center">Email</th>
+                    <th scope="col" style="padding-top: 0;" class="text-center">Có phép</th>
+                    <th scope="col" style="padding-top: 0;" class="text-center">Không phép</th>
                 </tr>
             </thead>
 
@@ -77,7 +81,7 @@
     <div class="alert alert-danger px-2 py-1">
         <ul class="ps-1">
             @foreach ($errors->all() as $error)
-            <li class="error-message" style="list-style-type:none;">{{ $error }}</li>
+            <li class="text-mess" style="list-style-type:none;">{{ $error }}</li>
             @endforeach
         </ul>
     </div>
@@ -86,6 +90,7 @@
 
 <div id="lesson-id" data-id="{{ $lesson->id }}"></div>
 <div id="attend-lesson" data-route="{{ route('attend.lesson') }}"></div>
+<div id="class-active" data-active="{{$lesson->classes->isActive()}}"></div>
 
 @endsection
 

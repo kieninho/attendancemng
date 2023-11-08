@@ -51,6 +51,20 @@ var errorAlert = document.getElementById('error-box');
                 }
             });
         });
+        
+        // Đoạn này xử lý dùng shift để chọn nhiều checkbox
+        let lastChecked = null;
+
+        $('table').on('click', 'input[type="checkbox"]', function (e) {
+            if (lastChecked && e.shiftKey) {
+                let checkboxes = $('input[type="checkbox"]');
+                let start = checkboxes.index(lastChecked);
+                let end = checkboxes.index(this);
+                checkboxes.slice(Math.min(start, end), Math.max(start, end) + 1).prop('checked', true);
+            }
+
+            lastChecked = this;
+        });
 
         $('input[name="item_ids[]"]').add($('#select-all')).on('change', function() {
 

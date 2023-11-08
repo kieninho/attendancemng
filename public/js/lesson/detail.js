@@ -38,4 +38,13 @@
 
         });
 
+
+        // Nếu class kết thúc thì không cho điểm danh các tiết học
+        let classActive = $('#class-active').data('active');
+        if(!classActive){
+            $('td input[type="checkbox"]').prop('disabled', true);
+            
+        }
+
+
     });
