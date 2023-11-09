@@ -13,25 +13,27 @@
             <a class="text-primary" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
         </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
-            <span class="list-group-item list-group-item-action">Quản lý bài học</span>
+            <span class="list-group-item list-group-item-action">Quản lý buổi học</span>
             @foreach($classes as $classItem)
-            <a href="{{route('classLesson',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-light list-group-item-action">{{$classItem->name}}</a>
+            <a href="{{route('classLesson',['classId'=>$classItem->id])}}" class="list-group-item list-group-item-light list-group-item-action">
+                {{$classItem->name}} @if(!$classItem->isActive()) <img width="15" height="15" src="{{ asset('images/lock.svg') }}"> @endif
+            </a>
             @endforeach
         </div>
     </div>
     <div class="col-md-10">
         <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
-            <h5>Danh sách bài học lớp: {{$class->name}}</h5>
+            <h5>Danh sách buổi học lớp: {{$class->name}}</h5>
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('classLesson',['classId'=>$class->id])}}" method="get">
-                    <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm bài học" aria-label="Search" value="{{$keyword}}">
+                    <input class="form-control me-2" type="text" name="keyword" placeholder="Tìm kiếm buổi học" aria-label="Search" value="{{$keyword}}">
                     <button class="btn btn-outline-secondary" type="submit">Tìm</button>
                 </form>
             </div>
             <div class="button-box">
                 <button type="submit" class="btn btn-primary" id="delete-mul" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" disabled>Xóa nhiều</input>
                     <button type="button" id="export" class="btn btn-primary  ms-2"><a class="text-light" href="{{route('export.classLesson',['classId'=>$class->id])}}">Xuất Excel</a></button>
-                    <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm bài học</button>
+                    <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm buổi học</button>
             </div>
         </div>
         <table class="table table-hover table-striped mb-1">
@@ -50,14 +52,14 @@
 
             <tbody>
                 @forelse($lessons as $lesson)
-                <tr @if($lesson->start_at > now()) class="un-available"
+                <tr class="td-padding-custom" @if($lesson->start_at > now()) class="un-available"
                     @elseif($lesson->checkedAttendance())
                     class="row-checked"
                     @elseif(!$lesson->checkedAttendance())
                     class="row-unchecked"
-                @endif >
+                @endif  >
                 <td class="table-Info text-center"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <td scope="row" class="table-Info">{{ $loop->iteration }}</td>
                     <td class="table-Info">{{$lesson->name}}</td>
                     <td class="table-Info">{{$lesson->description}}</td>
                     <td class="table-Info">{{$lesson->getStartAndEnd()}}</td>
@@ -80,7 +82,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr>
+                <tr class="td-padding-custom" >
                     <td colspan="8" class="text-center">Không có dữ liệu</td>
                 </tr>
 
@@ -107,7 +109,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tạo Bài học</h5>
+                <h5 class="modal-title">Tạo buổi học</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addForm" action="{{route('store.lesson',['classId'=>$class->id])}}" method="POST">
@@ -160,7 +162,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Chỉnh sửa bài học</h5>
+                <h5 class="modal-title">Chỉnh sửa buổi học</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="editForm" action="{{route('update.lesson')}}" method="POST">

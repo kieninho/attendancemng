@@ -48,8 +48,8 @@
         <tbody>
 
             @forelse($classes as $class)
-            <tr>
-                <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
+            <tr class="td-padding-custom">
+                <td scope="row" class="table-Info text-center">{{ $loop->iteration }}</td>
                 <td class="table-Info text-center"><a href="{{route('classLesson',['classId'=>$class->id])}}">{{$class->code}}</a></td>
                 <td class="table-Info">{{$class->name}}</td>
                 <td class="table-Info text-center">{{$attend = $class->countAttendWithStudentId($student->id)}}</td>
@@ -61,7 +61,7 @@
                 <td class="table-Info text-center">@if($attend == 0) {{0}}% @else {{round($attend/$all*100)}}%  @endif </td>
             </tr>
             @empty
-                <tr>
+                <tr class="td-padding-custom">
                     <td colspan="5" class="text-center">Không có dữ liệu</td>
                 </tr>
             @endforelse

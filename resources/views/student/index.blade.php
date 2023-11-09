@@ -39,9 +39,9 @@
             </thead>
             <tbody>
                 @forelse($students as $student)
-                <tr>
+                <tr class="td-padding-custom">
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-                    <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
+                    <td scope="row" class="table-Info text-center">{{ $loop->iteration }}</td>
                     <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
@@ -55,7 +55,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr>
+                <tr class="td-padding-custom">
                     <td colspan="7" class="text-center">Không có dữ liệu</td>
                 </tr>
                 @endforelse

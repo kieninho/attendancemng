@@ -32,7 +32,7 @@ class ClassExport implements FromCollection, WithHeadings, ShouldAutoSize,WithMa
             'Mô tả',
             'Sinh viên',
             'Giáo viên',
-            'Bài học',
+            'Buổi học',
             'Chuyên cần',
             'Khai giảng',
             'Kết thúc',

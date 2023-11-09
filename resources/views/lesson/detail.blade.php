@@ -8,12 +8,14 @@
 <div class="container-fluid row">
     <div class="col-md-2">
         <div class="d-flex justify-content-evenly mt-2">
-            <a class="text-primary" href="{{route('classLesson',['classId'=>$lesson->classes->id])}}">QL Bài học</a>
+            <a class="text-primary" href="{{route('classLesson',['classId'=>$lesson->classes->id])}}">QL buổi học</a>
             <span class="divider"></span>
             <a class="text-primary" href="{{route('studentInClass',['classId'=>$lesson->classes->id])}}">SV trong lớp</a>
         </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
-            <span class="list-group-item list-group-item-action">{{$lesson->classes->name}}</span>
+            <span class="list-group-item list-group-item-action">
+                {{$lesson->classes->name}} @if(!$lesson->classes->isActive()) <img width="18" height="18" src="{{ asset('images/lock.svg') }}"> @endif
+            </span>
             @foreach($lessons as $lessonItem)
             <a href="{{route('detail.lesson',['id'=>$lessonItem->id])}}" class="list-group-item list-group-item-light list-group-item-action">{{$lessonItem->name}}</a>
             @endforeach
@@ -23,9 +25,8 @@
     <div class="col-md-10">
         <div class="top-box d-flex justify-content-between my-1" style="width:100%;">
             <div>
-                <p style="margin: -5px 0; font-weight: bold;">Điểm danh: {{$lesson->name}}</p>
-                <i class="note-text">*Sinh viên không được đánh dấu tính là đi học</i> <br>
-
+                <h5 style="margin: -5px 0;">Điểm danh: {{$lesson->name}}</h5>
+                <i class="note-text">*Sinh viên không được đánh dấu tính là đi học</i>
             </div>
             <div class="search-box" style="width:300px; height:30px">
                 <form class="d-flex" action="{{route('detail.lesson',['id'=>$lesson->id])}}" method="get">
@@ -52,8 +53,8 @@
             <tbody>
 
                 @forelse($students as $student)
-                <tr>
-                    <th scope="row" class="text-center" class="table-Info">{{ $loop->iteration }}</th>
+                <tr class="td-padding-custom">
+                    <td scope="row" class="text-center" class="table-Info">{{ $loop->iteration }}</td>
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info text-center">{{$student->code}}</td>
                     <td class="table-Info">{{$student->email}}</td>
@@ -65,14 +66,13 @@
                         id="leave-{{$student->id}}" data-id="{{$student->id}}"></td>
                 </tr>
                 @empty
-                <tr>
+                <tr class="td-padding-custom">
                     <td colspan="7" class="text-center">Không có dữ liệu</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
         {{$students->links()}}
-
     </div>
 
 </div>
@@ -87,7 +87,6 @@
     </div>
     @endif
 </div>
-
 <div id="lesson-id" data-id="{{ $lesson->id }}"></div>
 <div id="attend-lesson" data-route="{{ route('attend.lesson') }}"></div>
 <div id="class-active" data-active="{{$lesson->classes->isActive()}}"></div>

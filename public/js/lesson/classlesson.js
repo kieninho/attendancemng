@@ -192,7 +192,7 @@ $('#editModal').on('hidden.bs.modal', function () {
 
 function showAlert(event) {
     event.preventDefault();
-    alert("Bài học chưa bắt đầu!");
+    alert("Buổi học chưa bắt đầu!");
 
     return false;
 }

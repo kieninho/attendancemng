@@ -24,14 +24,14 @@
         <table class="table table-hover table-striped mb-1">
             <thead>
                 <tr>
-                    <th scope="col"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
+                    <th scope="col" class="text-center"><input class="form-check-input" type="checkbox" onclick="selectAll()" id="select-all"></th>
                     <th scope="col" class="text-center">Stt</th>
                     <th scope="col" class="text-center">Mã lớp</th>
                     <th scope="col" class="text-center">Tên</th>
                     <th scope="col" class="text-center">Mô tả</th>
                     <th scope="col" class="text-center">Sinh viên</th>
                     <th scope="col" class="text-center">Giáo viên</th>
-                    <th scope="col" class="text-center">Bài học</th>
+                    <th scope="col" class="text-center">Buổi học</th>
                     <th scope="col" class="text-center">Chuyên cần</th>
                     <th scope="col" class="text-center">Khai giảng</th>
                     <th scope="col" class="text-center">Kết thúc</th>
@@ -41,9 +41,9 @@
             </thead>
             <tbody>
                 @forelse($classes as $class)
-                <tr>
-                    <td class="table-Info"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-                    <th scope="row" class="table-Info text-center">{{ $loop->iteration }}</th>
+                <tr class="td-padding-custom">
+                    <td class="table-Info text-center"><input class="form-check-input" name="item_ids[]" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
+                    <td scope="row" class="table-Info text-center">{{ $loop->iteration }}</td>
                     <td class="table-Info text-center">{{$class->code}}</td>
                     <td class="table-Info">{{$class->name}}</td>
                     <td class="table-Info">{{$class->description}}</td>
@@ -59,12 +59,12 @@
                     <td class="table-Info text-center">
                         <span class="edit-button text-success cursor-pointer" data-bs-toggle="modal" data-id="{{$class->id}}" data-bs-target="#editModal">Sửa</span> <span class="divider"></span>
                         <a class="link-danger" href="{{route('delete.class',['id'=>$class->id])}}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a> <span class="divider"></span>
-                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a> <span class="divider"></span>
-                        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">Sinh viên</a>
+                        <a class="link-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a> <span class="divider"></span>
+                        <a class="link-dark" href="{{route('studentInClass',['classId'=>$class->id])}}">SV</a>
                     </td>
                 </tr>
                 @empty
-                <tr>
+                <tr class="td-padding-custom">
                     <td colspan="13" class="text-center">Không có dữ liệu</td>
                 </tr>
                 @endforelse

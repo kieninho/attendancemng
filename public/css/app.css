@@ -10906,3 +10906,6 @@ label.error {
   font-size: 12px;
 }
 
+.td-padding-custom td{
+  padding: 0.4rem 0.5rem;
+}

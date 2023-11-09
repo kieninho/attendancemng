@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-evenly mt-2">
             <a class="text-primary" href="{{route('class')}}">DS lớp</a>
             <span class="divider"></span>
-            <a class="text-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Bài học</a>
+            <a class="text-primary" href="{{route('classLesson',['classId'=>$class->id])}}">Buổi học</a>
         </div>
         <div class="list-group scrollbar overflow-auto my-2" style="max-height: 400px;">
             <span class="list-group-item list-group-item-action">Quản lý sinh viên trong lớp</span>
@@ -55,9 +55,9 @@
             <tbody>
 
                 @forelse($students as $student)
-                <tr>
+                <tr class="td-padding-custom">
                     <td class="table-Info"><input class="form-check-input" name="item_ids[]" value="{{$student->id}}" type="checkbox" onclick="setCheckedSelectAll()" id="flexCheckChecked"></td>
-                    <th scope="row" class="table-Info">{{ $loop->iteration }}</th>
+                    <td scope="row" class="table-Info">{{ $loop->iteration }}</td>
                     <td class="table-Info">{{$student->code}}</td>
                     <td class="table-Info">{{$student->name}}</td>
                     <td class="table-Info">{{$student->email}}</td>
@@ -70,7 +70,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr>
+                <tr class="td-padding-custom">
                     <td colspan="8" class="text-center">Không có dữ liệu</td>
                 </tr>
                 @endforelse
