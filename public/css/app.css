@@ -10909,3 +10909,6 @@ label.error {
 .td-padding-custom td{
   padding: 0.4rem 0.5rem;
 }
+#td-padding-custom td{
+  padding: 0.4rem 0.5rem;
+}

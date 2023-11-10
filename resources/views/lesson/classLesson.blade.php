@@ -52,7 +52,7 @@
 
             <tbody>
                 @forelse($lessons as $lesson)
-                <tr class="td-padding-custom" @if($lesson->start_at > now()) class="un-available"
+                <tr id="td-padding-custom" @if($lesson->start_at > now()) class="un-available"
                     @elseif($lesson->checkedAttendance())
                     class="row-checked"
                     @elseif(!$lesson->checkedAttendance())
